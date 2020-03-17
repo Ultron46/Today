@@ -1,0 +1,233 @@
+﻿<!-- Data Table area Start-->
+<div class="data-table-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="data-table-list">
+
+                    <div class="table-responsive">
+                        <table id="data-table-basic" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Solution Name</th>
+                                    <th>Organization Name</th>
+                                    <th>Source URL</th>
+                                    <th>File Format </th>
+                                    <th>Status</th>
+                                    <th>Type</th>
+                                    <th>Platform</th>
+                                    <th>Created By</th>
+                                    <th>Modified By</th>
+                                    <th>Created Date</th>
+                                    <th>Last Modified Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*<tr>
+                                        <td>Tiger Nixon</td>
+                                        <td>System Architect</td>
+                                        <td>Edinburgh</td>
+                                        <td>61</td>
+                                        <td>2011/04/25</td>
+                                        <td>$320,800</td>
+                                    </tr>*@
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "http://localhost:60969/api/Projects/GetProjects",
+                context: document.body,
+                success: function (data) {
+                    console.log(data);
+                    $("#data-table-basic tbody").empty();
+                    for (var i = 0, li = data.length; i < li; i++) {
+                        var newTr = "<tr> <td>" + data[i].projectName + " </td><td>" + data[i].solutionName + "</td><td>" + data[i].organisation.name + "</td><td>" + data[i].sourceURL + "</td><td>" + data[i].fileFormat + "</td><td>" + data[i].status + "</td><td>" + data[i].type + "</td><td>" + data[i].plateform + "</td><td>" + data[i].user.name + "</td><td>" + data[i].user1.name + "</td><td>" + data[i].createdDate + "</td><td>" + data[i].lastModifiedDate + "</td><td> <input type='hidden' value=" + data[i].projectId + "><a class='editajax' id='" + data[i].projectId + "' href='#'>Edit</a></td><td><a class='deleteajax' id='" + data[i].projectId + "' href='#'>Delete</a></td></tr>";
+                      //  var newTr = "<tr> <td>" + data[i].name + " </td><td>" + data[i].address + "</td><td>" + data[i].nationality + "</td><td>" + data[i].email + "</td> <td>" + data[i].phone + "</td> <td>" + data[i].dateOfBirth + "</td> <td>" + data[i].organisationId + "</td><td>" + data[i].registrationDate + "</td><td><a href='#'>Edit</a></td><td><a href='#'>Delete</a></td></tr>";
+                        $("#data-table-basic").append(newTr);
+                        document.getElementsByClassName("editajax")[i].addEventListener("click", function (event) {
+                            event.preventDefault();
+                            //alert(event.target.id);
+                            var url1 = "http://localhost:57996/Projects/EditProject/" + event.target.id;
+                            $.ajax({
+                                url: url1,
+                                type: 'GET',//type of posting the data
+                                contentType: 'application/json',
+                                dataType: 'html',
+                                success: function (r) {
+                                    //console.log(r.ViewString);
+                                    $("#partialbody").empty();
+                                    $("#partialbody").html(r);
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    //what to do in error
+                                    alert(thrownError);
+                                }
+                            });
+
+                        });
+                        document.getElementsByClassName("deleteajax")[i].addEventListener("click", function (event) {
+                            event.preventDefault();
+                            //alert(event.target.id);
+                            if (confirm("Are you Sure Want to delete?")) {
+                                var id = event.target.id;
+                                var url1 = "http://localhost:60969/api/Projects/DeleteProject/" + id;
+                                $.ajax({
+                                    url: url1,
+                                    type: 'POST',//type of posting the data
+                                    data: '{id: "' + id + '"}',
+                                    dataType: 'json',
+                                    success: function (r) {
+                                        var url2 = "http://localhost:57996/Projects/Projects"
+                                        $.ajax({
+                                            url: url2,
+                                            type: 'GET',//type of posting the data
+                                            contentType: 'application/json',
+                                            dataType: 'json',
+                                            success: function (r) {
+                                                $("#partialbody").empty();
+                                                $("#partialbody").append(r.ViewString);
+                                            },
+                                            error: function (xhr, ajaxOptions, thrownError) {
+                                                //what to do in error
+                                            }
+                                        });
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        //what to do in error
+                                        alert(thrownError);
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                }
+            });
+        });
+
+        //$('.edit').click(function (e) {
+        //    e.preventDefault();
+        //    //var id = window.location.href.split('/').pop(-1);
+        //    //var url1 = "/Customers/Index";
+        //    $.ajax({
+        //        url: $(this).attr("href"),
+        //        type: 'GET',//type of posting the data
+        //        contentType: 'application/json',
+        //        dataType: 'json',
+        //        success: function (r) {
+        //            $("#partialbody").empty();
+        //            $("#partialbody").append(r.ViewString)
+        //        },
+        //        error: function (xhr, ajaxOptions, thrownError) {
+        //            //what to do in error
+        //        }
+        //    });
+
+        //});
+
+
+</script>
+
+@*@model IEnumerable<DevOps.DataEntities.Models.Project>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SolutionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SourceURL)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileFormat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Plateform)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastModifiedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Organisation.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User1.Name)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SolutionName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SourceURL)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileFormat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Plateform)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastModifiedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Organisation.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User1.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.ProjectId }) |
+                @Html.ActionLink("Details", "Details", new { id=item.ProjectId }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.ProjectId })
+            </td>
+        </tr>
+    }
+
+    </table>*@
