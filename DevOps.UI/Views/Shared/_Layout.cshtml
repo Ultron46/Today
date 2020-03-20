@@ -716,7 +716,7 @@
     <!-- Main Menu area End-->
     @RenderBody()
     <!-- Start Footer area-->
-    <div class="footer-copyright-area">
+    <footer class="footer-copyright-area">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -729,7 +729,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </footer>
     <!-- End Footer area-->
     <!-- jquery
         ============================================ -->
@@ -809,10 +809,10 @@
                 url: $(this).attr("href"),
                 type: 'GET',//type of posting the data
                 contentType: 'application/json',
-                dataType: 'json',
+                dataType: 'html',
                 success: function (r) {
                     $("#partialbody").empty();
-                    $("#partialbody").append(r.ViewString);
+                    $("#partialbody").html(r);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     //what to do in error

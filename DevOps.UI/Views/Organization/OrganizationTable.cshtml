@@ -1,11 +1,13 @@
-﻿<!-- Data Table area Start-->
+﻿@model IEnumerable<DevOps.UI.Models.Organization>
+
+<!-- Data Table area Start-->
 <div class="data-table-area">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="data-table-list">
-
                     <div class="table-responsive">
+                        <h4>Organizations</h4>
                         <table id="data-table-basic" class="table table-striped">
                             <thead>
                                 <tr>
@@ -17,14 +19,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @*<tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                    </tr>*@
                             </tbody>
 
                         </table>
@@ -42,89 +36,71 @@
                 context: document.body,
                 success: function (data) {
                     for (var i = 0, li = data.length; i < li; i++) {
-                        var newTr = "<tr> <td>" + data[i].name + " </td><td>" + data[i].address + "</td><td>" + data[i].nationality + "</td><td>" + data[i].type + "</td><td> <input type='hidden' value=" + data[i].organisationId + "><a class='editajax' id='" + data[i].organisationId + "' href='#'>Edit</a></td><td><a class='deleteajax' id='" + data[i].organisationId +"' href='#'>Delete</a></td></tr>";
-                      //  var newTr = "<tr> <td>" + data[i].name + " </td><td>" + data[i].address + "</td><td>" + data[i].nationality + "</td><td>" + data[i].email + "</td> <td>" + data[i].phone + "</td> <td>" + data[i].dateOfBirth + "</td> <td>" + data[i].organisationId + "</td><td>" + data[i].registrationDate + "</td><td><a href='#'>Edit</a></td><td><a href='#'>Delete</a></td></tr>";
+                        var newTr = "<tr> <td>" + data[i].name + " </td><td>" + data[i].address + "</td><td>" + data[i].nationality + "</td><td>" + data[i].type + "</td><td> <input type='hidden' value=" + data[i].organisationId + ">";
+                        if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+                            newTr += "<a class='editajax' id='" + data[i].organisationId + "' href='#'>Edit</a></td > <td><a class='deleteajax' id='" + data[i].organisationId + "' href='#'>Delete</a>";
+                        }
+                        newTr += "</td></tr >";
                         $("#data-table-basic").append(newTr);
-                        document.getElementsByClassName("editajax")[i].addEventListener("click", function (event) {
-                            event.preventDefault();
-                            //alert(event.target.id);
-                            var url1 = "http://localhost:57996/Organization/EditOrganization/" + event.target.id;
-                            $.ajax({
-                                url: url1,
-                                type: 'GET',//type of posting the data
-                                contentType: 'application/json',
-                                dataType: 'html',
-                                success: function (r) {
-                                    //console.log(r.ViewString);
-                                    $("#partialbody").empty();
-                                    $("#partialbody").html(r);
-                                },
-                                error: function (xhr, ajaxOptions, thrownError) {
-                                    //what to do in error
-                                    alert(url1);
-                                }
-                            });
-
-                        });
-                        document.getElementsByClassName("deleteajax")[i].addEventListener("click", function (event) {
-                            event.preventDefault();
-                            //alert(event.target.id);
-                            if (confirm("Are you Sure Want to delete?")) {
-                                var id = event.target.id;
-                                var url1 = "http://localhost:60969/api/Organizations/DeleteOrganization/" + id;
+                        if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+                            document.getElementsByClassName("editajax")[i].addEventListener("click", function (event) {
+                                event.preventDefault();
+                                var url1 = "http://localhost:57996/Organization/EditOrganization/" + event.target.id;
                                 $.ajax({
                                     url: url1,
-                                    type: 'POST',//type of posting the data
-                                    data: '{id: "' + id + '"}',
-                                    dataType: 'json',
+                                    type: 'GET',//type of posting the data
+                                    contentType: 'application/json',
+                                    dataType: 'html',
                                     success: function (r) {
-                                        var url2 = "http://localhost:57996/Organization/Organization"
-                                        $.ajax({
-                                            url: url2,
-                                            type: 'GET',//type of posting the data
-                                            contentType: 'application/json',
-                                            dataType: 'json',
-                                            success: function (r) {
-                                                $("#partialbody").empty();
-                                                $("#partialbody").append(r.ViewString);
-                                            },
-                                            error: function (xhr, ajaxOptions, thrownError) {
-                                                //what to do in error
-                                            }
-                                        });
+                                        //console.log(r.ViewString);
+                                        $("#partialbody").empty();
+                                        $("#partialbody").html(r);
                                     },
                                     error: function (xhr, ajaxOptions, thrownError) {
                                         //what to do in error
-                                        alert(thrownError);
+                                        alert(url1);
                                     }
                                 });
-                            }
-                        });
+
+                            });
+                            document.getElementsByClassName("deleteajax")[i].addEventListener("click", function (event) {
+                                event.preventDefault();
+                                if (confirm("Are you Sure Want to delete?")) {
+                                    var id = event.target.id;
+                                    var url1 = "http://localhost:60969/api/Organizations/DeleteOrganization/" + id;
+                                    $.ajax({
+                                        url: url1,
+                                        type: 'POST',//type of posting the data
+                                        data: '{id: "' + id + '"}',
+                                        dataType: 'json',
+                                        success: function (r) {
+                                            alert('Organization Deleted Successfully');
+                                            var url2 = "http://localhost:57996/Organization/Organization"
+                                            $.ajax({
+                                                url: url2,
+                                                type: 'GET',//type of posting the data
+                                                contentType: 'application/json',
+                                                dataType: 'html',
+                                                success: function (r) {
+                                                    $("#partialbody").empty();
+                                                    $("#partialbody").append(r);
+                                                },
+                                                error: function (xhr, ajaxOptions, thrownError) {
+                                                    //what to do in error
+                                                }
+                                            });
+                                        },
+                                        error: function (xhr, ajaxOptions, thrownError) {
+                                            //what to do in error
+                                            alert(thrownError);
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     }
 
                 }
             });
         });
-
-        //$('.edit').click(function (e) {
-        //    e.preventDefault();
-        //    //var id = window.location.href.split('/').pop(-1);
-        //    //var url1 = "/Customers/Index";
-        //    $.ajax({
-        //        url: $(this).attr("href"),
-        //        type: 'GET',//type of posting the data
-        //        contentType: 'application/json',
-        //        dataType: 'json',
-        //        success: function (r) {
-        //            $("#partialbody").empty();
-        //            $("#partialbody").append(r.ViewString)
-        //        },
-        //        error: function (xhr, ajaxOptions, thrownError) {
-        //            //what to do in error
-        //        }
-        //    });
-
-        //});
-
-
 </script>

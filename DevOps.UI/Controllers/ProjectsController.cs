@@ -18,58 +18,17 @@ namespace DevOps.UI.Controllers
     public class ProjectsController : Controller
     {
         string baseUrl = Constants.baseurl;
+
         [HttpGet]
-        // GET: Projects
         public async Task<ActionResult> Projects()
         {
-            List<Project> projects = new List<Project>();
-            var client = new HttpClient();
-
-            client.BaseAddress = new Uri(baseUrl);
-
-            client.DefaultRequestHeaders.Clear();
-
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            HttpResponseMessage Res = await client.GetAsync("api/Project/GetProjects");
-
-            if (Res.IsSuccessStatusCode)
-            {
-                var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
-
-                projects = JsonConvert.DeserializeObject<List<Project>>(MainMEnuResponse);
-            }
-
-            ReturnArgs r = new ReturnArgs();
-            r.status = 400;
-            using (var sw = new StringWriter())
-            {
-                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,
-                                                                         "Projects");
-                var viewContext = new ViewContext(ControllerContext, viewResult.View,
-                                             ViewData, TempData, sw);
-                viewResult.View.Render(viewContext, sw);
-                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
-                r.ViewString = sw.GetStringBuilder().ToString();
-            }
-            return Json(r, JsonRequestBehavior.AllowGet);
+            return PartialView("Projects");
         }
+
         [HttpGet]
         public async Task<ActionResult> Registration()
         {
-            ReturnArgs r = new ReturnArgs();
-            r.status = 400;
-            using (var sw = new StringWriter())
-            {
-                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,
-                                                                         "Registration");
-                var viewContext = new ViewContext(ControllerContext, viewResult.View,
-                                             ViewData, TempData, sw);
-                viewResult.View.Render(viewContext, sw);
-                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
-                r.ViewString = sw.GetStringBuilder().ToString();
-            }
-            return Json(r, JsonRequestBehavior.AllowGet);
+            return PartialView("Registration");
         }
 
         [HttpPost]
@@ -81,25 +40,18 @@ namespace DevOps.UI.Controllers
             project.LastModifiedDate = DateTime.Now;
             project.OrganisationId = Convert.ToInt32(Session["Organization"].ToString());
             var client = new HttpClient();
-
             client.BaseAddress = new Uri(baseUrl);
-
             client.DefaultRequestHeaders.Clear();
-
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var stringContent = new StringContent(JsonConvert.SerializeObject(project), Encoding.UTF8, "application/json");
-
             var addressUri = new Uri("api/Projects/InsertProject", UriKind.Relative);
             HttpResponseMessage Res = client.PostAsync(addressUri, stringContent).Result;
-
             if (Res.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index","Home");
+                return Json(new { success = true }); ;
             }
-
-            return View("Registration", project);
+            return Json(new { error = true });
         }
-
 
         [HttpGet]
         public async Task<ActionResult> EditProject(int id)
@@ -121,24 +73,8 @@ namespace DevOps.UI.Controllers
 
                 projects = JsonConvert.DeserializeObject<Project>(MainMEnuResponse);
             }
-
-            //ReturnArgs r = new ReturnArgs();
-            //r.status = 400;
-            //using (var sw = new StringWriter())
-            //{
-            //    var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,
-            //                                                             "EditUser");
-            //    var viewContext = new ViewContext(ControllerContext, viewResult.View,
-            //                                 ViewData, TempData, sw);
-            //    viewResult.View.Render(viewContext, sw);
-            //    viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
-            //    r.ViewString = sw.GetStringBuilder().ToString();
-            //}
             return PartialView(projects);
         }
-
-
-
     }
 }
 

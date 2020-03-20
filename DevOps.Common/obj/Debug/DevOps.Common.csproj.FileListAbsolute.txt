@@ -55,3 +55,14 @@ D:\Hardik.Prajapati\14-3\Home-master\DevOps.Common\obj\Debug\DevOps.Common.cspro
 D:\Hardik.Prajapati\14-3\Home-master\DevOps.Common\obj\Debug\DevOps.Common.csproj.CopyComplete
 D:\Hardik.Prajapati\14-3\Home-master\DevOps.Common\obj\Debug\DevOps.Common.dll
 D:\Hardik.Prajapati\14-3\Home-master\DevOps.Common\obj\Debug\DevOps.Common.pdb
+D:\Today\Today\DevOps.Common\bin\Debug\DevOps.Common.dll.config
+D:\Today\Today\DevOps.Common\bin\Debug\DevOps.Common.dll
+D:\Today\Today\DevOps.Common\bin\Debug\DevOps.Common.pdb
+D:\Today\Today\DevOps.Common\bin\Debug\EntityFramework.dll
+D:\Today\Today\DevOps.Common\bin\Debug\EntityFramework.SqlServer.dll
+D:\Today\Today\DevOps.Common\bin\Debug\EntityFramework.xml
+D:\Today\Today\DevOps.Common\bin\Debug\EntityFramework.SqlServer.xml
+D:\Today\Today\DevOps.Common\obj\Debug\DevOps.Common.csprojAssemblyReference.cache
+D:\Today\Today\DevOps.Common\obj\Debug\DevOps.Common.csproj.CopyComplete
+D:\Today\Today\DevOps.Common\obj\Debug\DevOps.Common.dll
+D:\Today\Today\DevOps.Common\obj\Debug\DevOps.Common.pdb

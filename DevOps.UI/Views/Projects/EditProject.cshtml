@@ -11,7 +11,6 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="text" class="form-control" placeholder="Name" name="Name">*@
                         @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
@@ -20,29 +19,22 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="text" class="form-control" placeholder="Address" name="Address">*@
                         @Html.EditorFor(model => model.SolutionName, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <br />
 
-
-
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-mobile-alt"></i></span>
                     <div class="nk-int-st">
-
-                        @*<input type="number" class="form-control" placeholder="Phone" name="Phone">*@
                         @Html.EditorFor(model => model.SourceURL, new { htmlAttributes = new { @class = "form-control", type = "text" } })
                     </div>
                 </div>
                 <br />
 
-
                 <div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-envelope"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="email" class="form-control" placeholder="Email Address" name="Email">*@
                         @Html.EditorFor(model => model.FileFormat, new { htmlAttributes = new { @class = "form-control", type = "text" } })
                     </div>
                 </div>
@@ -59,7 +51,6 @@
                 <div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="date" class="form-control" placeholder="Date" name="DateOfBirth">*@
                         @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control", type = "text" } })
                     </div>
                 </div>
@@ -67,22 +58,17 @@
                 <div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="date" class="form-control" placeholder="Date" name="DateOfBirth">*@
                         @Html.EditorFor(model => model.Plateform, new { htmlAttributes = new { @class = "form-control", type = "text" } })
                     </div>
                 </div>
                 <br />
 
-
                 <br /><br />
                 <input type="submit" id="editbtn" value="Submit" class=" btn-success uloginbtn" />
 
-
                 <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
             </div>
-
         </div>
-
     }
 </div>
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
@@ -109,15 +95,16 @@
             contentType: 'application/json',
             dataType: 'json',
             success: function (r) {
+                alert('Project Details Updated Successfully');
                 var urlg = "http://localhost:57996/Projects/Projects";
                 $.ajax({
                     url: urlg,
                     type: 'GET',//type of posting the data
                     contentType: 'application/json',
-                    dataType: 'json',
+                    dataType: 'html',
                     success: function (r) {
                         $("#partialbody").empty();
-                        $("#partialbody").append(r.ViewString);
+                        $("#partialbody").html(r);
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         //what to do in error
@@ -132,123 +119,3 @@
 
     });
 </script>
-
-@*@model DevOps.DataEntities.Models.Project
-
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-horizontal">
-            <h4>Project</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.ProjectId)
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ProjectName, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.SolutionName, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.SolutionName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.SolutionName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.OrganisationId, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.OrganisationId, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.OrganisationId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.SourceURL, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.SourceURL, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.SourceURL, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.FileFormat, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.FileFormat, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.FileFormat, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Plateform, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Plateform, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Plateform, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.CreatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.LastModifiedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.LastModifiedBy, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.LastModifiedBy, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.LastModifiedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.LastModifiedDate, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.LastModifiedDate, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
-                </div>
-            </div>
-        </div>
-    }
-
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>*@

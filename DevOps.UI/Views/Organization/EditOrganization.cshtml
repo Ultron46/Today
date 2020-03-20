@@ -10,7 +10,6 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="text" class="form-control" placeholder="Name" name="Name">*@
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
@@ -19,7 +18,6 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="text" class="form-control" placeholder="Address" name="Address">*@
                         @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
@@ -29,8 +27,6 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-flag"></i></span>
                     <div class="nk-int-st">
-
-                        @*<input type="text" class="form-control" placeholder="Nationality" name="Nationality">*@
                         @Html.EditorFor(model => model.Nationality, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
@@ -39,29 +35,15 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-mobile-alt"></i></span>
                     <div class="nk-int-st">
-
-                        @*<input type="number" class="form-control" placeholder="Phone" name="Phone">*@
                         @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <br />
-
-
-               
-
-                
-                
-                
-
-               
                 <input type="submit" id="editbtn" value="Submit" class=" btn-success uloginbtn" />
-
 
                 <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
             </div>
-
         </div>
-
     }
 </div>
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
@@ -84,15 +66,16 @@
             contentType: 'application/json',
             dataType: 'json',
             success: function (r) {
+                alert('Organization Details Updated Successfully');
                 var url2 = "http://localhost:57996/Organization/Organization"
                 $.ajax({
                     url: url2,
                     type: 'GET',//type of posting the data
                     contentType: 'application/json',
-                    dataType: 'json',
+                    dataType: 'html',
                     success: function (r) {
                         $("#partialbody").empty();
-                        $("#partialbody").append(r.ViewString);
+                        $("#partialbody").append(r);
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         //what to do in error
@@ -107,58 +90,3 @@
 
     });
 </script>
-@*@model DevOps.DataEntities.Models.Organisation
-
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-horizontal">
-            <h4>Organisation</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.OrganisationId)
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Nationality, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Nationality, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
-                </div>
-            </div>
-        </div>
-    }
-
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>*@

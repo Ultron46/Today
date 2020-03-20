@@ -1,328 +1,120 @@
-﻿@{
-    Layout = null;
-}
-@*<!doctype html>
-    <html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Login Register | Notika - Notika Admin Template</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="~/Content/font/css/fontawesome.css" rel="stylesheet">
-        <link href="~/Content/font/css/brands.css" rel="stylesheet">
-        <link href="~/Content/font/css/solid.css" rel="stylesheet">
-        <!-- favicon
-            ============================================ -->
-        <link rel="shortcut icon" type="image/x-icon" href="~/img/favicon.ico">
-        <!-- Google Fonts
-            ============================================ -->
-        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
-        <!-- Bootstrap CSS
-            ============================================ -->
-        <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
-        <!-- font awesome CSS
-            ============================================ -->
-        <link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
-        <!-- owl.carousel CSS
-            ============================================ -->
-        <link rel="stylesheet" href="~/Content/css/owl.carousel.css">
-        <link rel="stylesheet" href="~/Content/css/owl.theme.css">
-        <link rel="stylesheet" href="~/Content/css/owl.transitions.css">
-        <!-- animate CSS
-            ============================================ -->
-        <link rel="stylesheet" href="~/Content/css/animate.css">
-        <!-- normalize CSS
-            ============================================ -->
-        <link rel="stylesheet" href="~/Content/css/normalize.css">
-        <!-- mCustomScrollbar CSS
-            ============================================ -->
-        <link rel="stylesheet" href="~/Content/css/scrollbar/jquery.mCustomScrollbar.min.css">
-        <!-- wave CSS
-            ============================================ -->
-        <link rel="stylesheet" href="~/Content/css/wave/waves.min.css">
-        <!-- Notika icon CSS
-            ============================================ -->
-        <link rel="stylesheet" href="~/Content/css/notika-custom-icon.css">
-        <!-- main CSS
-            ============================================ -->
-        <link rel="stylesheet" href="~/Content/css/main.css">
-        <!-- style CSS
-            ============================================ -->
-        <link rel="stylesheet" href="~/Content/css/style.css">
-        <!-- responsive CSS
-            ============================================ -->
-        <link rel="stylesheet" href="~/Content/css/responsive.css">
-
-
-        <!-- modernizr JS
-            ============================================ -->
-        <script src="~/Scripts/js/vendor/modernizr-2.8.3.min.js"></script>
-    </head>
-    <body>*@
-<!--[if lt IE 8]>
-        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-<!-- Login Register area Start-->
-<div class="login-content">
-    <!-- Login -->
-    @using (Html.BeginForm("Registration", "Projects", FormMethod.Post))
-    {
-        <h2><center>Registration</center></h2>
-        <div class="nk-block toggled" id="l-register">
-            <div class="nk-form rform">
-                <div class="input-group">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
-                    <div class="nk-int-st">
-                        <input type="text" class="form-control" placeholder="Name" id="ProjectName" name="ProjectName">
-                    </div>
-                </div>
-                <br />
-
-                <div class="input-group">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
-                    <div class="nk-int-st">
-                        <input type="text" class="form-control" placeholder="SolutionName" name="SolutionName">
-                    </div>
-                </div>
-                <br />
-
-                <div class="input-group">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-mobile-alt"></i></span>
-                    <div class="nk-int-st">
-
-                        <input type="text" class="form-control" placeholder="SourceURL" name="SourceURL">
-                    </div>
-                </div>
-                <br />
-
-
-                <div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-envelope"></i></span>
-                    <div class="nk-int-st">
-                        <input type="text" class="form-control" placeholder="FileFormat" name="FileFormat">
-                    </div>
-                </div>
-                <br />
-
-                <div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-unlock-alt"></i></span>
-                    <div class="nk-int-st">
-                        <input type="text" class="form-control" placeholder="Status" name="Status">
-                    </div>
-                </div>
-                <br />
-
-                <div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-unlock-alt"></i></span>
-                    <div class="nk-int-st">
-                        <input type="text" class="form-control" placeholder="Type" name="Type">
-                    </div>
-                </div>
-                <br />
-
-                <div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
-                    <div class="nk-int-st">
-                        <input type="text" class="form-control" placeholder="Plateform" name="Plateform">
-                    </div>
-                </div>
-                <br />
-                
-                <br /><br />
-                <input type="submit" value="Submit" class=" btn-success uloginbtn" />
-
-
-                <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
-            </div>
-
-        </div>
-
-    }
-</div>
-@*<!-- Login Register area End-->
-        <!-- jquery
-            ============================================ -->
-        <script src="~/Scripts/js/vendor/jquery-1.12.4.min.js"></script>
-        <!-- bootstrap JS
-            ============================================ -->
-        <script src="~/Scripts/js/bootstrap.min.js"></script>
-        <!-- wow JS
-            ============================================ -->
-        <script src="~/Scripts/js/wow.min.js"></script>
-        <!-- price-slider JS
-            ============================================ -->
-        <script src="~/Scripts/js/jquery-price-slider.js"></script>
-        <!-- owl.carousel JS
-            ============================================ -->
-        <script src="~/Scripts/js/owl.carousel.min.js"></script>
-        <!-- scrollUp JS
-            ============================================ -->
-        <script src="~/Scripts/js/jquery.scrollUp.min.js"></script>
-        <!-- meanmenu JS
-            ============================================ -->
-        <script src="~/Scripts/js/meanmenu/jquery.meanmenu.js"></script>
-        <!-- counterup JS
-            ============================================ -->
-        <script src="~/Scripts/js/counterup/jquery.counterup.min.js"></script>
-        <script src="~/Scripts/js/counterup/waypoints.min.js"></script>
-        <script src="~/Scripts/js/counterup/counterup-active.js"></script>
-        <!-- mCustomScrollbar JS
-            ============================================ -->
-        <script src="~/Scripts/js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
-        <!-- sparkline JS
-            ============================================ -->
-        <script src="~/Scripts/js/sparkline/jquery.sparkline.min.js"></script>
-        <script src="~/Scripts/js/sparkline/sparkline-active.js"></script>
-        <!-- flot JS
-            ============================================ -->
-        <script src="~/Scripts/js/flot/jquery.flot.js"></script>
-        <script src="~/Scripts/js/flot/jquery.flot.resize.js"></script>
-        <script src="~/Scripts/js/flot/flot-active.js"></script>
-        <!-- knob JS
-            ============================================ -->
-        <script src="~/Scripts/js/knob/jquery.knob.js"></script>
-        <script src="~/Scripts/js/knob/jquery.appear.js"></script>
-        <script src="~/Scripts/js/knob/knob-active.js"></script>
-        <!--  Chat JS
-            ============================================ -->
-        <script src="~/Scripts/js/chat/jquery.chat.js"></script>
-        <!--  wave JS
-            ============================================ -->
-        <script src="~/Scripts/js/wave/waves.min.js"></script>
-        <script src="~/Scripts/js/wave/wave-active.js"></script>
-        <!-- icheck JS
-            ============================================ -->
-        <script src="~/Scripts/js/icheck/icheck.min.js"></script>
-        <script src="~/Scripts/js/icheck/icheck-active.js"></script>
-        <!--  todo JS
-            ============================================ -->
-        <script src="~/Scripts/js/todo/jquery.todo.js"></script>
-        <!-- Login JS
-            ============================================ -->
-        <script src="~/Scripts/js/login/login-action.js"></script>
-        <!-- plugins JS
-            ============================================ -->
-        <script src="~/Scripts/js/plugins.js"></script>
-        <!-- main JS
-            ============================================ -->
-        <script src="~/Scripts/js/main.js"></script>
-    </body>
-    </html>*@
-@*@model DevOps.DataEntities.Models.Project
-
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-horizontal">
-            <h4>Project</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.ProjectName, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.SolutionName, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.SolutionName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.SolutionName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.OrganisationId, "OrganisationId", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("OrganisationId", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.OrganisationId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.SourceURL, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.SourceURL, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.SourceURL, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.FileFormat, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.FileFormat, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.FileFormat, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Plateform, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Plateform, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Plateform, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.CreatedBy, "CreatedBy", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("CreatedBy", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.LastModifiedBy, "LastModifiedBy", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("LastModifiedBy", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.LastModifiedBy, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.LastModifiedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.LastModifiedDate, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.LastModifiedDate, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </div>
-        </div>
+﻿@model DevOps.UI.Models.Projects
+    @{
+        Layout = null;
     }
 
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>*@
+    <div class="login-content">
+        <!-- Login -->
+        @using (Html.BeginForm("Registration", "Projects", FormMethod.Post))
+        {
+            <h2><center>Registration</center></h2>
+            <div class="nk-block toggled" id="l-register">
+                <div class="nk-form rform">
+                    <div class="input-group">
+                        <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
+                        <div class="nk-int-st">
+                            <input type="text" class="form-control" placeholder="Name" id="ProjectName" name="ProjectName">
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="input-group">
+                        <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
+                        <div class="nk-int-st">
+                            <input type="text" id="SolutionName" class="form-control" placeholder="SolutionName" name="SolutionName">
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="input-group">
+                        <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-mobile-alt"></i></span>
+                        <div class="nk-int-st">
+                            <input type="text" id="SourceURL" class="form-control" placeholder="SourceURL" name="SourceURL">
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="input-group mg-t-15">
+                        <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-envelope"></i></span>
+                        <div class="nk-int-st">
+                            <input type="text" id="FileFormat" class="form-control" placeholder="FileFormat" name="FileFormat">
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="input-group mg-t-15">
+                        <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-unlock-alt"></i></span>
+                        <div class="nk-int-st">
+                            <input type="text" id="Status" class="form-control" placeholder="Status" name="Status">
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="input-group mg-t-15">
+                        <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-unlock-alt"></i></span>
+                        <div class="nk-int-st">
+                            <input type="text" id="Type" class="form-control" placeholder="Type" name="Type">
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="input-group mg-t-15">
+                        <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
+                        <div class="nk-int-st">
+                            <input type="text" id="Plateform" class="form-control" placeholder="Plateform" name="Plateform">
+                        </div>
+                    </div>
+                    <br />
+
+                    <br /><br />
+                    <input type="submit" id="submit" value="Submit" class=" btn-success uloginbtn" />
+
+                    <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
+                </div>
+            </div>
+        }
+    </div>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script>
+        $('#submit').click(function (e) {
+            e.preventDefault();
+            var ProjectName = $('#ProjectName').val();
+            var SolutionName = $('#SolutionName').val();
+            var SourceURL = $('#SourceURL').val();
+            var FileFormat = $('#FileFormat').val();
+            var Status = $('#Status').val();
+            var Type = $('#Type').val();
+            var Plateform = $('#Plateform').val();
+            var url1 = "http://localhost:57996/Projects/Registration";
+            $.ajax({
+                url: url1,
+                type: 'POST',//type of posting the data
+                data: '{ProjectName: "' + ProjectName + '",SolutionName: "' + SolutionName + '",SourceURL: "' + SourceURL + '",FileFormat: "' + FileFormat + '",Status: "' + Status + '",Type: "' + Type + '",Plateform: "' + Plateform +
+                    '"}',
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (r) {
+                    alert('User Created Successfully');
+                    var url2 = "http://localhost:57996/Projects/Projects";
+                    $.ajax({
+                        url: url2,
+                        type: 'GET',//type of posting the data
+                        contentType: 'application/json',
+                        dataType: 'html',
+                        success: function (r) {
+                            $("#partialbody").empty();
+                            $("#partialbody").html(r);
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            //what to do in error
+                        }
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //what to do in error
+                    console.log(thrownError);
+                }
+            });
+
+        });
+    </script>

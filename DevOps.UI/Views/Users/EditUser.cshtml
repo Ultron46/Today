@@ -10,7 +10,6 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="text" class="form-control" placeholder="Name" name="Name">*@
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
@@ -19,12 +18,10 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="text" class="form-control" placeholder="Address" name="Address">*@
                         @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <br />
-
 
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-flag"></i></span>
@@ -39,18 +36,14 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-mobile-alt"></i></span>
                     <div class="nk-int-st">
-
-                        @*<input type="number" class="form-control" placeholder="Phone" name="Phone">*@
                         @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", type = "number" } })
                     </div>
                 </div>
                 <br />
 
-
                 <div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-envelope"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="email" class="form-control" placeholder="Email Address" name="Email">*@
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", type = "email" } })
                     </div>
                 </div>
@@ -67,7 +60,6 @@
                 <div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="date" class="form-control" placeholder="Date" name="DateOfBirth">*@
                         @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", type = "date" } })
                     </div>
                 </div>
@@ -76,10 +68,7 @@
                 <div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-sitemap"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="text" class="form-control" placeholder="Organization Name" name="OrganisationId">*@
-
                         @Html.DropDownList("OrganisationId", new SelectList(ViewBag.Organizations, "Value", "Text"), "--Select Organization--", new { @class = "udropdown" })
-
                     </div>
                 </div>
                 <br />
@@ -87,23 +76,17 @@
                 <div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user-tag"></i></span>
                     <div class="nk-int-st">
-                        @*<input type="text" class="form-control" placeholder="Role" name="RoleId">*@
                         @Html.DropDownList("RoleId", new SelectList(ViewBag.Roles, "Value", "Text"), "--Select Role--", new { @class = "udropdown" })
                     </div>
                 </div>
                 <br />
 
-
-
                 <br /><br />
                 <input type="submit" id="editbtn" value="Submit" class=" btn-success uloginbtn" />
 
-
                 <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
             </div>
-
         </div>
-
     }
 </div>
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
@@ -131,15 +114,16 @@
             contentType: 'application/json',
             dataType: 'json',
             success: function (r) {
+                alert('User Details Updated Successfully');
                 var urlg = "http://localhost:57996/Users/Users";
                 $.ajax({
                     url: urlg,
                     type: 'GET',//type of posting the data
                     contentType: 'application/json',
-                    dataType: 'json',
+                    dataType: 'html',
                     success: function (r) {
                         $("#partialbody").empty();
-                        $("#partialbody").append(r.ViewString);
+                        $("#partialbody").append(r);
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         //what to do in error
