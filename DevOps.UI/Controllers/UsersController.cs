@@ -185,7 +185,7 @@ namespace DevOps.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Users()
+        public ActionResult Users()
         {
             return PartialView("UserTable");
         }

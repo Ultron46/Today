@@ -11,15 +11,8 @@ using System.Web.Mvc;
 
 namespace DevOps.Controllers
 {
-    //[Authorize]
     public class HomeController : Controller
     {
-        string baseUrl = "http://localhost:60969/";
-      
-
-        public async Task<ActionResult> Index(string name)
-        {
-            return View();
-        }
+        public ActionResult Index() => View();
     }
 }

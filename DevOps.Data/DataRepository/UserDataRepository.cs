@@ -13,7 +13,6 @@ namespace DevOps.Data.DataRepository
     {
 
         DevOpsEntities DbContext;
-
         public UserDataRepository()
         {
             DbContext = new DevOpsEntities();
@@ -29,67 +28,48 @@ namespace DevOps.Data.DataRepository
         }
         public bool InsertUser(User user)
         {
-            bool status;
-          
-            try
+            bool status = false;
+            DbContext.Users.Add(user);
+            if(DbContext.SaveChanges() > 0)
             {
-               
-                DbContext.Users.Add(user);
-                DbContext.SaveChanges();
                 status = true;
-            }
-            catch (Exception)
-            {
-                status = false;
             }
             return status;
         }
         public bool UpdateUser(User user)
         {
-            bool status;
-            try
+            bool status = false;
+            User u = DbContext.Users.AsNoTracking().Where( x => x.UserId == user.UserId).FirstOrDefault();
+            if(user.DateOfBirth == null)
             {
-                User u = DbContext.Users.AsNoTracking().Where( x => x.UserId == user.UserId).FirstOrDefault();
-                if(user.DateOfBirth == null)
-                {
-                    user.DateOfBirth = u.DateOfBirth;
-                }
-
-                if (user.OrganisationId == null)
-                {
-                    user.OrganisationId = u.OrganisationId;
-                }
-
-                if (user.RoleId == null)
-                {
-                    user.RoleId = u.RoleId;
-                }
-                DbContext.Entry(user).State = EntityState.Modified;
-                DbContext.SaveChanges();
-                status = true;
+                user.DateOfBirth = u.DateOfBirth;
             }
-            catch (Exception e)
+            if (user.OrganisationId == null)
             {
-                status = false;
+                user.OrganisationId = u.OrganisationId;
+            }
+            if (user.RoleId == null)
+            {
+                user.RoleId = u.RoleId;
+            }
+            DbContext.Entry(user).State = EntityState.Modified;
+            if(DbContext.SaveChanges() > 0)
+            {
+                status = true;
             }
             return status;
         }
         public bool DeleteUser(int id)
         {
-            bool status;
-            try
+            bool status = false;
+            User user = DbContext.Users.Where(p => p.UserId == id).FirstOrDefault();
+            if (user != null)
             {
-                User user = DbContext.Users.Where(p => p.UserId == id).FirstOrDefault();
-                if (user != null)
+                DbContext.Users.Remove(user);
+                if(DbContext.SaveChanges() > 0)
                 {
-                    DbContext.Users.Remove(user);
-                    DbContext.SaveChanges();
+                    status = true;
                 }
-                status = true;
-            }
-            catch (Exception)
-            {
-                status = false;
             }
             return status;
         }

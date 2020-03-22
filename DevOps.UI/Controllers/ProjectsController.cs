@@ -20,19 +20,19 @@ namespace DevOps.UI.Controllers
         string baseUrl = Constants.baseurl;
 
         [HttpGet]
-        public async Task<ActionResult> Projects()
+        public ActionResult Projects()
         {
             return PartialView("Projects");
         }
 
         [HttpGet]
-        public async Task<ActionResult> Registration()
+        public ActionResult Registration()
         {
             return PartialView("Registration");
         }
 
         [HttpPost]
-        public async Task<ActionResult> Registration(Project project)
+        public ActionResult Registration(Project project)
         {
             project.CreatedBy = Convert.ToInt32(Session["user"].ToString());
             project.CreatedDate = DateTime.Now;

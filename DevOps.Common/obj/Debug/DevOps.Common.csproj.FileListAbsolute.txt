@@ -62,7 +62,6 @@ D:\Today\Today\DevOps.Common\bin\Debug\EntityFramework.dll
 D:\Today\Today\DevOps.Common\bin\Debug\EntityFramework.SqlServer.dll
 D:\Today\Today\DevOps.Common\bin\Debug\EntityFramework.xml
 D:\Today\Today\DevOps.Common\bin\Debug\EntityFramework.SqlServer.xml
-D:\Today\Today\DevOps.Common\obj\Debug\DevOps.Common.csprojAssemblyReference.cache
 D:\Today\Today\DevOps.Common\obj\Debug\DevOps.Common.csproj.CopyComplete
 D:\Today\Today\DevOps.Common\obj\Debug\DevOps.Common.dll
 D:\Today\Today\DevOps.Common\obj\Debug\DevOps.Common.pdb

@@ -602,3 +602,4 @@ D:\Today\Today\DevOps.UI\obj\Debug\DevOps.UI.csprojAssemblyReference.cache
 D:\Today\Today\DevOps.UI\obj\Debug\DevOps.UI.csproj.CopyComplete
 D:\Today\Today\DevOps.UI\obj\Debug\DevOps.UI.dll
 D:\Today\Today\DevOps.UI\obj\Debug\DevOps.UI.pdb
+D:\Today\Today\DevOps.UI\bin\Elmah.dll

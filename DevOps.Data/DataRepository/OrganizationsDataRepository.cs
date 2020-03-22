@@ -18,8 +18,6 @@ namespace DevOps.Data.DataRepository
             DbContext = new DevOpsEntities();
         }
 
-        
-
         public List<Organisation> GetAllOrganization()
         {
             return DbContext.Organisations.ToList();
@@ -32,63 +30,44 @@ namespace DevOps.Data.DataRepository
 
         public bool InsertOrganization(Organisation organisation)
         {
-            bool status;
-
-            try
+            bool status = false;
+            DbContext.Organisations.Add(organisation);
+            if(DbContext.SaveChanges() > 0)
             {
-
-                DbContext.Organisations.Add(organisation);
-                DbContext.SaveChanges();
                 status = true;
-            }
-            catch (Exception)
-            {
-                status = false;
             }
             return status;
         }
 
         public bool UpdateOrganization(Organisation organisation)
         {
-            bool status;
-            try
+            bool status = false;
+            Organisation organizationTemp = DbContext.Organisations.AsNoTracking().Where(p => p.OrganisationId == organisation.OrganisationId).FirstOrDefault();
+            if (organizationTemp != null)
             {
-                Organisation organizationTemp = DbContext.Organisations.AsNoTracking().Where(p => p.OrganisationId == organisation.OrganisationId).FirstOrDefault();
-                if (organizationTemp != null)
+                organizationTemp = organisation;
+                DbContext.Entry(organizationTemp).State = EntityState.Modified;
+                if(DbContext.SaveChanges() > 0)
                 {
-                    organizationTemp = organisation;
-                    DbContext.Entry(organizationTemp).State = EntityState.Modified;
-                    DbContext.SaveChanges();
+                    status = true;
                 }
-                status = true;
-            }
-            catch (Exception e)
-            {
-                status = false;
             }
             return status;
         }
 
         public bool DeleteOrganization(int id)
         {
-            bool status;
-            try
+            bool status = false;
+            Organisation organisation = DbContext.Organisations.Where(p => p.OrganisationId == id).FirstOrDefault();
+            if (organisation != null)
             {
-                Organisation organisation = DbContext.Organisations.Where(p => p.OrganisationId == id).FirstOrDefault();
-                if (organisation != null)
+                DbContext.Organisations.Remove(organisation);
+                if(DbContext.SaveChanges() > 0)
                 {
-                    DbContext.Organisations.Remove(organisation);
-                    DbContext.SaveChanges();
+                    status = true;
                 }
-                status = true;
-            }
-            catch (Exception)
-            {
-                status = false;
             }
             return status;
         }
-
-        
     }
 }

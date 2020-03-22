@@ -12,6 +12,8 @@ namespace DevOps.DataEntities.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class DevOpsEntities : DbContext
     {
@@ -29,11 +31,11 @@ namespace DevOps.DataEntities.Models
     
         public virtual DbSet<Branch> Branches { get; set; }
         public virtual DbSet<BuildProject> BuildProjects { get; set; }
+        public virtual DbSet<ELMAH_Error> ELMAH_Error { get; set; }
         public virtual DbSet<EmailMaster> EmailMasters { get; set; }
         public virtual DbSet<MainMenu> MainMenus { get; set; }
         public virtual DbSet<Organisation> Organisations { get; set; }
         public virtual DbSet<Permission> Permissions { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<ReleaseProject> ReleaseProjects { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
@@ -44,5 +46,81 @@ namespace DevOps.DataEntities.Models
         public virtual DbSet<SupportTicket> SupportTickets { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
+        public virtual DbSet<UserToken> UserTokens { get; set; }
+    
+        public virtual ObjectResult<string> ELMAH_GetErrorsXml(string application, Nullable<int> pageIndex, Nullable<int> pageSize, ObjectParameter totalCount)
+        {
+            var applicationParameter = application != null ?
+                new ObjectParameter("Application", application) :
+                new ObjectParameter("Application", typeof(string));
+    
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("PageIndex", pageIndex) :
+                new ObjectParameter("PageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ELMAH_GetErrorsXml", applicationParameter, pageIndexParameter, pageSizeParameter, totalCount);
+        }
+    
+        public virtual ObjectResult<string> ELMAH_GetErrorXml(string application, Nullable<System.Guid> errorId)
+        {
+            var applicationParameter = application != null ?
+                new ObjectParameter("Application", application) :
+                new ObjectParameter("Application", typeof(string));
+    
+            var errorIdParameter = errorId.HasValue ?
+                new ObjectParameter("ErrorId", errorId) :
+                new ObjectParameter("ErrorId", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ELMAH_GetErrorXml", applicationParameter, errorIdParameter);
+        }
+    
+        public virtual int ELMAH_LogError(Nullable<System.Guid> errorId, string application, string host, string type, string source, string message, string user, string allXml, Nullable<int> statusCode, Nullable<System.DateTime> timeUtc)
+        {
+            var errorIdParameter = errorId.HasValue ?
+                new ObjectParameter("ErrorId", errorId) :
+                new ObjectParameter("ErrorId", typeof(System.Guid));
+    
+            var applicationParameter = application != null ?
+                new ObjectParameter("Application", application) :
+                new ObjectParameter("Application", typeof(string));
+    
+            var hostParameter = host != null ?
+                new ObjectParameter("Host", host) :
+                new ObjectParameter("Host", typeof(string));
+    
+            var typeParameter = type != null ?
+                new ObjectParameter("Type", type) :
+                new ObjectParameter("Type", typeof(string));
+    
+            var sourceParameter = source != null ?
+                new ObjectParameter("Source", source) :
+                new ObjectParameter("Source", typeof(string));
+    
+            var messageParameter = message != null ?
+                new ObjectParameter("Message", message) :
+                new ObjectParameter("Message", typeof(string));
+    
+            var userParameter = user != null ?
+                new ObjectParameter("User", user) :
+                new ObjectParameter("User", typeof(string));
+    
+            var allXmlParameter = allXml != null ?
+                new ObjectParameter("AllXml", allXml) :
+                new ObjectParameter("AllXml", typeof(string));
+    
+            var statusCodeParameter = statusCode.HasValue ?
+                new ObjectParameter("StatusCode", statusCode) :
+                new ObjectParameter("StatusCode", typeof(int));
+    
+            var timeUtcParameter = timeUtc.HasValue ?
+                new ObjectParameter("TimeUtc", timeUtc) :
+                new ObjectParameter("TimeUtc", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ELMAH_LogError", errorIdParameter, applicationParameter, hostParameter, typeParameter, sourceParameter, messageParameter, userParameter, allXmlParameter, statusCodeParameter, timeUtcParameter);
+        }
     }
 }

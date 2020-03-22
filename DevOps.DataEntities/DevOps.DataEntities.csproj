@@ -75,6 +75,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DevOps.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ELMAH_Error.cs">
+      <DependentUpon>DevOps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EmailMaster.cs">
       <DependentUpon>DevOps.tt</DependentUpon>
     </Compile>
@@ -88,9 +91,6 @@
       <DependentUpon>DevOps.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Permission.cs">
-      <DependentUpon>DevOps.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Product.cs">
       <DependentUpon>DevOps.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Project.cs">
@@ -120,6 +120,9 @@
     <Compile Include="Models\User.cs">
       <DependentUpon>DevOps.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserToken.cs">
+      <DependentUpon>DevOps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -136,7 +139,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Models\DevOps.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

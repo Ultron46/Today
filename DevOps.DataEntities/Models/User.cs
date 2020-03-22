@@ -24,6 +24,7 @@ namespace DevOps.DataEntities.Models
             this.ServerBuilds = new HashSet<ServerBuild>();
             this.SupportTickets = new HashSet<SupportTicket>();
             this.SupportTickets1 = new HashSet<SupportTicket>();
+            this.UserTokens = new HashSet<UserToken>();
         }
     
         public int UserId { get; set; }
@@ -54,5 +55,7 @@ namespace DevOps.DataEntities.Models
         public virtual ICollection<SupportTicket> SupportTickets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SupportTicket> SupportTickets1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserToken> UserTokens { get; set; }
     }
 }

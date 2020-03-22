@@ -5,7 +5,7 @@
       <PropertyRef Name="BranchId" />
     </Key>
     <Property Name="BranchId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="BranchName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BranchName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="ProjectId" Type="Int32" />
     <NavigationProperty Name="Project" Relationship="Self.FK_Project_Branch_ProjectId" FromRole="Branch" ToRole="Project" />
   </EntityType>
@@ -26,12 +26,28 @@
     <NavigationProperty Name="Project" Relationship="Self.FK_Project_BuildProject_ProjectId" FromRole="BuildProject" ToRole="Project" />
     <NavigationProperty Name="User" Relationship="Self.FK_User_BuildProject_BuildBy" FromRole="BuildProject" ToRole="User" />
   </EntityType>
+  <EntityType Name="ELMAH_Error">
+    <Key>
+      <PropertyRef Name="ErrorId" />
+    </Key>
+    <Property Name="ErrorId" Type="Guid" Nullable="false" />
+    <Property Name="Application" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Host" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Source" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="User" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="StatusCode" Type="Int32" Nullable="false" />
+    <Property Name="TimeUtc" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Sequence" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AllXml" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
   <EntityType Name="EmailMaster">
     <Key>
       <PropertyRef Name="EmailMasterId" />
     </Key>
     <Property Name="EmailMasterId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="EmailId" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EmailId" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="OrganisationId" Type="Int32" />
     <NavigationProperty Name="Organisation" Relationship="Self.FK_Organisation_EmailMaster_OrganisationId" FromRole="EmailMaster" ToRole="Organisation" />
   </EntityType>
@@ -40,7 +56,7 @@
       <PropertyRef Name="MainMenuId" />
     </Key>
     <Property Name="MainMenuId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="MainMenuName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="MainMenuName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="SubMenus" Relationship="Self.FK_MainMenu_SubMneu_MainMenuId" FromRole="MainMenu" ToRole="SubMenu" />
   </EntityType>
   <EntityType Name="Organisation">
@@ -62,21 +78,12 @@
       <PropertyRef Name="PermissionId" />
     </Key>
     <Property Name="PermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="RoleId" Type="Byte" />
-    <Property Name="SubMenuId" Type="Int32" />
-    <Property Name="Read" Type="Binary" MaxLength="1" FixedLength="true" />
-    <Property Name="Write" Type="Binary" MaxLength="1" FixedLength="true" />
-    <NavigationProperty Name="Role" Relationship="Self.FK_Role_Permissions_RoleId" FromRole="Permissions" ToRole="Role" />
-    <NavigationProperty Name="SubMenu" Relationship="Self.FK_SubMenu_Permissionsu_SubMenuId" FromRole="Permissions" ToRole="SubMenu" />
-  </EntityType>
-  <EntityType Name="Product">
-    <Key>
-      <PropertyRef Name="ProductId" />
-    </Key>
-    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="Quantity" Type="Int32" />
-    <Property Name="Price" Type="Int32" />
+    <Property Name="RoleId" Type="Byte" Nullable="false" />
+    <Property Name="SubMenuId" Type="Int32" Nullable="false" />
+    <Property Name="Read" Type="Boolean" Nullable="false" />
+    <Property Name="Write" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Role" Relationship="DevOpsModel.FK_Permissions_Role" FromRole="Permission" ToRole="Role" />
+    <NavigationProperty Name="SubMenu" Relationship="DevOpsModel.FK_Permissions_SubMenu" FromRole="Permission" ToRole="SubMenu" />
   </EntityType>
   <EntityType Name="Project">
     <Key>
@@ -121,8 +128,8 @@
     </Key>
     <Property Name="RoleId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="RoleName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="Permissions" Relationship="Self.FK_Role_Permissions_RoleId" FromRole="Role" ToRole="Permissions" />
     <NavigationProperty Name="Users" Relationship="Self.FK_Role_User_RoleId" FromRole="Role" ToRole="User" />
+    <NavigationProperty Name="Permissions" Relationship="DevOpsModel.FK_Permissions_Role" FromRole="Role" ToRole="Permission" />
   </EntityType>
   <EntityType Name="ServerBuild">
     <Key>
@@ -163,9 +170,9 @@
     </Key>
     <Property Name="ServerCredentialsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ServerId" Type="Int32" />
-    <Property Name="HostName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="ConnectionString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="HostName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ConnectionString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="ServerConfig" Relationship="Self.FK_Server_ServerCredentials_ServerId" FromRole="ServerCredentials" ToRole="ServerConfig" />
   </EntityType>
   <EntityType Name="SubMenu">
@@ -174,9 +181,9 @@
     </Key>
     <Property Name="SubMenuId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="MainMenuId" Type="Int32" />
-    <Property Name="SubMenuName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SubMenuName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="MainMenu" Relationship="Self.FK_MainMenu_SubMneu_MainMenuId" FromRole="SubMenu" ToRole="MainMenu" />
-    <NavigationProperty Name="Permissions" Relationship="Self.FK_SubMenu_Permissionsu_SubMenuId" FromRole="SubMenu" ToRole="Permissions" />
+    <NavigationProperty Name="Permissions" Relationship="DevOpsModel.FK_Permissions_SubMenu" FromRole="SubMenu" ToRole="Permission" />
   </EntityType>
   <EntityType Name="SupportTicket">
     <Key>
@@ -217,6 +224,7 @@
     <NavigationProperty Name="ServerBuilds" Relationship="Self.FK_User_ServerBuild_PublishedBy" FromRole="User" ToRole="ServerBuild" />
     <NavigationProperty Name="SupportTickets" Relationship="Self.FK_User_SupportTickets_FixedBy" FromRole="User" ToRole="SupportTickets" />
     <NavigationProperty Name="SupportTickets1" Relationship="Self.FK_User_SupportTickets_GeneratedBy" FromRole="User" ToRole="SupportTickets" />
+    <NavigationProperty Name="UserTokens" Relationship="Self.FK_UserToken_User" FromRole="User" ToRole="UserToken" />
   </EntityType>
   <EntityType Name="ErrorLog">
     <Key>
@@ -241,6 +249,15 @@
     <Property Name="StatusCode" Type="Int32" Nullable="false" />
     <Property Name="TimeUtc" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="Sequence" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="UserToken">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="Token" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK_UserToken_User" FromRole="UserToken" ToRole="User" />
   </EntityType>
   <Association Name="FK_Project_Branch_ProjectId">
     <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
@@ -347,30 +364,6 @@
       </Principal>
       <Dependent Role="User">
         <PropertyRef Name="OrganisationId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Role_Permissions_RoleId">
-    <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
-    <End Role="Permissions" Type="Self.Permission" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Role">
-        <PropertyRef Name="RoleId" />
-      </Principal>
-      <Dependent Role="Permissions">
-        <PropertyRef Name="RoleId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_SubMenu_Permissionsu_SubMenuId">
-    <End Role="SubMenu" Type="Self.SubMenu" Multiplicity="0..1" />
-    <End Role="Permissions" Type="Self.Permission" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="SubMenu">
-        <PropertyRef Name="SubMenuId" />
-      </Principal>
-      <Dependent Role="Permissions">
-        <PropertyRef Name="SubMenuId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -494,14 +487,26 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_UserToken_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserToken" Type="Self.UserToken" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserToken">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="DevOpsEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Branches" EntityType="Self.Branch" />
     <EntitySet Name="BuildProjects" EntityType="Self.BuildProject" />
+    <EntitySet Name="ELMAH_Error" EntityType="Self.ELMAH_Error" />
     <EntitySet Name="EmailMasters" EntityType="Self.EmailMaster" />
     <EntitySet Name="MainMenus" EntityType="Self.MainMenu" />
     <EntitySet Name="Organisations" EntityType="Self.Organisation" />
     <EntitySet Name="Permissions" EntityType="Self.Permission" />
-    <EntitySet Name="Products" EntityType="Self.Product" />
     <EntitySet Name="Projects" EntityType="Self.Project" />
     <EntitySet Name="ReleaseProjects" EntityType="Self.ReleaseProject" />
     <EntitySet Name="Roles" EntityType="Self.Role" />
@@ -512,6 +517,7 @@
     <EntitySet Name="SupportTickets" EntityType="Self.SupportTicket" />
     <EntitySet Name="Users" EntityType="Self.User" />
     <EntitySet Name="ErrorLogs" EntityType="Self.ErrorLog" />
+    <EntitySet Name="UserTokens" EntityType="Self.UserToken" />
     <AssociationSet Name="FK_Project_Branch_ProjectId" Association="Self.FK_Project_Branch_ProjectId">
       <End Role="Project" EntitySet="Projects" />
       <End Role="Branch" EntitySet="Branches" />
@@ -547,14 +553,6 @@
     <AssociationSet Name="FK_Organisation_User_OrganisationId" Association="Self.FK_Organisation_User_OrganisationId">
       <End Role="Organisation" EntitySet="Organisations" />
       <End Role="User" EntitySet="Users" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Role_Permissions_RoleId" Association="Self.FK_Role_Permissions_RoleId">
-      <End Role="Role" EntitySet="Roles" />
-      <End Role="Permissions" EntitySet="Permissions" />
-    </AssociationSet>
-    <AssociationSet Name="FK_SubMenu_Permissionsu_SubMenuId" Association="Self.FK_SubMenu_Permissionsu_SubMenuId">
-      <End Role="SubMenu" EntitySet="SubMenus" />
-      <End Role="Permissions" EntitySet="Permissions" />
     </AssociationSet>
     <AssociationSet Name="FK_User_Project_CreatedBy" Association="Self.FK_User_Project_CreatedBy">
       <End Role="User" EntitySet="Users" />
@@ -596,5 +594,63 @@
       <End Role="User" EntitySet="Users" />
       <End Role="SupportTickets" EntitySet="SupportTickets" />
     </AssociationSet>
+    <AssociationSet Name="FK_UserToken_User" Association="Self.FK_UserToken_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserToken" EntitySet="UserTokens" />
+    </AssociationSet>
+    <FunctionImport Name="ELMAH_GetErrorsXml" ReturnType="Collection(String)">
+      <Parameter Name="Application" Mode="In" Type="String" />
+      <Parameter Name="PageIndex" Mode="In" Type="Int32" />
+      <Parameter Name="PageSize" Mode="In" Type="Int32" />
+      <Parameter Name="TotalCount" Mode="InOut" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ELMAH_GetErrorXml" ReturnType="Collection(String)">
+      <Parameter Name="Application" Mode="In" Type="String" />
+      <Parameter Name="ErrorId" Mode="In" Type="Guid" />
+    </FunctionImport>
+    <FunctionImport Name="ELMAH_LogError">
+      <Parameter Name="ErrorId" Mode="In" Type="Guid" />
+      <Parameter Name="Application" Mode="In" Type="String" />
+      <Parameter Name="Host" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Source" Mode="In" Type="String" />
+      <Parameter Name="Message" Mode="In" Type="String" />
+      <Parameter Name="User" Mode="In" Type="String" />
+      <Parameter Name="AllXml" Mode="In" Type="String" />
+      <Parameter Name="StatusCode" Mode="In" Type="Int32" />
+      <Parameter Name="TimeUtc" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <AssociationSet Name="FK_Permissions_Role" Association="DevOpsModel.FK_Permissions_Role">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="Permission" EntitySet="Permissions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Permissions_SubMenu" Association="DevOpsModel.FK_Permissions_SubMenu">
+      <End Role="SubMenu" EntitySet="SubMenus" />
+      <End Role="Permission" EntitySet="Permissions" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="FK_Permissions_Role">
+    <End Type="DevOpsModel.Role" Role="Role" Multiplicity="1" />
+    <End Type="DevOpsModel.Permission" Role="Permission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="Permission">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Permissions_SubMenu">
+    <End Type="DevOpsModel.SubMenu" Role="SubMenu" Multiplicity="1" />
+    <End Type="DevOpsModel.Permission" Role="Permission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SubMenu">
+        <PropertyRef Name="SubMenuId" />
+      </Principal>
+      <Dependent Role="Permission">
+        <PropertyRef Name="SubMenuId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

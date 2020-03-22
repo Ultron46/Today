@@ -15,10 +15,10 @@ namespace DevOps.DataEntities.Models
     public partial class Permission
     {
         public int PermissionId { get; set; }
-        public Nullable<byte> RoleId { get; set; }
-        public Nullable<int> SubMenuId { get; set; }
-        public byte[] Read { get; set; }
-        public byte[] Write { get; set; }
+        public byte RoleId { get; set; }
+        public int SubMenuId { get; set; }
+        public bool Read { get; set; }
+        public bool Write { get; set; }
     
         public virtual Role Role { get; set; }
         public virtual SubMenu SubMenu { get; set; }

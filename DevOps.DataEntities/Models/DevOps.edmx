@@ -4,13 +4,13 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DevOpsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DevOpsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Branch">
           <Key>
             <PropertyRef Name="BranchId" />
           </Key>
           <Property Name="BranchId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BranchName" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="BranchName" Type="varchar" MaxLength="10" />
           <Property Name="ProjectId" Type="int" />
         </EntityType>
         <EntityType Name="BuildProject">
@@ -27,12 +27,28 @@
           <Property Name="Status" Type="varchar" MaxLength="10" />
           <Property Name="BuildDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="ELMAH_Error">
+          <Key>
+            <PropertyRef Name="ErrorId" />
+          </Key>
+          <Property Name="ErrorId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Application" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Host" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Source" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="User" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StatusCode" Type="int" Nullable="false" />
+          <Property Name="TimeUtc" Type="datetime" Nullable="false" />
+          <Property Name="Sequence" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AllXml" Type="ntext" Nullable="false" />
+        </EntityType>
         <EntityType Name="EmailMaster">
           <Key>
             <PropertyRef Name="EmailMasterId" />
           </Key>
           <Property Name="EmailMasterId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EmailId" Type="varchar(max)" Nullable="false" />
+          <Property Name="EmailId" Type="varchar(max)" />
           <Property Name="OrganisationId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -66,7 +82,7 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             <PropertyRef Name="MainMenuId" />
           </Key>
           <Property Name="MainMenuId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="MainMenuName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="MainMenuName" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Organisation">
           <Key>
@@ -83,19 +99,10 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             <PropertyRef Name="PermissionId" />
           </Key>
           <Property Name="PermissionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RoleId" Type="tinyint" />
-          <Property Name="SubMenuId" Type="int" />
-          <Property Name="Read" Type="binary" MaxLength="1" />
-          <Property Name="Write" Type="binary" MaxLength="1" />
-        </EntityType>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="ProductId" />
-          </Key>
-          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
-          <Property Name="Quantity" Type="int" />
-          <Property Name="Price" Type="int" />
+          <Property Name="RoleId" Type="tinyint" Nullable="false" />
+          <Property Name="SubMenuId" Type="int" Nullable="false" />
+          <Property Name="Read" Type="bit" Nullable="false" />
+          <Property Name="Write" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
@@ -166,9 +173,9 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           </Key>
           <Property Name="ServerCredentialsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ServerId" Type="int" />
-          <Property Name="HostName" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ConnectionString" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="HostName" Type="nvarchar(max)" />
+          <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="ConnectionString" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="SubMenu">
           <Key>
@@ -176,7 +183,7 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           </Key>
           <Property Name="SubMenuId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MainMenuId" Type="int" />
-          <Property Name="SubMenuName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="SubMenuName" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="SupportTickets">
           <Key>
@@ -206,6 +213,16 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           <Property Name="OrganisationId" Type="int" />
           <Property Name="RoleId" Type="tinyint" />
           <Property Name="RegistrationDate" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="UserToken">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="Token" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Token" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <Association Name="FK_BuildProject_ServerBuild_BuildId">
           <End Role="BuildProject" Type="Self.BuildProject" Multiplicity="0..1" />
@@ -279,6 +296,30 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Permissions_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Permissions">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permissions_SubMenu">
+          <End Role="SubMenu" Type="Self.SubMenu" Multiplicity="1" />
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubMenu">
+              <PropertyRef Name="SubMenuId" />
+            </Principal>
+            <Dependent Role="Permissions">
+              <PropertyRef Name="SubMenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Project_Branch_ProjectId">
           <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
           <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
@@ -300,18 +341,6 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             </Principal>
             <Dependent Role="BuildProject">
               <PropertyRef Name="ProjectId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Role_Permissions_RoleId">
-          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
-          <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="RoleId" />
-            </Principal>
-            <Dependent Role="Permissions">
-              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -360,18 +389,6 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             </Principal>
             <Dependent Role="ServerBuild">
               <PropertyRef Name="ServerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SubMenu_Permissionsu_SubMenuId">
-          <End Role="SubMenu" Type="Self.SubMenu" Multiplicity="0..1" />
-          <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SubMenu">
-              <PropertyRef Name="SubMenuId" />
-            </Principal>
-            <Dependent Role="Permissions">
-              <PropertyRef Name="SubMenuId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -459,14 +476,48 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserToken_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserToken" Type="Self.UserToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserToken">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ELMAH_GetErrorsXml" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Application" Type="nvarchar" Mode="In" />
+          <Parameter Name="PageIndex" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="TotalCount" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="ELMAH_GetErrorXml" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Application" Type="nvarchar" Mode="In" />
+          <Parameter Name="ErrorId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="ELMAH_LogError" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ErrorId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Application" Type="nvarchar" Mode="In" />
+          <Parameter Name="Host" Type="nvarchar" Mode="In" />
+          <Parameter Name="Type" Type="nvarchar" Mode="In" />
+          <Parameter Name="Source" Type="nvarchar" Mode="In" />
+          <Parameter Name="Message" Type="nvarchar" Mode="In" />
+          <Parameter Name="User" Type="nvarchar" Mode="In" />
+          <Parameter Name="AllXml" Type="ntext" Mode="In" />
+          <Parameter Name="StatusCode" Type="int" Mode="In" />
+          <Parameter Name="TimeUtc" Type="datetime" Mode="In" />
+        </Function>
         <EntityContainer Name="DevOpsModelStoreContainer">
           <EntitySet Name="Branch" EntityType="Self.Branch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BuildProject" EntityType="Self.BuildProject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ELMAH_Error" EntityType="Self.ELMAH_Error" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailMaster" EntityType="Self.EmailMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MainMenu" EntityType="Self.MainMenu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Organisation" EntityType="Self.Organisation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReleaseProject" EntityType="Self.ReleaseProject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
@@ -489,6 +540,12 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
     [ErrorLog].[TimeUtc] AS [TimeUtc], 
     [ErrorLog].[Sequence] AS [Sequence]
     FROM [dbo].[ErrorLog] AS [ErrorLog]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="UserToken" EntityType="Self.UserToken" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserToken].[UserID] AS [UserID], 
+    [UserToken].[Token] AS [Token]
+    FROM [dbo].[UserToken] AS [UserToken]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_BuildProject_ServerBuild_BuildId" Association="Self.FK_BuildProject_ServerBuild_BuildId">
             <End Role="BuildProject" EntitySet="BuildProject" />
@@ -514,6 +571,14 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             <End Role="Organisation" EntitySet="Organisation" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
+          <AssociationSet Name="FK_Permissions_Role" Association="Self.FK_Permissions_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Permissions" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permissions_SubMenu" Association="Self.FK_Permissions_SubMenu">
+            <End Role="SubMenu" EntitySet="SubMenu" />
+            <End Role="Permissions" EntitySet="Permissions" />
+          </AssociationSet>
           <AssociationSet Name="FK_Project_Branch_ProjectId" Association="Self.FK_Project_Branch_ProjectId">
             <End Role="Project" EntitySet="Project" />
             <End Role="Branch" EntitySet="Branch" />
@@ -521,10 +586,6 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           <AssociationSet Name="FK_Project_BuildProject_ProjectId" Association="Self.FK_Project_BuildProject_ProjectId">
             <End Role="Project" EntitySet="Project" />
             <End Role="BuildProject" EntitySet="BuildProject" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Role_Permissions_RoleId" Association="Self.FK_Role_Permissions_RoleId">
-            <End Role="Role" EntitySet="Role" />
-            <End Role="Permissions" EntitySet="Permissions" />
           </AssociationSet>
           <AssociationSet Name="FK_Role_User_RoleId" Association="Self.FK_Role_User_RoleId">
             <End Role="Role" EntitySet="Role" />
@@ -541,10 +602,6 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           <AssociationSet Name="FK_ServerConfig_ServerBuild_ServerId" Association="Self.FK_ServerConfig_ServerBuild_ServerId">
             <End Role="ServerConfig" EntitySet="ServerConfig" />
             <End Role="ServerBuild" EntitySet="ServerBuild" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SubMenu_Permissionsu_SubMenuId" Association="Self.FK_SubMenu_Permissionsu_SubMenuId">
-            <End Role="SubMenu" EntitySet="SubMenu" />
-            <End Role="Permissions" EntitySet="Permissions" />
           </AssociationSet>
           <AssociationSet Name="FK_User_BuildProject_BuildBy" Association="Self.FK_User_BuildProject_BuildBy">
             <End Role="User" EntitySet="User" />
@@ -574,9 +631,12 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             <End Role="User" EntitySet="User" />
             <End Role="SupportTickets" EntitySet="SupportTickets" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserToken_User" Association="Self.FK_UserToken_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserToken" EntitySet="UserToken" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DevOpsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -585,7 +645,7 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             <PropertyRef Name="BranchId" />
           </Key>
           <Property Name="BranchId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BranchName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BranchName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="ProjectId" Type="Int32" />
           <NavigationProperty Name="Project" Relationship="Self.FK_Project_Branch_ProjectId" FromRole="Branch" ToRole="Project" />
         </EntityType>
@@ -606,12 +666,28 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           <NavigationProperty Name="Project" Relationship="Self.FK_Project_BuildProject_ProjectId" FromRole="BuildProject" ToRole="Project" />
           <NavigationProperty Name="User" Relationship="Self.FK_User_BuildProject_BuildBy" FromRole="BuildProject" ToRole="User" />
         </EntityType>
+        <EntityType Name="ELMAH_Error">
+          <Key>
+            <PropertyRef Name="ErrorId" />
+          </Key>
+          <Property Name="ErrorId" Type="Guid" Nullable="false" />
+          <Property Name="Application" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Host" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Source" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="User" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StatusCode" Type="Int32" Nullable="false" />
+          <Property Name="TimeUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Sequence" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AllXml" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
         <EntityType Name="EmailMaster">
           <Key>
             <PropertyRef Name="EmailMasterId" />
           </Key>
           <Property Name="EmailMasterId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EmailId" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmailId" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="OrganisationId" Type="Int32" />
           <NavigationProperty Name="Organisation" Relationship="Self.FK_Organisation_EmailMaster_OrganisationId" FromRole="EmailMaster" ToRole="Organisation" />
         </EntityType>
@@ -620,7 +696,7 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             <PropertyRef Name="MainMenuId" />
           </Key>
           <Property Name="MainMenuId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MainMenuName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MainMenuName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="SubMenus" Relationship="Self.FK_MainMenu_SubMneu_MainMenuId" FromRole="MainMenu" ToRole="SubMenu" />
         </EntityType>
         <EntityType Name="Organisation">
@@ -642,21 +718,12 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             <PropertyRef Name="PermissionId" />
           </Key>
           <Property Name="PermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RoleId" Type="Byte" />
-          <Property Name="SubMenuId" Type="Int32" />
-          <Property Name="Read" Type="Binary" MaxLength="1" FixedLength="true" />
-          <Property Name="Write" Type="Binary" MaxLength="1" FixedLength="true" />
-          <NavigationProperty Name="Role" Relationship="Self.FK_Role_Permissions_RoleId" FromRole="Permissions" ToRole="Role" />
-          <NavigationProperty Name="SubMenu" Relationship="Self.FK_SubMenu_Permissionsu_SubMenuId" FromRole="Permissions" ToRole="SubMenu" />
-        </EntityType>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="ProductId" />
-          </Key>
-          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Quantity" Type="Int32" />
-          <Property Name="Price" Type="Int32" />
+          <Property Name="RoleId" Type="Byte" Nullable="false" />
+          <Property Name="SubMenuId" Type="Int32" Nullable="false" />
+          <Property Name="Read" Type="Boolean" Nullable="false" />
+          <Property Name="Write" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="DevOpsModel.FK_Permissions_Role" FromRole="Permission" ToRole="Role" />
+          <NavigationProperty Name="SubMenu" Relationship="DevOpsModel.FK_Permissions_SubMenu" FromRole="Permission" ToRole="SubMenu" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
@@ -701,8 +768,8 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           </Key>
           <Property Name="RoleId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RoleName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Permissions" Relationship="Self.FK_Role_Permissions_RoleId" FromRole="Role" ToRole="Permissions" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Role_User_RoleId" FromRole="Role" ToRole="User" />
+          <NavigationProperty Name="Permissions" Relationship="DevOpsModel.FK_Permissions_Role" FromRole="Role" ToRole="Permission" />
         </EntityType>
         <EntityType Name="ServerBuild">
           <Key>
@@ -743,9 +810,9 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           </Key>
           <Property Name="ServerCredentialsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ServerId" Type="Int32" />
-          <Property Name="HostName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ConnectionString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HostName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ConnectionString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ServerConfig" Relationship="Self.FK_Server_ServerCredentials_ServerId" FromRole="ServerCredentials" ToRole="ServerConfig" />
         </EntityType>
         <EntityType Name="SubMenu">
@@ -754,9 +821,9 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           </Key>
           <Property Name="SubMenuId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MainMenuId" Type="Int32" />
-          <Property Name="SubMenuName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SubMenuName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MainMenu" Relationship="Self.FK_MainMenu_SubMneu_MainMenuId" FromRole="SubMenu" ToRole="MainMenu" />
-          <NavigationProperty Name="Permissions" Relationship="Self.FK_SubMenu_Permissionsu_SubMenuId" FromRole="SubMenu" ToRole="Permissions" />
+          <NavigationProperty Name="Permissions" Relationship="DevOpsModel.FK_Permissions_SubMenu" FromRole="SubMenu" ToRole="Permission" />
         </EntityType>
         <EntityType Name="SupportTicket">
           <Key>
@@ -797,6 +864,7 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           <NavigationProperty Name="ServerBuilds" Relationship="Self.FK_User_ServerBuild_PublishedBy" FromRole="User" ToRole="ServerBuild" />
           <NavigationProperty Name="SupportTickets" Relationship="Self.FK_User_SupportTickets_FixedBy" FromRole="User" ToRole="SupportTickets" />
           <NavigationProperty Name="SupportTickets1" Relationship="Self.FK_User_SupportTickets_GeneratedBy" FromRole="User" ToRole="SupportTickets" />
+          <NavigationProperty Name="UserTokens" Relationship="Self.FK_UserToken_User" FromRole="User" ToRole="UserToken" />
         </EntityType>
         <EntityType Name="ErrorLog">
           <Key>
@@ -821,6 +889,15 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           <Property Name="StatusCode" Type="Int32" Nullable="false" />
           <Property Name="TimeUtc" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Sequence" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="UserToken">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="Token" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserToken_User" FromRole="UserToken" ToRole="User" />
         </EntityType>
         <Association Name="FK_Project_Branch_ProjectId">
           <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
@@ -927,30 +1004,6 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="OrganisationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Role_Permissions_RoleId">
-          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
-          <End Role="Permissions" Type="Self.Permission" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="RoleId" />
-            </Principal>
-            <Dependent Role="Permissions">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SubMenu_Permissionsu_SubMenuId">
-          <End Role="SubMenu" Type="Self.SubMenu" Multiplicity="0..1" />
-          <End Role="Permissions" Type="Self.Permission" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SubMenu">
-              <PropertyRef Name="SubMenuId" />
-            </Principal>
-            <Dependent Role="Permissions">
-              <PropertyRef Name="SubMenuId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1074,14 +1127,26 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserToken_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserToken" Type="Self.UserToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserToken">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="DevOpsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Branches" EntityType="Self.Branch" />
           <EntitySet Name="BuildProjects" EntityType="Self.BuildProject" />
+          <EntitySet Name="ELMAH_Error" EntityType="Self.ELMAH_Error" />
           <EntitySet Name="EmailMasters" EntityType="Self.EmailMaster" />
           <EntitySet Name="MainMenus" EntityType="Self.MainMenu" />
           <EntitySet Name="Organisations" EntityType="Self.Organisation" />
           <EntitySet Name="Permissions" EntityType="Self.Permission" />
-          <EntitySet Name="Products" EntityType="Self.Product" />
           <EntitySet Name="Projects" EntityType="Self.Project" />
           <EntitySet Name="ReleaseProjects" EntityType="Self.ReleaseProject" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
@@ -1092,6 +1157,7 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           <EntitySet Name="SupportTickets" EntityType="Self.SupportTicket" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="ErrorLogs" EntityType="Self.ErrorLog" />
+          <EntitySet Name="UserTokens" EntityType="Self.UserToken" />
           <AssociationSet Name="FK_Project_Branch_ProjectId" Association="Self.FK_Project_Branch_ProjectId">
             <End Role="Project" EntitySet="Projects" />
             <End Role="Branch" EntitySet="Branches" />
@@ -1127,14 +1193,6 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           <AssociationSet Name="FK_Organisation_User_OrganisationId" Association="Self.FK_Organisation_User_OrganisationId">
             <End Role="Organisation" EntitySet="Organisations" />
             <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Role_Permissions_RoleId" Association="Self.FK_Role_Permissions_RoleId">
-            <End Role="Role" EntitySet="Roles" />
-            <End Role="Permissions" EntitySet="Permissions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SubMenu_Permissionsu_SubMenuId" Association="Self.FK_SubMenu_Permissionsu_SubMenuId">
-            <End Role="SubMenu" EntitySet="SubMenus" />
-            <End Role="Permissions" EntitySet="Permissions" />
           </AssociationSet>
           <AssociationSet Name="FK_User_Project_CreatedBy" Association="Self.FK_User_Project_CreatedBy">
             <End Role="User" EntitySet="Users" />
@@ -1176,7 +1234,65 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
             <End Role="User" EntitySet="Users" />
             <End Role="SupportTickets" EntitySet="SupportTickets" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserToken_User" Association="Self.FK_UserToken_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserToken" EntitySet="UserTokens" />
+          </AssociationSet>
+          <FunctionImport Name="ELMAH_GetErrorsXml" ReturnType="Collection(String)">
+            <Parameter Name="Application" Mode="In" Type="String" />
+            <Parameter Name="PageIndex" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="TotalCount" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ELMAH_GetErrorXml" ReturnType="Collection(String)">
+            <Parameter Name="Application" Mode="In" Type="String" />
+            <Parameter Name="ErrorId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="ELMAH_LogError">
+            <Parameter Name="ErrorId" Mode="In" Type="Guid" />
+            <Parameter Name="Application" Mode="In" Type="String" />
+            <Parameter Name="Host" Mode="In" Type="String" />
+            <Parameter Name="Type" Mode="In" Type="String" />
+            <Parameter Name="Source" Mode="In" Type="String" />
+            <Parameter Name="Message" Mode="In" Type="String" />
+            <Parameter Name="User" Mode="In" Type="String" />
+            <Parameter Name="AllXml" Mode="In" Type="String" />
+            <Parameter Name="StatusCode" Mode="In" Type="Int32" />
+            <Parameter Name="TimeUtc" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <AssociationSet Name="FK_Permissions_Role" Association="DevOpsModel.FK_Permissions_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="Permission" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permissions_SubMenu" Association="DevOpsModel.FK_Permissions_SubMenu">
+            <End Role="SubMenu" EntitySet="SubMenus" />
+            <End Role="Permission" EntitySet="Permissions" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Permissions_Role">
+          <End Type="DevOpsModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="DevOpsModel.Permission" Role="Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Permission">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permissions_SubMenu">
+          <End Type="DevOpsModel.SubMenu" Role="SubMenu" Multiplicity="1" />
+          <End Type="DevOpsModel.Permission" Role="Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubMenu">
+              <PropertyRef Name="SubMenuId" />
+            </Principal>
+            <Dependent Role="Permission">
+              <PropertyRef Name="SubMenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1204,6 +1320,23 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
                 <ScalarProperty Name="DownloadURL" ColumnName="DownloadURL" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="BuildDate" ColumnName="BuildDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ELMAH_Error">
+            <EntityTypeMapping TypeName="DevOpsModel.ELMAH_Error">
+              <MappingFragment StoreEntitySet="ELMAH_Error">
+                <ScalarProperty Name="ErrorId" ColumnName="ErrorId" />
+                <ScalarProperty Name="Application" ColumnName="Application" />
+                <ScalarProperty Name="Host" ColumnName="Host" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+                <ScalarProperty Name="TimeUtc" ColumnName="TimeUtc" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="AllXml" ColumnName="AllXml" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1243,16 +1376,6 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
                 <ScalarProperty Name="SubMenuId" ColumnName="SubMenuId" />
                 <ScalarProperty Name="Read" ColumnName="Read" />
                 <ScalarProperty Name="Write" ColumnName="Write" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Products">
-            <EntityTypeMapping TypeName="DevOpsModel.Product">
-              <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1391,6 +1514,17 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="UserTokens">
+            <EntityTypeMapping TypeName="DevOpsModel.UserToken">
+              <MappingFragment StoreEntitySet="UserToken">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ELMAH_GetErrorsXml" FunctionName="DevOpsModel.Store.ELMAH_GetErrorsXml" />
+          <FunctionImportMapping FunctionImportName="ELMAH_GetErrorXml" FunctionName="DevOpsModel.Store.ELMAH_GetErrorXml" />
+          <FunctionImportMapping FunctionImportName="ELMAH_LogError" FunctionName="DevOpsModel.Store.ELMAH_LogError" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
