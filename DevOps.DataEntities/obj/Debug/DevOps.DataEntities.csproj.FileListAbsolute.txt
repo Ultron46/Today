@@ -66,3 +66,4 @@ D:\Today\Today\DevOps.DataEntities\bin\Debug\EntityFramework.SqlServer.xml
 D:\Today\Today\DevOps.DataEntities\obj\Debug\DevOps.DataEntities.csproj.CopyComplete
 D:\Today\Today\DevOps.DataEntities\obj\Debug\DevOps.DataEntities.dll
 D:\Today\Today\DevOps.DataEntities\obj\Debug\DevOps.DataEntities.pdb
+D:\Today\Today\DevOps.DataEntities\obj\Debug\DevOps.DataEntities.csprojAssemblyReference.cache
