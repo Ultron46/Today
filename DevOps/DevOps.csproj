@@ -225,6 +225,7 @@
     <Compile Include="Controllers\MainMenuController.cs" />
     <Compile Include="Controllers\OrganizationsController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\ServersController.cs" />
     <Compile Include="Controllers\SubMenuController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -266,6 +267,10 @@
     <ProjectReference Include="..\DevOps.Data\DevOps.Data.csproj">
       <Project>{F7CB9116-8597-4876-86B4-5DC3B67858D7}</Project>
       <Name>DevOps.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DevOps.UI\DevOps.UI.csproj">
+      <Project>{7C223C9B-EE4E-4FA7-B356-478CBD45F06A}</Project>
+      <Name>DevOps.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

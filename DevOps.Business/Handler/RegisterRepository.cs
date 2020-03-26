@@ -17,6 +17,8 @@ namespace DevOps.Business.Handler
             containerBuilder.RegisterType(typeof(SubMenuDataRepository)).AsImplementedInterfaces();
             containerBuilder.RegisterType(typeof(OrganizationsDataRepository)).AsImplementedInterfaces();
             containerBuilder.RegisterType(typeof(ProjectDataRepository)).AsImplementedInterfaces();
+            containerBuilder.RegisterType(typeof(ServerConfigDataRepository)).AsImplementedInterfaces();
+            containerBuilder.RegisterType(typeof(ServerCredentialDataRepository)).AsImplementedInterfaces();
         }
     }
 }

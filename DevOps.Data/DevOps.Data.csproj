@@ -58,11 +58,15 @@
     <Compile Include="DataRepository\MainMenuDataRepository.cs" />
     <Compile Include="DataRepository\OrganizationsDataRepository.cs" />
     <Compile Include="DataRepository\ProjectDataRepository.cs" />
+    <Compile Include="DataRepository\ServerConfigDataRepository.cs" />
+    <Compile Include="DataRepository\ServerCredentialDataRepository.cs" />
     <Compile Include="DataRepository\SubMenuDataRepository.cs" />
     <Compile Include="DataRepository\UserDataRepository.cs" />
     <Compile Include="Interfaces\IMainMenuDataRepository.cs" />
     <Compile Include="Interfaces\IOrganizationsDataRepository.cs" />
     <Compile Include="Interfaces\IProjectDataRepository.cs" />
+    <Compile Include="Interfaces\IServerConfigDataRepository.cs" />
+    <Compile Include="Interfaces\IServerCredentialDataRepository.cs" />
     <Compile Include="Interfaces\ISubMenuDataRepository.cs" />
     <Compile Include="Interfaces\IUserDataRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -69,11 +69,15 @@
     <Compile Include="Interfaces\IMainMenuManager.cs" />
     <Compile Include="Interfaces\IOrganizationsManager.cs" />
     <Compile Include="Interfaces\IProjectManager.cs" />
+    <Compile Include="Interfaces\IServerCredentialManager.cs" />
+    <Compile Include="Interfaces\IServerConfigManager.cs" />
+    <Compile Include="Interfaces\IServerManager.cs" />
     <Compile Include="Interfaces\ISubMenuManager.cs" />
     <Compile Include="Interfaces\IUserManager.cs" />
     <Compile Include="Manager\MainMenuManager.cs" />
     <Compile Include="Manager\OrganizationsManager.cs" />
     <Compile Include="Manager\ProjectManager.cs" />
+    <Compile Include="Manager\ServerManager.cs" />
     <Compile Include="Manager\SubMenuManager.cs" />
     <Compile Include="Manager\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

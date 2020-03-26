@@ -1449,3 +1449,9 @@ D:\Today\Today\DevOps\obj\Debug\DevOps.csproj.CopyComplete
 D:\Today\Today\DevOps\obj\Debug\DevOps.dll
 D:\Today\Today\DevOps\obj\Debug\DevOps.pdb
 D:\Today\Today\DevOps\bin\Elmah.dll
+D:\Today\Today\DevOps\bin\DevOps.UI.dll
+D:\Today\Today\DevOps\bin\DevOps.Common.dll
+D:\Today\Today\DevOps\bin\DevOps.UI.pdb
+D:\Today\Today\DevOps\bin\DevOps.UI.dll.config
+D:\Today\Today\DevOps\bin\DevOps.Common.pdb
+D:\Today\Today\DevOps\bin\DevOps.Common.dll.config

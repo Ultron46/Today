@@ -1,0 +1,112 @@
+﻿@model IEnumerable<DevOps.UI.Models.Server>
+
+<!-- Data Table area Start-->
+<div class="data-table-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="data-table-list">
+                    <div class="table-responsive">
+                        <h4>Organizations</h4>
+                        <table id="data-table-basic" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ServerName</th>
+                                    <th>IPAddress</th>
+                                    <th>RAM</th>
+                                    <th>Processor</th>
+                                    <th>OS </th>
+                                    <th>Version</th>
+                                    <th>Host Name</th>
+                                    <th>Password</th>
+                                    <th>Connection String</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+            $.ajax({
+                url: "http://localhost:60969/api/Servers/GetServerConfigs?Organization=@Session["Organization"].ToString()",
+                context: document.body,
+                success: function (data) {
+                    console.log(data);
+                    for (var i = 0, li = data.length; i < li; i++) {
+                        var newTr = "<tr> <td>" + data[i].serverName + " </td><td>" + data[i].ipAddress + "</td><td>" + data[i].ram + "</td><td>" + data[i].processer + "</td><td>" + data[i].os + "</td><td>" + data[i].version + "</td><td>" + data[i].serverCredentials[0].hostName + "</td><td>" + data[i].serverCredentials[0].password + "</td><td>" + data[i].serverCredentials[0].connectionString + "</td><td> <input type='hidden' value=" + data[i].serverId + ">";
+                        if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+                            newTr += "<a class='editajax' id='" + data[i].serverId + "' href='#'>Edit</a></td > <td><a class='deleteajax' id='" + data[i].serverId + "' href='#'>Delete</a>";
+                        }
+                        newTr += "</td></tr >";
+                        $("#data-table-basic").append(newTr);
+                        if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+                            document.getElementsByClassName("editajax")[i].addEventListener("click", function (event) {
+                                event.preventDefault();
+                                var url1 = "http://localhost:57996/ServerConfiguration/EditServerConfiguration/" + event.target.id;
+                                $.ajax({
+                                    url: url1,
+                                    type: 'GET',//type of posting the data
+                                    contentType: 'application/json',
+                                    dataType: 'html',
+                                    success: function (r) {
+                                        //console.log(r.ViewString);
+                                        $("#partialbody").empty();
+                                        $("#partialbody").html(r);
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        //what to do in error
+                                        alert(url1);
+                                    }
+                                });
+
+                            });
+                            document.getElementsByClassName("deleteajax")[i].addEventListener("click", function (event) {
+                                event.preventDefault();
+                                if (confirm("Are you Sure Want to delete?")) {
+                                    var id = event.target.id;
+                                    var url1 = "http://localhost:60969/api/ServerConfiguration/DeleteServerConfig/" + id;
+                                    $.ajax({
+                                        url: url1,
+                                        type: 'POST',//type of posting the data
+                                        data: '{id: "' + id + '"}',
+                                        dataType: 'json',
+                                        success: function (r) {
+                                            alert('Organization Deleted Successfully');
+                                            var url2 = "http://localhost:57996/ServerConfiguration/ServerConfigurations"
+                                            $.ajax({
+                                                url: url2,
+                                                type: 'GET',//type of posting the data
+                                                contentType: 'application/json',
+                                                dataType: 'html',
+                                                success: function (r) {
+                                                    $("#partialbody").empty();
+                                                    $("#partialbody").append(r);
+                                                },
+                                                error: function (xhr, ajaxOptions, thrownError) {
+                                                    //what to do in error
+                                                }
+                                            });
+                                        },
+                                        error: function (xhr, ajaxOptions, thrownError) {
+                                            //what to do in error
+                                            alert(thrownError);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+
+                }
+            });
+        });
+</script>

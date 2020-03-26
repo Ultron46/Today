@@ -16,6 +16,7 @@ namespace DevOps.Handler
             containerBuilder.RegisterType(typeof(SubMenuManager)).AsImplementedInterfaces();
             containerBuilder.RegisterType(typeof(OrganizationsManager)).AsImplementedInterfaces();
             containerBuilder.RegisterType(typeof(ProjectManager)).AsImplementedInterfaces();
+            containerBuilder.RegisterType(typeof(ServerManager)).AsImplementedInterfaces();
         }
     }
 }
