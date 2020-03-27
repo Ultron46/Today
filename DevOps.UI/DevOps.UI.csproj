@@ -2043,6 +2043,7 @@
     <Content Include="Views\Projects\EditProject.cshtml" />
     <Content Include="Views\Servers\Registration.cshtml" />
     <Content Include="Views\Servers\Servers.cshtml" />
+    <Content Include="Views\Servers\EditServer.cshtml" />
     <None Include="Views\Users\UserTable.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

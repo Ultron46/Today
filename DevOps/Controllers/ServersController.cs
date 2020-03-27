@@ -32,6 +32,16 @@ namespace DevOps.Controllers
             return Ok(serverConfigs);
         }
 
+        public IHttpActionResult GetServerConfig(int id)
+        {
+            ServerConfig serverConfig = _serverManager.GetServerConfig(id);
+            if (serverConfig == null)
+            {
+                return NotFound();
+            }
+            return Ok(serverConfig);
+        }
+
         public IHttpActionResult GetServerCredentials()
         {
             List<ServerCredential> serverCredentials = _serverManager.GetServerCredentials();
@@ -42,6 +52,7 @@ namespace DevOps.Controllers
             return Ok(serverCredentials);
         }
 
+        [HttpPost]
         public IHttpActionResult InsertServer(Server server)
         {
             bool status = false;
@@ -67,6 +78,64 @@ namespace DevOps.Controllers
                 serverCredential.ServerId = serverConfigs.Last().ServerId;
                 bool CredentialStatus = _serverManager.InsertServerCredential(serverCredential);
                 if(CredentialStatus == true)
+                {
+                    status = true;
+                }
+            }
+            if(status == false)
+            {
+                return NotFound();
+            }
+            return Ok(status);
+        }
+
+        [HttpPost]
+        public IHttpActionResult UpdateServer(Server server)
+        {
+            bool status = false;
+            ServerConfig serverConfig = new ServerConfig
+            {
+                ServerId = server.ServerId,
+                ServerName = server.ServerName,
+                IPAddress = server.IPAddress,
+                RAM = server.RAM,
+                Processer = server.Processer,
+                OS = server.OS,
+                Version = server.Version
+            };
+            bool ConfigStatus = _serverManager.UpdateServerConfig(serverConfig);
+            if (ConfigStatus == true)
+            {
+                ServerCredential serverCredential = new ServerCredential
+                {
+                    ServerId = serverConfig.ServerId,
+                    HostName = server.HostName,
+                    Password = server.Password,
+                    ConnectionString = server.ConnectionString
+                };
+                bool CredentialStatus = _serverManager.UpdateServerCredential(serverCredential);
+                if (CredentialStatus == true)
+                {
+                    status = true;
+                }
+            }
+            if (status == false)
+            {
+                return NotFound();
+            }
+            return Ok(status);
+        }
+
+        [HttpPost]
+        public IHttpActionResult DeleteServer(int id)
+        {
+            bool status = false;
+            ServerConfig serverConfig = _serverManager.GetServerConfig(id);
+            bool delete = _serverManager.DeleteServerCredential(serverConfig.ServerCredentials.First().ServerCredentialsId);
+            if(delete == true)
+            {
+                bool deleteConfirm = _serverManager.DeleteServerConfig(id);
+                if(deleteConfirm == true)
                 {
                     status = true;
                 }

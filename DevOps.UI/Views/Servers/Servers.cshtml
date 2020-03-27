@@ -51,7 +51,7 @@
                         if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
                             document.getElementsByClassName("editajax")[i].addEventListener("click", function (event) {
                                 event.preventDefault();
-                                var url1 = "http://localhost:57996/ServerConfiguration/EditServerConfiguration/" + event.target.id;
+                                var url1 = "http://localhost:57996/Servers/EditServer/" + event.target.id;
                                 $.ajax({
                                     url: url1,
                                     type: 'GET',//type of posting the data
@@ -73,15 +73,15 @@
                                 event.preventDefault();
                                 if (confirm("Are you Sure Want to delete?")) {
                                     var id = event.target.id;
-                                    var url1 = "http://localhost:60969/api/ServerConfiguration/DeleteServerConfig/" + id;
+                                    var url1 = "http://localhost:60969/api/Servers/DeleteServer/" + id;
                                     $.ajax({
                                         url: url1,
                                         type: 'POST',//type of posting the data
                                         data: '{id: "' + id + '"}',
                                         dataType: 'json',
                                         success: function (r) {
-                                            alert('Organization Deleted Successfully');
-                                            var url2 = "http://localhost:57996/ServerConfiguration/ServerConfigurations"
+                                            alert('Server Deleted Successfully');
+                                            var url2 = "http://localhost:57996/Servers/Servers"
                                             $.ajax({
                                                 url: url2,
                                                 type: 'GET',//type of posting the data

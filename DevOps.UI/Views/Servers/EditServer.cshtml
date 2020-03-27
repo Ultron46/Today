@@ -1,18 +1,18 @@
-﻿@model DevOps.UI.Models.Server
-
-
+﻿
+@model DevOps.UI.Models.Server
 
 <div class="login-content">
-    <!-- Login -->
-    @using (Html.BeginForm("Registration", "ServerConfiguration", FormMethod.Post))
+
+    @using (Html.BeginForm())
     {
-        <h2><center>Registration</center></h2>
+        <h2><center>Edit</center></h2>
         <div class="nk-block toggled" id="l-register">
+            <input type="hidden" id="ServerId" name="id" value="@Model.ServerId" />
             <div class="nk-form rform">
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" id="ServerName" class="form-control" placeholder="ServerName" name="ServerName">
+                        @Html.EditorFor(model => model.ServerName, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <br />
@@ -20,7 +20,7 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" id="IPAddress" class="form-control" placeholder="IPAddress" name="IPAddress">
+                        @Html.EditorFor(model => model.IPAddress, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <br />
@@ -29,8 +29,7 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-flag"></i></span>
                     <div class="nk-int-st">
-
-                        <input type="text" id="RAM" class="form-control" placeholder="RAM" name="RAM">
+                        @Html.EditorFor(model => model.RAM, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <br />
@@ -38,62 +37,51 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-mobile-alt"></i></span>
                     <div class="nk-int-st">
-
-                        <input type="text" id="Processer" class="form-control" placeholder="Processer" name="Processer">
+                        @Html.EditorFor(model => model.Processer, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <br />
 
-
-                <div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-envelope"></i></span>
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-mobile-alt"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" id="OS" class="form-control" placeholder="OS" name="OS">
+                        @Html.EditorFor(model => model.OS, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <br />
 
-                <div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-unlock-alt"></i></span>
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-mobile-alt"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" id="Version" class="form-control" placeholder="Version" name="Version">
+                        @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <br />
 
-                @*<div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-unlock-alt"></i></span>
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-mobile-alt"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" id="OrganisationId" class="form-control" placeholder="OrganisationId" name="OrganisationId">
-                    </div>
-                </div>
-                <br />*@
-
-                <div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
-                    <div class="nk-int-st">
-                        <input type="text" id="HostName" class="form-control" placeholder="HostName" name="HostName">
+                        @Html.EditorFor(model => model.HostName, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <br />
 
-                <div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-mobile-alt"></i></span>
                     <div class="nk-int-st">
-                        <input type="password" id="Password" class="form-control" placeholder="Password" name="Password">
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <br />
 
-                <div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-mobile-alt"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" id="ConnectionString" class="form-control" placeholder="ConnectionString" name="ConnectionString">
+                        @Html.EditorFor(model => model.ConnectionString, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <br />
-
-                <input type="submit" id="submit" value="Submit" class=" btn-success uloginbtn" />
+                <input type="submit" id="editbtn" value="Submit" class=" btn-success uloginbtn" />
 
                 <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
             </div>
@@ -102,8 +90,9 @@
 </div>
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script>
-    $('#submit').click(function (e) {
+    $('#editbtn').click(function (e) {
         e.preventDefault();
+        var ServerId = $('#ServerId').val();
         var ServerName = $('#ServerName').val();
         var IPAddress = $('#IPAddress').val();
         var RAM = $('#RAM').val();
@@ -113,18 +102,18 @@
         var HostName = $('#HostName').val();
         var Password = $('#Password').val();
         var ConnectionString = $('#ConnectionString').val();
-        var url1 = "http://localhost:57996/Servers/Registration";
+        var url1 = "http://localhost:60969/api/Servers/UpdateServer";
         $.ajax({
             url: url1,
             type: 'POST',//type of posting the data
-            data: '{ServerName: "' + ServerName + '",IPAddress: "' + IPAddress + '",RAM: "' + RAM + '",Processer: "' + Processer +
-                '",OS: "' + OS + '",Version: "' + Version + '",HostName: "' + HostName + '",Password: "' + Password +  '",ConnectionString: "' + ConnectionString +
+            data: '{ServerId: "' + ServerId + '",ServerName: "' + ServerName + '",IPAddress: "' + IPAddress + '",RAM: "' + RAM +
+                '",Processer: "' + Processer + '",OS: "' + OS + '",Version: "' + Version + '",HostName: "' + HostName + '",Password: "' + Password + '",ConnectionString: "' + ConnectionString + 
                 '"}',
             contentType: 'application/json',
             dataType: 'json',
             success: function (r) {
-                alert('Server Created Successfully');
-                var url2 = "http://localhost:57996/Servers/Servers";
+                alert('Organization Details Updated Successfully');
+                var url2 = "http://localhost:57996/Servers/Servers"
                 $.ajax({
                     url: url2,
                     type: 'GET',//type of posting the data
@@ -132,7 +121,7 @@
                     dataType: 'html',
                     success: function (r) {
                         $("#partialbody").empty();
-                        $("#partialbody").html(r);
+                        $("#partialbody").append(r);
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         //what to do in error
@@ -145,6 +134,5 @@
             }
         });
 
-    });
-</script>
+    });</script>
 

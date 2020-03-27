@@ -25,7 +25,7 @@ namespace DevOps.Data.DataRepository
 
         public ServerConfig GetServerConfig(int id)
         {
-            return db.ServerConfigs.Find(id);
+            return db.ServerConfigs.AsNoTracking().Where(x => x.ServerId == id).Include(x => x.ServerCredentials).FirstOrDefault();
         }
 
 
@@ -43,10 +43,10 @@ namespace DevOps.Data.DataRepository
         public bool UpdateServerConfig(ServerConfig serverConfig)
         {
             bool status = false;
-            ServerConfig serverConfig1 = db.ServerConfigs.Find(serverConfig.ServerId);
-            serverConfig1 = serverConfig;
-            db.Entry(serverConfig1).State = EntityState.Modified;
-            if(db.SaveChanges() > 0)
+            ServerConfig serverConfig1 = db.ServerConfigs.AsNoTracking().Where(x => x.ServerId == serverConfig.ServerId).FirstOrDefault();
+            serverConfig.OrganisationId = serverConfig1.OrganisationId;
+            db.Entry(serverConfig).State = EntityState.Modified;
+            if (db.SaveChanges() > 0)
             {
                 status = true;
             }
@@ -58,7 +58,7 @@ namespace DevOps.Data.DataRepository
             bool status = false;
             ServerConfig serverConfig = db.ServerConfigs.Find(id);
             db.ServerConfigs.Remove(serverConfig);
-            if(db.SaveChanges() > 0)
+            if (db.SaveChanges() > 0)
             {
                 status = true;
             }

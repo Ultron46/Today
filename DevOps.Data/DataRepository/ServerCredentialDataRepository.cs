@@ -41,8 +41,10 @@ namespace DevOps.Data.DataRepository
         public bool UpdateServerCredential(ServerCredential serverCredential)
         {
             bool status = false;
-            ServerCredential serverCredential1 = db.ServerCredentials.Find(serverCredential.ServerCredentialsId);
-            serverCredential1 = serverCredential;
+            ServerCredential serverCredential1 = db.ServerCredentials.Where(x => x.ServerId == serverCredential.ServerId).FirstOrDefault();
+            serverCredential1.HostName = serverCredential.HostName;
+            serverCredential1.Password = serverCredential.Password;
+            serverCredential1.ConnectionString = serverCredential.ConnectionString;
             db.Entry(serverCredential1).State = EntityState.Modified;
             if(db.SaveChanges() > 0)
             {
