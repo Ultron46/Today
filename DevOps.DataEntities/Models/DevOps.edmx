@@ -41,7 +41,7 @@
           <Property Name="StatusCode" Type="int" Nullable="false" />
           <Property Name="TimeUtc" Type="datetime" Nullable="false" />
           <Property Name="Sequence" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AllXml" Type="ntext" Nullable="false" />
+          <Property Name="AllXml" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="EmailMaster">
           <Key>
@@ -214,14 +214,12 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
           <Property Name="RoleId" Type="tinyint" />
           <Property Name="RegistrationDate" Type="date" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UserToken">
           <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="Token" />
+            <PropertyRef Name="TokenId" />
           </Key>
-          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="TokenId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="Token" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <Association Name="FK_BuildProject_ServerBuild_BuildId">
@@ -296,30 +294,6 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Permissions_Role">
-          <End Role="Role" Type="Self.Role" Multiplicity="1" />
-          <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="RoleId" />
-            </Principal>
-            <Dependent Role="Permissions">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Permissions_SubMenu">
-          <End Role="SubMenu" Type="Self.SubMenu" Multiplicity="1" />
-          <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SubMenu">
-              <PropertyRef Name="SubMenuId" />
-            </Principal>
-            <Dependent Role="Permissions">
-              <PropertyRef Name="SubMenuId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Project_Branch_ProjectId">
           <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
           <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
@@ -353,18 +327,6 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Server_ServerCredentials_ServerId">
-          <End Role="ServerConfig" Type="Self.ServerConfig" Multiplicity="0..1" />
-          <End Role="ServerCredentials" Type="Self.ServerCredentials" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ServerConfig">
-              <PropertyRef Name="ServerId" />
-            </Principal>
-            <Dependent Role="ServerCredentials">
-              <PropertyRef Name="ServerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -452,30 +414,6 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_SupportTickets_FixedBy">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="SupportTickets" Type="Self.SupportTickets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="SupportTickets">
-              <PropertyRef Name="FixedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_User_SupportTickets_GeneratedBy">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="SupportTickets" Type="Self.SupportTickets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="SupportTickets">
-              <PropertyRef Name="GeneratedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserToken_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="UserToken" Type="Self.UserToken" Multiplicity="*" />
@@ -484,7 +422,7 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="UserToken">
-              <PropertyRef Name="UserID" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -527,6 +465,7 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
           <EntitySet Name="SubMenu" EntityType="Self.SubMenu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SupportTickets" EntityType="Self.SupportTickets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserToken" EntityType="Self.UserToken" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ErrorLog" EntityType="Self.ErrorLog" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ErrorLog].[ErrorId] AS [ErrorId], 
@@ -540,12 +479,6 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
     [ErrorLog].[TimeUtc] AS [TimeUtc], 
     [ErrorLog].[Sequence] AS [Sequence]
     FROM [dbo].[ErrorLog] AS [ErrorLog]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="UserToken" EntityType="Self.UserToken" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [UserToken].[UserID] AS [UserID], 
-    [UserToken].[Token] AS [Token]
-    FROM [dbo].[UserToken] AS [UserToken]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_BuildProject_ServerBuild_BuildId" Association="Self.FK_BuildProject_ServerBuild_BuildId">
             <End Role="BuildProject" EntitySet="BuildProject" />
@@ -571,14 +504,6 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
             <End Role="Organisation" EntitySet="Organisation" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
-          <AssociationSet Name="FK_Permissions_Role" Association="Self.FK_Permissions_Role">
-            <End Role="Role" EntitySet="Role" />
-            <End Role="Permissions" EntitySet="Permissions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Permissions_SubMenu" Association="Self.FK_Permissions_SubMenu">
-            <End Role="SubMenu" EntitySet="SubMenu" />
-            <End Role="Permissions" EntitySet="Permissions" />
-          </AssociationSet>
           <AssociationSet Name="FK_Project_Branch_ProjectId" Association="Self.FK_Project_Branch_ProjectId">
             <End Role="Project" EntitySet="Project" />
             <End Role="Branch" EntitySet="Branch" />
@@ -590,10 +515,6 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
           <AssociationSet Name="FK_Role_User_RoleId" Association="Self.FK_Role_User_RoleId">
             <End Role="Role" EntitySet="Role" />
             <End Role="User" EntitySet="User" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Server_ServerCredentials_ServerId" Association="Self.FK_Server_ServerCredentials_ServerId">
-            <End Role="ServerConfig" EntitySet="ServerConfig" />
-            <End Role="ServerCredentials" EntitySet="ServerCredentials" />
           </AssociationSet>
           <AssociationSet Name="FK_ServerBuild_ReleaseProject_ServerBuildId" Association="Self.FK_ServerBuild_ReleaseProject_ServerBuildId">
             <End Role="ServerBuild" EntitySet="ServerBuild" />
@@ -622,14 +543,6 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
           <AssociationSet Name="FK_User_ServerBuild_PublishedBy" Association="Self.FK_User_ServerBuild_PublishedBy">
             <End Role="User" EntitySet="User" />
             <End Role="ServerBuild" EntitySet="ServerBuild" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_SupportTickets_FixedBy" Association="Self.FK_User_SupportTickets_FixedBy">
-            <End Role="User" EntitySet="User" />
-            <End Role="SupportTickets" EntitySet="SupportTickets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_SupportTickets_GeneratedBy" Association="Self.FK_User_SupportTickets_GeneratedBy">
-            <End Role="User" EntitySet="User" />
-            <End Role="SupportTickets" EntitySet="SupportTickets" />
           </AssociationSet>
           <AssociationSet Name="FK_UserToken_User" Association="Self.FK_UserToken_User">
             <End Role="User" EntitySet="User" />
@@ -864,8 +777,8 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
           <NavigationProperty Name="ServerBuilds" Relationship="Self.FK_User_ServerBuild_PublishedBy" FromRole="User" ToRole="ServerBuild" />
           <NavigationProperty Name="SupportTickets" Relationship="Self.FK_User_SupportTickets_FixedBy" FromRole="User" ToRole="SupportTickets" />
           <NavigationProperty Name="SupportTickets1" Relationship="Self.FK_User_SupportTickets_GeneratedBy" FromRole="User" ToRole="SupportTickets" />
-          <NavigationProperty Name="UserTokens" Relationship="Self.FK_UserToken_User" FromRole="User" ToRole="UserToken" />
-        </EntityType>
+          <NavigationProperty Name="UserTokens" Relationship="DevOpsModel.FK_UserToken_User" FromRole="User" ToRole="UserToken" />
+          </EntityType>
         <EntityType Name="ErrorLog">
           <Key>
             <PropertyRef Name="ErrorId" />
@@ -889,15 +802,6 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
           <Property Name="StatusCode" Type="Int32" Nullable="false" />
           <Property Name="TimeUtc" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Sequence" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="UserToken">
-          <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="Token" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK_UserToken_User" FromRole="UserToken" ToRole="User" />
         </EntityType>
         <Association Name="FK_Project_Branch_ProjectId">
           <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
@@ -1127,18 +1031,6 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserToken_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserToken" Type="Self.UserToken" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="UserToken">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="DevOpsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Branches" EntityType="Self.Branch" />
           <EntitySet Name="BuildProjects" EntityType="Self.BuildProject" />
@@ -1157,7 +1049,6 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
           <EntitySet Name="SupportTickets" EntityType="Self.SupportTicket" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="ErrorLogs" EntityType="Self.ErrorLog" />
-          <EntitySet Name="UserTokens" EntityType="Self.UserToken" />
           <AssociationSet Name="FK_Project_Branch_ProjectId" Association="Self.FK_Project_Branch_ProjectId">
             <End Role="Project" EntitySet="Projects" />
             <End Role="Branch" EntitySet="Branches" />
@@ -1234,10 +1125,6 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
             <End Role="User" EntitySet="Users" />
             <End Role="SupportTickets" EntitySet="SupportTickets" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserToken_User" Association="Self.FK_UserToken_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserToken" EntitySet="UserTokens" />
-          </AssociationSet>
           <FunctionImport Name="ELMAH_GetErrorsXml" ReturnType="Collection(String)">
             <Parameter Name="Application" Mode="In" Type="String" />
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
@@ -1268,6 +1155,11 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
             <End Role="SubMenu" EntitySet="SubMenus" />
             <End Role="Permission" EntitySet="Permissions" />
           </AssociationSet>
+          <EntitySet Name="UserTokens" EntityType="DevOpsModel.UserToken" />
+          <AssociationSet Name="FK_UserToken_User" Association="DevOpsModel.FK_UserToken_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserToken" EntitySet="UserTokens" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_Permissions_Role">
           <End Type="DevOpsModel.Role" Role="Role" Multiplicity="1" />
@@ -1290,6 +1182,27 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
             </Principal>
             <Dependent Role="Permission">
               <PropertyRef Name="SubMenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserToken">
+          <Key>
+            <PropertyRef Name="TokenId" />
+          </Key>
+          <Property Name="TokenId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Token" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="User" Relationship="DevOpsModel.FK_UserToken_User" FromRole="UserToken" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_UserToken_User">
+          <End Type="DevOpsModel.User" Role="User" Multiplicity="1" />
+          <End Type="DevOpsModel.UserToken" Role="UserToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserToken">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1514,17 +1427,18 @@ warning 6002: The table/view 'DevOps.dbo.UserToken' does not have a primary key 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserTokens">
-            <EntityTypeMapping TypeName="DevOpsModel.UserToken">
-              <MappingFragment StoreEntitySet="UserToken">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="ELMAH_GetErrorsXml" FunctionName="DevOpsModel.Store.ELMAH_GetErrorsXml" />
           <FunctionImportMapping FunctionImportName="ELMAH_GetErrorXml" FunctionName="DevOpsModel.Store.ELMAH_GetErrorXml" />
           <FunctionImportMapping FunctionImportName="ELMAH_LogError" FunctionName="DevOpsModel.Store.ELMAH_LogError" />
+          <EntitySetMapping Name="UserTokens">
+            <EntityTypeMapping TypeName="DevOpsModel.UserToken">
+              <MappingFragment StoreEntitySet="UserToken">
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TokenId" ColumnName="TokenId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

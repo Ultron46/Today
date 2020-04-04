@@ -222,6 +222,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="TokenAuthAttribute.cs" />
+    <Compile Include="Controllers\AuthorizationController.cs" />
     <Compile Include="Controllers\MainMenuController.cs" />
     <Compile Include="Controllers\OrganizationsController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
@@ -259,6 +261,10 @@
     <ProjectReference Include="..\DevOps.Business\DevOps.Business.csproj">
       <Project>{5eaa1514-3656-426f-8462-5ff833bbd09b}</Project>
       <Name>DevOps.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DevOps.Common\DevOps.Common.csproj">
+      <Project>{A797D3FE-49DB-4C97-8FC0-15708E0EA632}</Project>
+      <Name>DevOps.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\DevOps.DataEntities\DevOps.DataEntities.csproj">
       <Project>{835CB1D5-C155-4295-8C08-7D6226E1A0AE}</Project>

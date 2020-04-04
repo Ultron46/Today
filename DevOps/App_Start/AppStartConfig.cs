@@ -26,6 +26,8 @@ namespace DevOps.App_Start
 
             AddMvcRegistrations(builder);
             AddRegisterations(builder);
+            //builder.RegisterFilterProvider();
+            //builder.RegisterType<TokenAuthAttribute>().PropertiesAutowired();
 
             var container = builder.Build();
 

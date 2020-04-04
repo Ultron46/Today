@@ -11,6 +11,7 @@ namespace DevOps.Business.Interfaces
     {
         List<User> GetAllUsers();
         User GetUser(int userId);
+        User GetAuthUser(string email, string password);
         bool InsertUser(User user);
         bool UpdateUser(User user);
         bool DeleteUser(int id);

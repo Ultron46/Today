@@ -20,8 +20,8 @@ namespace DevOps.DataEntities.Models
         public DevOpsEntities()
             : base("name=DevOpsEntities")
         {
-            this.Configuration.ProxyCreationEnabled = false;
             this.Configuration.LazyLoadingEnabled = true;
+            this.Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

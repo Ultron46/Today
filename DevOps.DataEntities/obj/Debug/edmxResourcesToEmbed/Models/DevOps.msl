@@ -216,16 +216,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="UserTokens">
-      <EntityTypeMapping TypeName="DevOpsModel.UserToken">
-        <MappingFragment StoreEntitySet="UserToken">
-          <ScalarProperty Name="UserID" ColumnName="UserID" />
-          <ScalarProperty Name="Token" ColumnName="Token" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="ELMAH_GetErrorsXml" FunctionName="DevOpsModel.Store.ELMAH_GetErrorsXml" />
     <FunctionImportMapping FunctionImportName="ELMAH_GetErrorXml" FunctionName="DevOpsModel.Store.ELMAH_GetErrorXml" />
     <FunctionImportMapping FunctionImportName="ELMAH_LogError" FunctionName="DevOpsModel.Store.ELMAH_LogError" />
+    <EntitySetMapping Name="UserTokens">
+      <EntityTypeMapping TypeName="DevOpsModel.UserToken">
+        <MappingFragment StoreEntitySet="UserToken">
+          <ScalarProperty Name="Token" ColumnName="Token" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="TokenId" ColumnName="TokenId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

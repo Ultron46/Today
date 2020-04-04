@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http.Cors;
 using System.Web.Mvc;
 
@@ -18,37 +19,20 @@ namespace DevOps.UI.Controllers
     [EnableCorsAttribute("*","*","*")]
     public class UsersController : Controller
     {
-        string baseUrl = Constants.baseurl;
-
-        [HttpGet]
-        public async Task<ActionResult> Index(string sortName,int? page)
+        private string baseUrl;
+        private HttpClient client;
+        private HttpResponseMessage Res;
+        private string AddressUri;
+        private StringContent StringContent;
+        private Uri addressUri;
+        public UsersController()
         {
-            List<User> users = new List<User>();
-            var client = new HttpClient();
+            baseUrl = Constants.baseurl;
+            client = new HttpClient();
+            client.DefaultRequestHeaders.Clear();
             client.BaseAddress = new Uri(baseUrl);
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage Res = await client.GetAsync("api/Users/GetAllUsers");
-            if (Res.IsSuccessStatusCode)
-            {
-                var userResponse = Res.Content.ReadAsStringAsync().Result;
-                users = JsonConvert.DeserializeObject<List<User>>(userResponse);
-            }
-            var user = from u in users select u;
-            ViewBag.CurrentSort = sortName;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortName) ? "name_desc" : "";
-            switch (sortName)
-            {
-                case "name_desc":
-                    user = user.OrderByDescending(s => s.Name);
-                    break;
-                default:
-                    user = user.OrderBy(s => s.Name);
-                    break;
-            }
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
-            return View(user.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpGet]
@@ -66,15 +50,12 @@ namespace DevOps.UI.Controllers
             }
             ViewBag.Roles = roles;
             List<Organization> organisations = new List<Organization>();
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(baseUrl);
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage Res = await client.GetAsync("api/Organizations/GetAllOrganization");
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Session["UserToken"].ToString());
+            Res = await client.GetAsync("api/Organizations/GetAllOrganization");
             if (Res.IsSuccessStatusCode)
             {
-                var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
-                organisations = JsonConvert.DeserializeObject<List<Organization>>(MainMEnuResponse);
+                var OrganizationResponse = Res.Content.ReadAsStringAsync().Result;
+                organisations = JsonConvert.DeserializeObject<List<Organization>>(OrganizationResponse);
             }
             var organizationTemp = organisations.Select(x => new SelectListItem { Text = x.Name, Value = x.OrganisationId.ToString() }).ToList();
             if (Session["Role"].ToString() != "Admin")
@@ -86,78 +67,71 @@ namespace DevOps.UI.Controllers
             return PartialView("Registration");
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult> Registration(User user)
-        //{
-        //    List<User> users = new List<User>();
-        //    var client = new HttpClient();
-        //    client.BaseAddress = new Uri(baseUrl);
-        //    client.DefaultRequestHeaders.Clear();
-        //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        //    HttpResponseMessage Res = await client.GetAsync("api/Users/GetAllUsers");
-        //    if (Res.IsSuccessStatusCode)
-        //    {
-        //        var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
-        //        users = JsonConvert.DeserializeObject<List<User>>(MainMEnuResponse);
-        //    }
-        //    bool check = true;
-        //    if(users.Any(x => x.Email == user.Email))
-        //    {
-        //        ViewBag.EmailError = "email id already exists";
-        //        check = false;
-        //    }
-        //    if (users.Any(x => x.Phone == user.Phone))
-        //    {
-        //        ViewBag.PhoneError = "Mobile Number is already exists";
-        //        check = false;
-        //    }
-        //    if(check)
-        //    {
-        //        client.DefaultRequestHeaders.Clear();
-        //        user.RegistrationDate = DateTime.Now;
-        //        var stringContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-        //        var addressUri = new Uri("api/Users/InsertUser", UriKind.Relative);
-        //        Res = client.PostAsync(addressUri, stringContent).Result;
-        //        if (Res.IsSuccessStatusCode)
-        //        {
-        //            return RedirectToAction("Index","Home");
-        //        }
-        //    }
-        //    return PartialView("Registration", user);
-        //}
-
         [HttpGet]
-        public ActionResult Login()
+        public async Task<ActionResult> Login(string returnurl)
         {
-            return View();
+            if (!String.IsNullOrEmpty(returnurl))
+            {
+                return View();
+            }
+            HttpCookie cookie = Request.Cookies["DevOps"];
+            if (cookie == null)
+            {
+                return View();
+            }
+            FormCollection form = new FormCollection();
+            form["Email"] = cookie["username"];
+            form["Password"] = cookie["password"];
+            return await Login(form);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(User user)
+        public async Task<ActionResult> Login(FormCollection collection)
         {
-            List<User> users = new List<User>();
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(baseUrl);
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage Res = await client.GetAsync("api/Users/GetAllUsers");
+            string cookiecheck = collection["Check"];
+            User principal = null;
+            AddressUri = "api/Users/GetAuthUser?email=" + collection["Email"] + "&password=" + collection["Password"];
+            Res = await client.GetAsync(AddressUri);
             if (Res.IsSuccessStatusCode)
             {
-                var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
-                users = JsonConvert.DeserializeObject<List<User>>(MainMEnuResponse);
+                var UserResponse = Res.Content.ReadAsStringAsync().Result;
+                principal = JsonConvert.DeserializeObject<User>(UserResponse);
             }
-            User principal = users.Where(x => x.Email == user.Email && x.Password == user.Password).FirstOrDefault();
             if (principal != null)
             {
                 int role = Convert.ToInt32(principal.RoleId);
                 Session["Role"] = ((Enums.Roles)role).ToString();
                 Session["Organization"] = principal.OrganisationId.ToString();
                 Session["user"] = principal.UserId;
+                AddressUri = "api/Authorization/GetUserToken?id=" + principal.UserId.ToString();
+                UserToken token1 = new UserToken();
+                Res = await client.GetAsync(AddressUri);
+                if (Res.IsSuccessStatusCode)
+                {
+                    var TokenResponse = Res.Content.ReadAsStringAsync().Result;
+                    token1 = JsonConvert.DeserializeObject<UserToken>(TokenResponse);
+                }
+                if (String.IsNullOrEmpty(token1.Token))
+                {
+                    string token = Helpers.GenerateToken(principal.UserId,principal.Password);
+                    UserToken userToken = new UserToken { UserID = principal.UserId, Token = token };
+                    StringContent = new StringContent(JsonConvert.SerializeObject(userToken), Encoding.UTF8, "application/json");
+                    addressUri = new Uri("api/Authorization/InsertToken", UriKind.Relative);
+                    Res = client.PostAsync(addressUri, StringContent).Result;
+                    if (!Res.IsSuccessStatusCode)
+                    {
+                        return View();
+                    }
+                    Session["UserToken"] = token;
+                }
+                else
+                {
+                    Session["UserToken"] = token1.Token;
+                }
                 List<MainMenu> mainMenus = new List<MainMenu>();
                 List<SubMenu> subs = new List<SubMenu>();
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                Res = await client.GetAsync("api/MainMEnu/GetMainMEnus");
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Session["UserToken"].ToString());
+                Res = await client.GetAsync("api/MainMenu/GetMainMenus");
                 if (Res.IsSuccessStatusCode)
                 {
                     var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
@@ -175,12 +149,20 @@ namespace DevOps.UI.Controllers
                 mainMenus = mainMenus.Where(x => mainMenuIds.Contains(x.MainMenuId)).ToList();
                 Session["Menu"] = mainMenus;
                 Session["Subs"] = subs;
+                if (!String.IsNullOrEmpty(cookiecheck))
+                {
+                    HttpCookie cookie = new HttpCookie("DevOps");
+                    cookie["username"] = principal.Email;
+                    cookie["password"] = principal.Password;
+                    cookie.Expires = DateTime.Now.AddDays(30);
+                    Response.Cookies.Add(cookie);
+                }
                 return RedirectToAction("Index","Home");
             }
             else
             {
                 ViewBag.LoginError = "Not valid";
-                return View("Login", user);
+                return View("Login", collection);
             }
         }
 
@@ -205,15 +187,12 @@ namespace DevOps.UI.Controllers
             }
             ViewBag.Roles = roles;
             List<Organization> organisations = new List<Organization>();
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(baseUrl);
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage Res = await client.GetAsync("api/Organizations/GetAllOrganization");
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Session["UserToken"].ToString());
+            Res = await client.GetAsync("api/Organizations/GetAllOrganization");
             if (Res.IsSuccessStatusCode)
             {
-                var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
-                organisations = JsonConvert.DeserializeObject<List<Organization>>(MainMEnuResponse);
+                var OrganizationResponse = Res.Content.ReadAsStringAsync().Result;
+                organisations = JsonConvert.DeserializeObject<List<Organization>>(OrganizationResponse);
             }
             var organizationTemp = organisations.Select(x => new SelectListItem { Text = x.Name, Value = x.OrganisationId.ToString() }).ToList();
             if (Session["Role"].ToString() != "Admin")
@@ -221,18 +200,41 @@ namespace DevOps.UI.Controllers
                 roles.Remove(roles.First());
                 organizationTemp = organizationTemp.Where(x => x.Value == Session["Organization"].ToString()).ToList();
             }
-            ViewBag.Organizations = organizationTemp;
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            string userurl = "api/Users/GetUser?userId=" + id.ToString();
-            Res = await client.GetAsync(userurl);
+            AddressUri = "api/Users/GetUser?userId=" + id.ToString();
+            Res = await client.GetAsync(AddressUri);
             User user = new User();
             if (Res.IsSuccessStatusCode)
             {
-                var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
-                user = JsonConvert.DeserializeObject<User>(MainMEnuResponse);
+                var UsersResponse = Res.Content.ReadAsStringAsync().Result;
+                user = JsonConvert.DeserializeObject<User>(UsersResponse);
             }
             return PartialView(user);
+        }
+
+        public async Task<ActionResult> LogOut()
+        {
+            int id = Convert.ToInt32(Session["user"].ToString());
+            AddressUri = "api/Authorization/DeleteToken?id=" + id.ToString();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Session["UserToken"].ToString());
+            Res = await client.GetAsync(AddressUri);
+            if (Res.IsSuccessStatusCode)
+            {
+                Session.Clear();
+                Session.Abandon();
+                HttpCookie aCookie = default;
+                int i = 0;
+                string cookieName = null;
+                int limit = Request.Cookies.Count - 1;
+                for (i = 0; i <= limit; i++)
+                {
+                    cookieName = Request.Cookies[i].Name;
+                    aCookie = new HttpCookie(cookieName);
+                    aCookie.Expires = DateTime.Now.AddDays(-1);
+                    Response.Cookies.Add(aCookie);
+                }
+                return RedirectToAction("Login", new { returnurl = "LogOut"});
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

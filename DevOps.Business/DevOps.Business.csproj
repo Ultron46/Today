@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Handler\RegisterRepository.cs" />
+    <Compile Include="Interfaces\IAuthorizationManager.cs" />
     <Compile Include="Interfaces\IMainMenuManager.cs" />
     <Compile Include="Interfaces\IOrganizationsManager.cs" />
     <Compile Include="Interfaces\IProjectManager.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Interfaces\IServerManager.cs" />
     <Compile Include="Interfaces\ISubMenuManager.cs" />
     <Compile Include="Interfaces\IUserManager.cs" />
+    <Compile Include="Manager\AuthorizationManager.cs" />
     <Compile Include="Manager\MainMenuManager.cs" />
     <Compile Include="Manager\OrganizationsManager.cs" />
     <Compile Include="Manager\ProjectManager.cs" />

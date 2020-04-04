@@ -34,7 +34,7 @@ namespace DevOps.Controllers
             }
             return Ok(users);
         }
-
+        [TokenAuth("Admin","ReleaseManager")]
         public IHttpActionResult GetAuthUsers(string role, int organization)
         {
             var users = _userManager.GetAllUsers();
@@ -53,6 +53,16 @@ namespace DevOps.Controllers
         {
             var user = _userManager.GetUser(userId);
             if(user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+
+        public IHttpActionResult GetAuthUser(string email, string password)
+        {
+            var user = _userManager.GetAuthUser(email,password);
+            if (user == null)
             {
                 return NotFound();
             }

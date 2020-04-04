@@ -14,7 +14,8 @@ namespace DevOps.DataEntities.Models
     
     public partial class UserToken
     {
-        public int UserID { get; set; }
+        public int TokenId { get; set; }
+        public int UserId { get; set; }
         public string Token { get; set; }
     
         public virtual User User { get; set; }

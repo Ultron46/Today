@@ -22,7 +22,6 @@
         <EntityTypeShape EntityType="DevOpsModel.SupportTicket" Width="1.5" PointX="11.25" PointY="8.25" IsExpanded="true" />
         <EntityTypeShape EntityType="DevOpsModel.User" Width="1.5" PointX="9" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DevOpsModel.ErrorLog" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DevOpsModel.UserToken" Width="1.5" PointX="11.25" PointY="12" IsExpanded="true" />
         <AssociationConnector Association="DevOpsModel.FK_Project_Branch_ProjectId" ManuallyRouted="false" />
         <AssociationConnector Association="DevOpsModel.FK_BuildProject_ServerBuild_BuildId" ManuallyRouted="false" />
         <AssociationConnector Association="DevOpsModel.FK_Project_BuildProject_ProjectId" ManuallyRouted="false" />
@@ -42,9 +41,10 @@
         <AssociationConnector Association="DevOpsModel.FK_Server_ServerCredentials_ServerId" ManuallyRouted="false" />
         <AssociationConnector Association="DevOpsModel.FK_User_SupportTickets_FixedBy" ManuallyRouted="false" />
         <AssociationConnector Association="DevOpsModel.FK_User_SupportTickets_GeneratedBy" ManuallyRouted="false" />
-        <AssociationConnector Association="DevOpsModel.FK_UserToken_User" ManuallyRouted="false" />
         <AssociationConnector Association="DevOpsModel.FK_Permissions_Role" />
         <AssociationConnector Association="DevOpsModel.FK_Permissions_SubMenu" />
+        <EntityTypeShape EntityType="DevOpsModel.UserToken" Width="1.5" PointX="11.25" PointY="12" />
+        <AssociationConnector Association="DevOpsModel.FK_UserToken_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

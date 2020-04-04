@@ -40,6 +40,9 @@
             $.ajax({
                 url: urlg,
                 context: document.body,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Bearer " + '@Session["UserToken"]');
+                },
                 success: function (data) {
                     console.log(data);
                     for (var i = 0, li = data.length; i < li; i++) {

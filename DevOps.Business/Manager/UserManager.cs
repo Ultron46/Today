@@ -44,5 +44,10 @@ namespace DevOps.Business.Manager
         {
             return _userDataRepository.DeleteUser(id);
         }
+
+        public User GetAuthUser(string email, string password)
+        {
+            return _userDataRepository.GetAuthUser(email, password);
+        }
     }
 }

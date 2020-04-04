@@ -73,5 +73,10 @@ namespace DevOps.Data.DataRepository
             }
             return status;
         }
+
+        public User GetAuthUser(string email, string password)
+        {
+            return DbContext.Users.Include(x => x.Organisation).Where(x => x.Email == email && x.Password == password).FirstOrDefault();
+        }
     }
 }
