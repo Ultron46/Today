@@ -40,6 +40,12 @@
     <!-- mCustomScrollbar CSS
         ============================================ -->
     <link rel="stylesheet" href="~/Content/css/scrollbar/jquery.mCustomScrollbar.min.css">
+    <!-- Notika icon CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Content/css/notika-custom-icon.css">
+    <!-- Data Table JS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Content/css/jquery.dataTables.min.css">
     <!-- jvectormap CSS
         ============================================ -->
     <link rel="stylesheet" href="~/Content/css/jvectormap/jquery-jvectormap-2.0.3.css">
@@ -505,9 +511,9 @@
                                 }
                             }
                         }
-                    <li>
-                        @Html.ActionLink("Log Out", "LogOut", "Users")
-                    </li>
+                        <li>
+                            @Html.ActionLink("Log Out", "LogOut", "Users")
+                        </li>
                     </ul>
                     <div class="tab-content custom-menu-content">
                         @foreach (var menu in menuss)
@@ -658,7 +664,7 @@
 
         });
 
-       
+
         function myFunction(e) {
             console.log($('#' + e)[0])
             $('#' + e)[0].preventDefault();

@@ -42,6 +42,28 @@ namespace DevOps.Controllers
             return Ok(project);
         }
 
+        [HttpGet]
+        public IHttpActionResult GetOrganizationProject(int id)
+        {
+            List<Project> project = _projectManager.GetOrganizationProject(id);
+            if (project == null)
+            {
+                return NotFound();
+            }
+            return Ok(project);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetProjectBuilds(int id)
+        {
+            List<BuildProject> builds = _projectManager.ProjectBuilds(id);
+            if(builds == null)
+            {
+                return NotFound();
+            }
+            return Ok(builds);
+        }
+
         [HttpPost]
         public IHttpActionResult InsertProject(Project project)
         {
@@ -67,6 +89,45 @@ namespace DevOps.Controllers
                 return NotFound();
             }
             return Ok(status);
+        }
+
+        [HttpGet]
+        public IHttpActionResult ProjectBuild(string sourceURL)
+        {
+            return Ok();
+        }
+
+        [HttpGet]
+        public IHttpActionResult InsertBuildProject(string sourceURL, int projectId, int userId)
+        {
+            bool status = _projectManager.BuildProject(sourceURL, projectId, userId);
+            if(status == false)
+            {
+                return NotFound();
+            }
+            return Ok(status);
+        }
+
+        [HttpGet]
+        public IHttpActionResult Builds(int id)
+        {
+            List<BuildProject> builds = _projectManager.builds(id);
+            if(builds == null)
+            {
+                return NotFound();
+            }
+            return Ok(builds);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetProjectBuild(int id)
+        {
+            BuildProject project = _projectManager.ProjectBuild(id);
+            if(project == null)
+            {
+                return NotFound();
+            }
+            return Ok(project);
         }
     }
 }

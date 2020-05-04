@@ -15,5 +15,6 @@ namespace DevOps.Data.Interfaces
         bool InsertUser(User user);
         bool UpdateUser(User user);
         bool DeleteUser(int id);
+        List<User> GetAllUsersOfOrganization(int id);
     }
 }

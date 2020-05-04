@@ -1,0 +1,72 @@
+﻿<div class="login-content">
+    <!-- Login -->
+    @using (Html.BeginForm("EditSettings", "Settings", FormMethod.Post))
+    {
+        <h2><center>Edit Settings</center></h2>
+        <div class="nk-block toggled" id="l-register">
+            <div class="nk-form rform">
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
+                    <div class="nk-int-st">
+                        @Html.Label("Project Build API")
+                        @Html.Editor("ProjectBuildAPI", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.ProjectBuildAPI } })
+                    </div>
+                </div>
+                <br />
+
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
+                    <div class="nk-int-st">
+                        @Html.Label("Server Build API")
+                        @Html.Editor("ServerBuildAPI", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.ServerBuildAPI } })
+                    </div>
+                </div>
+                <br />
+
+                <br /><br />
+                <input type="submit" id="submit" value="Submit" class=" btn-success uloginbtn" />
+
+                <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
+            </div>
+        </div>
+    }
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $('#submit').click(function (e) {
+        e.preventDefault();
+        var ProjectBuildAPI = $('#ProjectBuildAPI').val();
+        var ServerBuildAPI = $('#ServerBuildAPI').val();
+
+        var url1 = "http://localhost:57996/Settings/UpdateSettings";
+        $.ajax({
+            url: url1,
+            type: 'POST',//type of posting the data
+            data: '{ProjectBuildAPI: "' + ProjectBuildAPI + '",ServerBuildAPI: "' + ServerBuildAPI + 
+        '"}',
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (r) {
+                alert('Settings Updated Successfully');
+                var urlg = "http://localhost:57996/Settings/Settings";
+                $.ajax({
+                    url: urlg,
+                    type: 'GET',//type of posting the data
+                    contentType: 'application/json',
+                    dataType: 'html',
+                    success: function (r) {
+                        $("#partialbody").empty();
+                        $("#partialbody").html(r);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //what to do in error
+                    }
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                //what to do in error
+                console.log(thrownError);
+            }
+        });
+
+    });</script>

@@ -18,6 +18,8 @@ namespace DevOps.Handler
             containerBuilder.RegisterType(typeof(ProjectManager)).AsImplementedInterfaces();
             containerBuilder.RegisterType(typeof(ServerManager)).AsImplementedInterfaces();
             containerBuilder.RegisterType(typeof(AuthorizationManager)).AsImplementedInterfaces();
+            containerBuilder.RegisterTypes(typeof(SupportTicketManager)).AsImplementedInterfaces();
+            containerBuilder.RegisterTypes(typeof(EmailMasterManager)).AsImplementedInterfaces();
         }
     }
 }

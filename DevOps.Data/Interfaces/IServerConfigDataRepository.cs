@@ -9,10 +9,12 @@ namespace DevOps.Data.Interfaces
 {
     public interface IServerConfigDataRepository
     {
-        List<ServerConfig> GetServerConfigs();
+        List<ServerConfig> GetServerConfigs(int id);
         ServerConfig GetServerConfig(int id);
         bool InsertServerConfig(ServerConfig serverConfig);
         bool UpdateServerConfig(ServerConfig serverConfig);
         bool DeleteServerConfig(int id);
+        bool InsertServerBuild(int BuildId, int ServerId, int UserId);
+        List<ServerBuild> serverBuilds(int id);
     }
 }

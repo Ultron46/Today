@@ -1,0 +1,76 @@
+﻿@model DevOps.UI.Models.EmailMaster
+
+
+
+<div class="login-content">
+    <!-- Login -->
+    @using (Html.BeginForm("AddEmailMaster", "Settings", FormMethod.Post))
+    {
+        <h2><center>Registration</center></h2>
+        <div class="nk-block toggled" id="l-register">
+            <div class="nk-form rform">
+                <input type="hidden" id="ID" value="@ViewBag.serverID" />
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
+                    <div class="nk-int-st">
+                        <input type="text" id="Email" class="form-control" placeholder="Email ID" name="Email">
+                    </div>
+                </div>
+                <br />
+
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
+                    <div class="nk-int-st">
+                        @Html.DropDownList("OrganisationId", new SelectList(ViewBag.Organizations, "OrganisationId", "Name"), "Search", new { @class = "udropdown" })
+                    </div>
+                </div>
+                <br />
+
+                <input type="submit" id="submit" value="Submit" class=" btn-success uloginbtn" />
+
+                <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
+            </div>
+        </div>
+    }
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $('#submit').click(function (e) {
+        e.preventDefault();
+        var EmailID = $('#Email').val();
+        var OrganisationId = $('#OrganisationId').val();
+        var url1 = "http://localhost:60969/api/EmailMaster/InsertEmailMaster";
+        alert(EmailID);
+        $.ajax({
+            url: url1,
+            type: 'POST',//type of posting the data
+            data: {"EmailID": EmailID,OrganisationId: OrganisationId},
+            success: function (r) {
+                alert('Server Credentials Added Successfully');
+                var url2 = "http://localhost:57996/Settings/EmailMaster";
+                $.ajax({
+                    url: url2,
+                    type: 'GET',//type of posting the data
+                    contentType: 'application/json',
+                    dataType: 'html',
+                    success: function (r) {
+                        $("#partialbody").empty();
+                        $("#partialbody").html(r);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //what to do in error
+                    }
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                //what to do in error
+                console.log(thrownError);
+            }
+        });
+
+    });
+</script>
+
+
+
+

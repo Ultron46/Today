@@ -16,7 +16,7 @@ using System.Web.Mvc;
 
 namespace DevOps.UI.Controllers
 {
-    [EnableCorsAttribute("*","*","*")]
+    [EnableCorsAttribute("*", "*", "*")]
     public class UsersController : Controller
     {
         private string baseUrl;
@@ -45,7 +45,7 @@ namespace DevOps.UI.Controllers
                 roles.Add(new SelectListItem
                 {
                     Text = Enum.GetName(typeof(Enums.Roles), i),
-                    Value =((int)i).ToString()
+                    Value = ((int)i).ToString()
                 });
             }
             ViewBag.Roles = roles;
@@ -103,6 +103,8 @@ namespace DevOps.UI.Controllers
                 Session["Role"] = ((Enums.Roles)role).ToString();
                 Session["Organization"] = principal.OrganisationId.ToString();
                 Session["user"] = principal.UserId;
+                Session["name"] = principal.Name;
+                Session["Username"] = principal.Email;
                 AddressUri = "api/Authorization/GetUserToken?id=" + principal.UserId.ToString();
                 UserToken token1 = new UserToken();
                 Res = await client.GetAsync(AddressUri);
@@ -113,7 +115,7 @@ namespace DevOps.UI.Controllers
                 }
                 if (String.IsNullOrEmpty(token1.Token))
                 {
-                    string token = Helpers.GenerateToken(principal.UserId,principal.Password);
+                    string token = Helpers.GenerateToken(principal.UserId, principal.Password);
                     UserToken userToken = new UserToken { UserID = principal.UserId, Token = token };
                     StringContent = new StringContent(JsonConvert.SerializeObject(userToken), Encoding.UTF8, "application/json");
                     addressUri = new Uri("api/Authorization/InsertToken", UriKind.Relative);
@@ -139,7 +141,7 @@ namespace DevOps.UI.Controllers
                 }
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                Res = await client.GetAsync("api/SubMenu/GetSubMenus?id="+role);
+                Res = await client.GetAsync("api/SubMenu/GetSubMenus?id=" + role);
                 if (Res.IsSuccessStatusCode)
                 {
                     var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
@@ -157,7 +159,7 @@ namespace DevOps.UI.Controllers
                     cookie.Expires = DateTime.Now.AddDays(30);
                     Response.Cookies.Add(cookie);
                 }
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -188,17 +190,30 @@ namespace DevOps.UI.Controllers
             ViewBag.Roles = roles;
             List<Organization> organisations = new List<Organization>();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Session["UserToken"].ToString());
-            Res = await client.GetAsync("api/Organizations/GetAllOrganization");
-            if (Res.IsSuccessStatusCode)
+            if (Session["Role"].ToString() == "Admin")
             {
-                var OrganizationResponse = Res.Content.ReadAsStringAsync().Result;
-                organisations = JsonConvert.DeserializeObject<List<Organization>>(OrganizationResponse);
+                Res = await client.GetAsync("api/Organizations/GetAllOrganization");
+                if (Res.IsSuccessStatusCode)
+                {
+                    var OrganizationResponse = Res.Content.ReadAsStringAsync().Result;
+                    organisations = JsonConvert.DeserializeObject<List<Organization>>(OrganizationResponse);
+                }
             }
-            var organizationTemp = organisations.Select(x => new SelectListItem { Text = x.Name, Value = x.OrganisationId.ToString() }).ToList();
+            if (!organisations.Where(x => x.OrganisationId.ToString() == Session["Organization"].ToString()).Any())
+            {
+                Organization organization = new Organization();
+                AddressUri = "api/Organizations/GetOrganization?OrganisationId=" + Session["Organization"].ToString();
+                Res = await client.GetAsync(AddressUri);
+                if (Res.IsSuccessStatusCode)
+                {
+                    var OrganizationResponse = Res.Content.ReadAsStringAsync().Result;
+                    organization = JsonConvert.DeserializeObject<Organization>(OrganizationResponse);
+                }
+                organisations.Add(organization);
+            }
             if (Session["Role"].ToString() != "Admin")
             {
                 roles.Remove(roles.First());
-                organizationTemp = organizationTemp.Where(x => x.Value == Session["Organization"].ToString()).ToList();
             }
             AddressUri = "api/Users/GetUser?userId=" + id.ToString();
             Res = await client.GetAsync(AddressUri);
@@ -208,6 +223,7 @@ namespace DevOps.UI.Controllers
                 var UsersResponse = Res.Content.ReadAsStringAsync().Result;
                 user = JsonConvert.DeserializeObject<User>(UsersResponse);
             }
+            ViewBag.Organizations = organisations;
             return PartialView(user);
         }
 
@@ -232,7 +248,7 @@ namespace DevOps.UI.Controllers
                     aCookie.Expires = DateTime.Now.AddDays(-1);
                     Response.Cookies.Add(aCookie);
                 }
-                return RedirectToAction("Login", new { returnurl = "LogOut"});
+                return RedirectToAction("Login", new { returnurl = "LogOut" });
             }
             return RedirectToAction("Index", "Home");
         }

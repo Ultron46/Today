@@ -17,9 +17,9 @@ namespace DevOps.Data.DataRepository
         {
             db = new DevOpsEntities();
         }
-        public List<ServerCredential> GetServerCredentials()
+        public List<ServerCredential> GetServerCredentials(int ServerId)
         {
-            return db.ServerCredentials.ToList();
+            return db.ServerCredentials.Where(x => x.ServerId == ServerId).ToList();
         }
 
         public ServerCredential GetServerCredential(int id)
@@ -41,10 +41,7 @@ namespace DevOps.Data.DataRepository
         public bool UpdateServerCredential(ServerCredential serverCredential)
         {
             bool status = false;
-            ServerCredential serverCredential1 = db.ServerCredentials.Where(x => x.ServerId == serverCredential.ServerId).FirstOrDefault();
-            serverCredential1.HostName = serverCredential.HostName;
-            serverCredential1.Password = serverCredential.Password;
-            serverCredential1.ConnectionString = serverCredential.ConnectionString;
+            ServerCredential serverCredential1 = db.ServerCredentials.Find(serverCredential.ServerCredentialsId);
             db.Entry(serverCredential1).State = EntityState.Modified;
             if(db.SaveChanges() > 0)
             {
@@ -59,6 +56,42 @@ namespace DevOps.Data.DataRepository
             ServerCredential serverCredential = db.ServerCredentials.Find(id);
             db.ServerCredentials.Remove(serverCredential);
             if(db.SaveChanges() > 0)
+            {
+                status = true;
+            }
+            return status;
+        }
+        public bool InsertEmail(EmailMaster emailMaster)
+        {
+            bool status = false;
+            db.EmailMasters.Add(emailMaster);
+            if (db.SaveChanges() > 0)
+            {
+                status = true;
+            }
+            return status;
+        }
+
+        public bool DeleteAllServerCredentials(int id)
+        {
+            bool status = false;
+            List<ServerCredential> serverCredentials = db.ServerCredentials.Where(x => x.ServerId == id).ToList();
+            if (serverCredentials.Count != 0)
+            {
+                db.ServerCredentials.RemoveRange(serverCredentials);
+                try
+                {
+                    if (db.SaveChanges() > 0)
+                    {
+                        status = true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            else
             {
                 status = true;
             }

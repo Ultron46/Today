@@ -27,6 +27,7 @@ namespace DevOps.UI.Controllers
         }
 
         [HttpGet]
+        [RoleAuth("Admin")]
         public ActionResult Organization()
         {
             return PartialView("OrganizationTable");

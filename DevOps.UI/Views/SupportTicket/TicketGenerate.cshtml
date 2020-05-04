@@ -1,0 +1,174 @@
+﻿@model DevOps.UI.Models.SupportTicket
+
+@{
+    ViewBag.Title = "TicketGenerate";
+}
+
+<div class="login-content">
+    <!-- Login -->
+     <form>
+         <h2><center>Registration</center></h2>
+         <div class="nk-block toggled" id="l-register">
+             <div class="nk-form rform">
+                 @*<div class="input-group">
+                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
+                     <div class="nk-int-st">
+                         <input type="text" id="GeneratedBy" class="form-control" placeholder="GeneratedBy" name="GeneratedBy" value="">
+                     </div>
+                 </div>
+                 <br />*@
+
+                 <div class="input-group">
+                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
+                     <div class="nk-int-st">
+                         <input type="text" id="Category" class="form-control" placeholder="Category" name="Category">
+                     </div>
+                 </div>
+                 <br />
+
+                 <div class="input-group">
+                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
+                     <div class="nk-int-st">
+                         <input type="text" id="Description" class="form-control" placeholder="Description" name="Description">
+                     </div>
+                 </div>
+                 <br />
+
+                 @*<div class="input-group">
+                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-flag"></i></span>
+                     <div class="nk-int-st">
+                         <input type="text" id="GeneratedDate" class="form-control" placeholder="GeneratedDate" name="GeneratedDate">
+                     </div>
+                 </div>
+                 <br />*@
+
+                 <br /><br />
+                 <input type="submit" id="Send" value="Send" class=" btn-success uloginbtn" />
+                 <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
+             </div>
+         </div>
+     </form>
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $('#Send').click(function (e) {
+        e.preventDefault();
+        var Category = $('#Category').val();
+        var Description = $('#Description').val();
+        var url1 = "http://localhost:57996/SupportTicket/TicketGenerate";
+        $.ajax({
+            url: url1,
+            type: 'POST',//type of posting the data
+            data: '{Category: "' + Category + '",Description: "' + Description + 
+                '"}',
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (r) {
+                alert('Your ticket send Successfully');
+                //var url2 = "http://localhost:57996/Organization/Organization";
+                //$.ajax({
+                //    url: url2,
+                //    type: 'GET',//type of posting the data
+                //    contentType: 'application/json',
+                //    dataType: 'html',
+                //    success: function (r) {
+                //        $("#partialbody").empty();
+                //        $("#partialbody").html(r);
+                //    },
+                //    error: function (xhr, ajaxOptions, thrownError) {
+                //        //what to do in error
+                //    }
+                //});
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                //what to do in error
+                console.log(thrownError);
+            }
+        });
+
+    });
+</script>h2>TicketGenerate</h2>
+
+@*@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>SupportTicket</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.TicketId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TicketId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TicketId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.GeneratedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.GeneratedBy, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.GeneratedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FixedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FixedBy, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FixedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.GeneratedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.GeneratedDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.GeneratedDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FixedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FixedDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FixedDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@

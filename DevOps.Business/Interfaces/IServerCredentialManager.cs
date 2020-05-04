@@ -9,10 +9,12 @@ namespace DevOps.Business.Interfaces
 {
     public interface IServerCredentialManager
     {
-        List<ServerCredential> GetServerCredentials();
+        List<ServerCredential> GetServerCredentials(int ServerId);
         ServerCredential GetServerCredential(int id);
         bool InsertServerCredential(ServerCredential serverCredential);
         bool UpdateServerCredential(ServerCredential serverCredential);
         bool DeleteServerCredential(int id);
+        bool DeleteAllServerCredential(int id);
+        bool InsertEmail(EmailMaster emailMaster);
     }
 }

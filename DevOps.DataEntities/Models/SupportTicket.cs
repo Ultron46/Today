@@ -24,6 +24,6 @@ namespace DevOps.DataEntities.Models
         public Nullable<System.DateTime> FixedDate { get; set; }
     
         public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
+       public virtual User User1 { get; set; }
     }
 }

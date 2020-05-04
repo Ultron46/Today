@@ -20,6 +20,8 @@ namespace DevOps.Business.Handler
             containerBuilder.RegisterType(typeof(ServerConfigDataRepository)).AsImplementedInterfaces();
             containerBuilder.RegisterType(typeof(ServerCredentialDataRepository)).AsImplementedInterfaces();
             containerBuilder.RegisterType(typeof(AuthorizationDataRepository)).AsImplementedInterfaces();
+            containerBuilder.RegisterType(typeof(SupportTicketDataRepository)).AsImplementedInterfaces();
+            containerBuilder.RegisterType(typeof(EmailMasterRepository)).AsImplementedInterfaces();
         }
     }
 }

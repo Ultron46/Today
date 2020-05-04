@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DevOps.UI.Models.Server>
+﻿@model IEnumerable<DevOps.UI.Models.ServerConfig>
 
 <!-- Data Table area Start-->
 <div class="data-table-area">
@@ -17,9 +17,7 @@
                                     <th>Processor</th>
                                     <th>OS </th>
                                     <th>Version</th>
-                                    <th>Host Name</th>
-                                    <th>Password</th>
-                                    <th>Connection String</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -42,16 +40,17 @@
                 success: function (data) {
                     console.log(data);
                     for (var i = 0, li = data.length; i < li; i++) {
-                        var newTr = "<tr> <td>" + data[i].serverName + " </td><td>" + data[i].ipAddress + "</td><td>" + data[i].ram + "</td><td>" + data[i].processer + "</td><td>" + data[i].os + "</td><td>" + data[i].version + "</td><td>" + data[i].serverCredentials[0].hostName + "</td><td>" + data[i].serverCredentials[0].password + "</td><td>" + data[i].serverCredentials[0].connectionString + "</td><td> <input type='hidden' value=" + data[i].serverId + ">";
+                        var newTr = "<tr> <td>" + data[i].serverName + " </td><td>" + data[i].ipAddress + "</td><td>" + data[i].ram + "</td><td>" + data[i].processer + "</td><td>" + data[i].os + "</td><td>" + data[i].version + "</td><td> <input type='hidden' value=" + data[i].serverId + ">";
                         if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
-                            newTr += "<a class='editajax' id='" + data[i].serverId + "' href='#'>Edit</a></td > <td><a class='deleteajax' id='" + data[i].serverId + "' href='#'>Delete</a>";
+                            newTr += "<a class='createajax' id='" + data[i].serverId + "' href='#'>Add Server Credentials</a></td ><td><a class='editajax' id='" + data[i].serverId + "' href='#'>Edit</a></td > <td><a class='deleteajax' id='" + data[i].serverId + "' href='#'>Delete</a>";
                         }
                         newTr += "</td></tr >";
                         $("#data-table-basic").append(newTr);
                         if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
-                            document.getElementsByClassName("editajax")[i].addEventListener("click", function (event) {
+
+                            document.getElementsByClassName("createajax")[i].addEventListener("click", function (event) {
                                 event.preventDefault();
-                                var url1 = "http://localhost:57996/Servers/EditServer/" + event.target.id;
+                                var url1 = "http://localhost:57996/Servers/InsertCredentials/" + event.target.id;
                                 $.ajax({
                                     url: url1,
                                     type: 'GET',//type of posting the data
@@ -69,6 +68,28 @@
                                 });
 
                             });
+
+                            document.getElementsByClassName("editajax")[i].addEventListener("click", function (event) {
+                                event.preventDefault();
+                                var url1 = "http://localhost:57996/Servers/EditServer/" + event.target.id;
+                                $.ajax({
+                                    url: url1,
+                                    type: 'GET',//type of posting the data
+                                    contentType: 'application/json',
+                                    dataType: 'html',
+                                    success: function (r) {
+                                        //console.log(r.ViewString);
+                                        $("#partialbody").empty();
+                                        $("#partialbody").html(r);
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        //what to do in error
+                                        alert(thrownError);
+                                    }
+                                });
+
+                            });
+
                             document.getElementsByClassName("deleteajax")[i].addEventListener("click", function (event) {
                                 event.preventDefault();
                                 if (confirm("Are you Sure Want to delete?")) {

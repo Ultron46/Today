@@ -49,5 +49,11 @@ namespace DevOps.Business.Manager
         {
             return _userDataRepository.GetAuthUser(email, password);
         }
+        public List<User> GetAllUsersOfOrganization(int id)
+        {
+            return _userDataRepository.GetAllUsersOfOrganization(id);
+        }
+
+        
     }
 }

@@ -1,0 +1,167 @@
+﻿@model IEnumerable<DevOps.UI.Models.EmailMaster>
+
+<!-- Data Table area Start-->
+<div class="breadcomb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="breadcomb-list">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            @*<a href="/Settings/AddEmailMaster">Add</a>*@
+                            <input type="button" id="submit" value="Add" class=" btn-success" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="data-table-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="data-table-list">
+                    <div class="basic-tb-hd">
+                        <h2>Email Master</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="data-table-basic" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Email ID</th>
+                                    <th>Organization</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="script">
+</div>
+@*<script src="~/Scripts/js/vendor/jquery-1.12.4.min.js"></script>*@
+<script>
+    $(document).ready(function () {
+        var i;
+        if ('@Session["Role"].ToString()' == 'Admin') {
+            i = 0;
+        }
+        else {
+            i = '@Session["Organization"].ToString()';
+        }
+        var urlb = "http://localhost:60969/api/EmailMaster/GetEmails?id=" + i;
+        $.ajax({
+            url: urlb,
+                context: document.body,
+                success: function (data) {
+                    console.log(data);
+                    for (var i = 0, li = data.length; i < li; i++) {
+                        var newTr = "<tr> <td>" + data[i].emailId + " </td><td>" + data[i].organisation.name + "</td><td> <input type='hidden' value=" + data[i].emailMasterId + ">";
+                        if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+                            newTr += "<a class='editajax' id='" + data[i].emailMasterId + "' href='#'>Edit</a>    <a class='deleteajax' id='" + data[i].emailMasterId + "' href='#'>Delete</a>";
+                        }
+                        newTr += "</td></tr >";
+                        $("#data-table-basic").append(newTr);
+                        if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+
+                            document.getElementsByClassName("editajax")[i].addEventListener("click", function (event) {
+                                event.preventDefault();
+                                var url1 = "http://localhost:57996/Settings/EditEmailMaster/" + event.target.id;
+                                $.ajax({
+                                    url: url1,
+                                    type: 'GET',//type of posting the data
+                                    contentType: 'application/json',
+                                    dataType: 'html',
+                                    success: function (r) {
+                                        //console.log(r.ViewString);
+                                        $("#partialbody").empty();
+                                        $("#partialbody").html(r);
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        //what to do in error
+                                        alert(url1);
+                                    }
+                                });
+
+                            });
+
+
+
+                            document.getElementsByClassName("deleteajax")[i].addEventListener("click", function (event) {
+                                event.preventDefault();
+                                if (confirm("Are you Sure Want to delete?")) {
+                                    var id = event.target.id;
+                                    var url1 = "http://localhost:60969/api/EmailMaster/DeleteEmailMaster/" + id;
+                                    $.ajax({
+                                        url: url1,
+                                        type: 'POST',//type of posting the data
+                                        data: '{id: "' + id + '"}',
+                                        dataType: 'json',
+                                        success: function (r) {
+                                            alert('Server Deleted Successfully');
+                                            var url2 = "http://localhost:57996/Settings/EmailMaster"
+                                            $.ajax({
+                                                url: url2,
+                                                type: 'GET',//type of posting the data
+                                                contentType: 'application/json',
+                                                dataType: 'html',
+                                                success: function (r) {
+                                                    $("#partialbody").empty();
+                                                    $("#partialbody").append(r);
+                                                },
+                                                error: function (xhr, ajaxOptions, thrownError) {
+                                                    //what to do in error
+                                                }
+                                            });
+                                        },
+                                        error: function (xhr, ajaxOptions, thrownError) {
+                                            //what to do in error
+                                            alert(thrownError);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    reload_js();
+                }
+            });
+    });
+    function reload_js() {
+            var s = "<script src='/Scripts/js/data-table/jquery.dataTables.min.js'><\/script>";
+            s += "<script src='/Scripts/js/data-table/data-table-act.js'><\/script>";
+            $('#script').append(s);
+            console.log('Javascript is loaded successful!');
+    };
+    $('#submit').click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "http://localhost:57996/Settings/AddEmailMaster",
+            type: 'GET',//type of posting the data
+            contentType: 'application/json',
+            dataType: 'html',
+            success: function (r) {
+                $("#partialbody").empty();
+                $("#partialbody").html(r);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                //what to do in error
+                console.log(thrownError);
+            }
+        });
+
+    });
+</script>
+<!-- Data Table JS
+        ============================================ -->
+@*<script src="~/Scripts/js/data-table/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/js/data-table/data-table-act.js"></script>*@
+
+

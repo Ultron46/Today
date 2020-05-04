@@ -1,0 +1,57 @@
+﻿
+<div class="data-table-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="data-table-list">
+                    <div class="table-responsive">
+                        <h4>Settings</h4>
+                        <table id="data-table-basic" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Value</th>
+                                </tr>
+                                <tr>
+                                    <td>Project Build API</td>
+                                    <td>@ViewBag.ProjectBuildAPI</td>
+                                </tr>
+                                <tr>
+                                    <td>Server Build API</td>
+                                    <td>@ViewBag.ServerBuildAPI</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <p>
+                            <a href="/Settings/EditSettings" class="editajax">Edit Settings</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $(".editajax").click(function (event) {
+                event.preventDefault();
+                var url1 = "http://localhost:57996/Settings/EditSettings/";
+                $.ajax({
+                    url: url1,
+                    type: 'GET',//type of posting the data
+                    contentType: 'application/json',
+                    dataType: 'html',
+                    success: function (r) {
+                        //console.log(r.ViewString);
+                        $("#partialbody").empty();
+                        $("#partialbody").html(r);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //what to do in error
+                        alert(thrownError);
+                    }
+                });
+            });
+</script>

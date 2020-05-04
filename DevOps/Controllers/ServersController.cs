@@ -1,6 +1,5 @@
 ﻿using DevOps.Business.Interfaces;
 using DevOps.DataEntities.Models;
-using DevOps.UI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +22,7 @@ namespace DevOps.Controllers
 
         public IHttpActionResult GetServerConfigs(int Organization)
         {
-            List<ServerConfig> serverConfigs = _serverManager.GetServerConfigs();
-            serverConfigs = serverConfigs.Where(x => x.OrganisationId == Organization).ToList();
+            List<ServerConfig> serverConfigs = _serverManager.GetServerConfigs(Organization);
             if(serverConfigs == null)
             {
                 return NotFound();
@@ -42,9 +40,9 @@ namespace DevOps.Controllers
             return Ok(serverConfig);
         }
 
-        public IHttpActionResult GetServerCredentials()
+        public IHttpActionResult GetServerCredentials(int ServerId)
         {
-            List<ServerCredential> serverCredentials = _serverManager.GetServerCredentials();
+            List<ServerCredential> serverCredentials = _serverManager.GetServerCredentials(ServerId);
             if(serverCredentials == null)
             {
                 return NotFound();
@@ -53,36 +51,15 @@ namespace DevOps.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult InsertServer(Server server)
+        public IHttpActionResult InsertServer(ServerConfig serverConfig)
         {
             bool status = false;
-            ServerConfig serverConfig = new ServerConfig { 
-                ServerId = server.ServerId,
-                ServerName = server.ServerName,
-                IPAddress = server.IPAddress,
-                RAM = server.RAM,
-                Processer = server.Processer,
-                OS = server.OS,
-                Version = server.Version,
-                OrganisationId = server.OrganisationId
-            };
             bool ConfigStatus = _serverManager.InsertServerConfig(serverConfig);
-            if(ConfigStatus == true)
+            if (ConfigStatus == true)
             {
-                ServerCredential serverCredential = new ServerCredential { 
-                    HostName = server.HostName,
-                    Password = server.Password,
-                    ConnectionString = server.ConnectionString
-                };
-                List<ServerConfig> serverConfigs = _serverManager.GetServerConfigs();
-                serverCredential.ServerId = serverConfigs.Last().ServerId;
-                bool CredentialStatus = _serverManager.InsertServerCredential(serverCredential);
-                if(CredentialStatus == true)
-                {
-                    status = true;
-                }
+                status = true;
             }
-            if(status == false)
+            if (status == false)
             {
                 return NotFound();
             }
@@ -90,34 +67,24 @@ namespace DevOps.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult UpdateServer(Server server)
+        public IHttpActionResult InsertServerCredentials(ServerCredential serverCredential)
+        {
+            bool status = _serverManager.InsertServerCredential(serverCredential);
+            if (status == false)
+            {
+                return NotFound();
+            }
+            return Ok(status);
+        }
+
+        [HttpPost]
+        public IHttpActionResult UpdateServer(ServerConfig serverConfig)
         {
             bool status = false;
-            ServerConfig serverConfig = new ServerConfig
-            {
-                ServerId = server.ServerId,
-                ServerName = server.ServerName,
-                IPAddress = server.IPAddress,
-                RAM = server.RAM,
-                Processer = server.Processer,
-                OS = server.OS,
-                Version = server.Version
-            };
             bool ConfigStatus = _serverManager.UpdateServerConfig(serverConfig);
             if (ConfigStatus == true)
             {
-                ServerCredential serverCredential = new ServerCredential
-                {
-                    ServerId = serverConfig.ServerId,
-                    HostName = server.HostName,
-                    Password = server.Password,
-                    ConnectionString = server.ConnectionString
-                };
-                bool CredentialStatus = _serverManager.UpdateServerCredential(serverCredential);
-                if (CredentialStatus == true)
-                {
-                    status = true;
-                }
+                status = true;
             }
             if (status == false)
             {
@@ -130,21 +97,58 @@ namespace DevOps.Controllers
         public IHttpActionResult DeleteServer(int id)
         {
             bool status = false;
-            ServerConfig serverConfig = _serverManager.GetServerConfig(id);
-            bool delete = _serverManager.DeleteServerCredential(serverConfig.ServerCredentials.First().ServerCredentialsId);
-            if(delete == true)
+            bool delete = _serverManager.DeleteAllServerCredential(id);
+            if (delete == true)
             {
                 bool deleteConfirm = _serverManager.DeleteServerConfig(id);
-                if(deleteConfirm == true)
+                if (deleteConfirm == true)
                 {
                     status = true;
                 }
             }
+            if (status == false)
+            {
+                return NotFound();
+            }
+            return Ok(status);
+        }
+        [HttpPost]
+        public IHttpActionResult InsertEmail(DataEntities.Models.EmailMaster emails)
+        {
+            bool status = _serverManager.InsertEmail(emails);
+            if (status == false)
+            {
+                return NotFound();
+            }
+            return Ok(status);
+        }
+
+        [HttpGet]
+        public IHttpActionResult InsertServerBuild(int BuildId, int ServerID, int UserId)
+        {
+            bool status = _serverManager.InsertServerBuild(BuildId, ServerID, UserId);
             if(status == false)
             {
                 return NotFound();
             }
             return Ok(status);
+        }
+
+        [HttpGet]
+        public IHttpActionResult ServerBuild(string downloadURL)
+        {
+            return Ok();
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetServerBuilds(int id)
+        {
+            List<DataEntities.Models.ServerBuild> serverBuilds = _serverManager.serverBuilds(id);
+            if(serverBuilds == null)
+            {
+                return NotFound();
+            }
+            return Ok(serverBuilds);
         }
     }
 }

@@ -1,0 +1,126 @@
+﻿@model IEnumerable<DevOps.UI.Models.SupportTicket>
+
+@{
+    ViewBag.Title = "TicketManagement";
+}
+<div class="data-table-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="data-table-list">
+                    <div class="table-responsive">
+                        <h4>Ticket</h4>
+                        <table id="data-table-basic" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>GeneratedBy</th>
+                                    <th>FixedBy</th>
+                                    <th>Category</th>
+                                    <th>Discription</th>
+                                    <th>Status</th>
+                                    <th>GeneratedDate</th>
+                                    <th>FixedDate</th>
+                                    <th>Action </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+           $(document).ready(function () {
+            var role = '@Session["Role"].ToString()';
+            var org = '@Session["Organization"].ToString()';
+            var urlg = "http://localhost:60969/api/SupportTicket/GetAllTicket?role=" + role + "&organization=" + org;
+                 $.ajax({
+                        url: urlg,
+                        context: document.body,
+                        success: function (data) {
+                            console.log(data);
+                            for (var i = 0, li = data.length; i < li; i++) {
+                                var fixedby = data[i].user ?? 10;
+                                var name;
+                                if (fixedby == 10) {
+                                    name = "not fixed";
+                                }
+                                else {
+                                    name = data[i].user.name;
+                                }
+                                console.log(fixedby);
+                                var newTr = "<tr> <td>" + data[i].user1.name + " </td><td>" + name + "</td><td>" + data[i].category + "</td><td>" + data[i].description + "</td><td>" + data[i].status + "</td><td>" + data[i].generatedDate + "</td><td>" + data[i].fixedDate + "</td><td> <input type='hidden' value=" + data[i].ticketId + ">";
+                        if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+                            newTr += "<a class='replyajax' id = '" + data[i].ticketId + "' href = '#' > Fix Ticket</a >";
+                        }
+                        newTr += "</td></tr >";
+                        $("#data-table-basic").append(newTr);
+                        if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+                            document.getElementsByClassName("replyajax")[i].addEventListener("click", function (event) {
+                                event.preventDefault();
+                                var url1 = "http://localhost:57996/SupportTicket/ShareSolution/" + event.target.id;
+                                $.ajax({
+                                    url: url1,
+                                    type: 'GET',//type of posting the data
+                                    contentType: 'application/json',
+                                    dataType: 'html',
+                                    success: function (r) {
+                                        //console.log(r.ViewString);
+                                        $("#partialbody").empty();
+                                        $("#partialbody").html(r);
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        //what to do in error
+                                        alert(url1);
+                                    }
+                                });
+
+                            });
+                            //document.getElementsByClassName("deleteajax")[i].addEventListener("click", function (event) {
+                            //    event.preventDefault();
+                            //    if (confirm("Are you Sure Want to delete?")) {
+                            //        var id = event.target.id;
+                            //        var url1 = "http://localhost:60969/api/Organizations/DeleteOrganization/" + id;
+                            //        $.ajax({
+                            //            url: url1,
+                            //            type: 'POST',//type of posting the data
+                            //            data: '{id: "' + id + '"}',
+                            //            dataType: 'json',
+                            //            success: function (r) {
+                            //                alert('Organization Deleted Successfully');
+                            //                var url2 = "http://localhost:57996/Organization/Organization"
+                            //                $.ajax({
+                            //                    url: url2,
+                            //                    type: 'GET',//type of posting the data
+                            //                    contentType: 'application/json',
+                            //                    dataType: 'html',
+                            //                    success: function (r) {
+                            //                        $("#partialbody").empty();
+                            //                        $("#partialbody").append(r);
+                            //                    },
+                            //                    error: function (xhr, ajaxOptions, thrownError) {
+                            //                        //what to do in error
+                            //                    }
+                            //                });
+                            //            },
+                            //            error: function (xhr, ajaxOptions, thrownError) {
+                            //                //what to do in error
+                            //                alert(thrownError);
+                            //            }
+                            //        });
+                            //    }
+                            //});
+                        }
+                    }
+
+                }
+            });
+        });
+</script>

@@ -78,5 +78,14 @@ namespace DevOps.Data.DataRepository
         {
             return DbContext.Users.Include(x => x.Organisation).Where(x => x.Email == email && x.Password == password).FirstOrDefault();
         }
+        
+        public List<User> GetAllUsersOfOrganization(int id)
+        {
+            List<User> users = DbContext.Users.Where(x => x.OrganisationId == id).ToList();
+            
+
+            return users;
+        }
+        
     }
 }

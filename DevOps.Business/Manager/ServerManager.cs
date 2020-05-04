@@ -36,9 +36,9 @@ namespace DevOps.Business.Manager
             return serverConfig;
         }
 
-        public List<ServerConfig> GetServerConfigs()
+        public List<ServerConfig> GetServerConfigs(int id)
         {
-            List<ServerConfig> serverConfigs = _serverConfigDataRepository.GetServerConfigs();
+            List<ServerConfig> serverConfigs = _serverConfigDataRepository.GetServerConfigs(id);
             return serverConfigs;
         }
 
@@ -48,9 +48,9 @@ namespace DevOps.Business.Manager
             return serverCredential;
         }
 
-        public List<ServerCredential> GetServerCredentials()
+        public List<ServerCredential> GetServerCredentials(int ServerId)
         {
-            List<ServerCredential> serverCredentials = _serverCredentialDataRepository.GetServerCredentials();
+            List<ServerCredential> serverCredentials = _serverCredentialDataRepository.GetServerCredentials(ServerId);
             return serverCredentials;
         }
 
@@ -75,6 +75,29 @@ namespace DevOps.Business.Manager
         public bool UpdateServerCredential(ServerCredential serverCredential)
         {
             bool status = _serverCredentialDataRepository.UpdateServerCredential(serverCredential);
+            return status;
+        }
+        public bool InsertEmail(EmailMaster emailMaster)
+        {
+            bool status = _serverCredentialDataRepository.InsertEmail(emailMaster);
+            return status;
+        }
+
+        public bool InsertServerBuild(int BuildId, int ServerId, int UserId)
+        {
+            bool status = _serverConfigDataRepository.InsertServerBuild(BuildId, ServerId, UserId);
+            return status;
+        }
+
+        public List<ServerBuild> serverBuilds(int id)
+        {
+            List<ServerBuild> builds = _serverConfigDataRepository.serverBuilds(id);
+            return builds;
+        }
+
+        public bool DeleteAllServerCredential(int id)
+        {
+            bool status = _serverCredentialDataRepository.DeleteAllServerCredentials(id);
             return status;
         }
     }

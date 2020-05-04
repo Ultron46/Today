@@ -18,9 +18,18 @@ namespace DevOps.Data.DataRepository
             db = new DevOpsEntities();
         }
 
-        public List<ServerConfig> GetServerConfigs()
+        public List<ServerConfig> GetServerConfigs(int id)
         {
-            return db.ServerConfigs.Include(x => x.ServerCredentials).ToList();
+            List<ServerConfig> servers = new List<ServerConfig>();
+            if(id == 0)
+            {
+                servers = db.ServerConfigs.ToList();
+            }
+            else
+            {
+                servers = db.ServerConfigs.Where(x => x.OrganisationId == id).ToList();
+            }
+            return servers;
         }
 
         public ServerConfig GetServerConfig(int id)
@@ -63,6 +72,48 @@ namespace DevOps.Data.DataRepository
                 status = true;
             }
             return status;
+        }
+
+        public bool InsertServerBuild(int BuildId, int ServerId, int UserId)
+        {
+            bool status = false;
+            ServerBuild serverBuild = new ServerBuild();
+            try
+            {
+                ServerBuild build = db.ServerBuilds.Where(x => x.BuildId == BuildId).OrderByDescending(x => x.PublishDate).FirstOrDefault();
+                serverBuild.BuildId = BuildId;
+                serverBuild.Build_Version = build == null ? 1001 : build.Build_Version + 1;
+                serverBuild.Mejor_Version = build == null ? 1 : build.Mejor_Version;
+                serverBuild.Minor_Version = build == null ? 1 : build.Minor_Version;
+                serverBuild.PublishedBy = UserId;
+                serverBuild.ServerId = ServerId;
+                serverBuild.PublishDate = DateTime.Now;
+                db.ServerBuilds.Add(serverBuild);
+                if(db.SaveChanges() > 0)
+                {
+                    status = true;
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+            return status;
+        }
+
+        public List<ServerBuild> serverBuilds(int id)
+        {
+            List<ServerBuild> serverBuilds = new List<ServerBuild>();
+            if(id == 0)
+            {
+                serverBuilds = db.ServerBuilds.Include(x => x.BuildProject).Include(x => x.User).Include(x => x.BuildProject.Project).Include(x => x.ServerConfig).ToList();
+            }
+            else
+            {
+                serverBuilds = db.ServerBuilds.Where(x => x.BuildProject.Project.OrganisationId == id).Include(x => x.BuildProject).Include(x => x.User).Include(x => x.BuildProject.Project).Include(x => x.ServerConfig).ToList();
+            }
+            return serverBuilds;
         }
     }
 }

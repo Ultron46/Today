@@ -94,5 +94,15 @@ namespace DevOps.Controllers
             }
             return Ok(status);
         }
+        public IHttpActionResult GetAllUsersOfOrganization(int id)
+        {
+            var users = _userManager.GetAllUsersOfOrganization(id);
+            if (users == null)
+            {
+                return NotFound();
+            }
+            return Ok(users);
+        }
+        
     }
 }

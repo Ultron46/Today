@@ -45,7 +45,7 @@
                     for (var i = 0, li = data.length; i < li; i++) {
                         var newTr = "<tr> <td>" + data[i].projectName + " </td><td>" + data[i].solutionName + "</td><td>" + data[i].organisation.name + "</td><td>" + data[i].sourceURL + "</td><td>" + data[i].fileFormat + "</td><td>" + data[i].status + "</td><td>" + data[i].type + "</td><td>" + data[i].plateform + "</td><td>" + data[i].user.name + "</td><td>" + data[i].user1.name + "</td><td>" + data[i].createdDate + "</td><td>" + data[i].lastModifiedDate + "</td><td> <input type='hidden' value=" + data[i].projectId + ">";
                         if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
-                            newTr += "<a class='editajax' id = '" + data[i].projectId + "' href = '#' > Edit</a ></td> <td><a class='deleteajax' id='" + data[i].projectId + "' href='#'>Delete</a>";
+                            newTr += "<a class='editajax' id = '" + data[i].projectId + "' href = '#' > Edit</a ></td> <td><a class='deleteajax' id='" + data[i].projectId + "' href='#'>Delete</a></td> <td><a class='buildajax' id='" + data[i].sourceURL + "' href='#'>Build</a>";
                         }
                         newTr += "</td></tr>";
                         $("#data-table-basic").append(newTr);
@@ -104,6 +104,28 @@
                                         }
                                     });
                                 }
+                            });
+                            document.getElementsByClassName("buildajax")[i].addEventListener("click", function (event) {
+                                event.preventDefault();
+                                alert('Build Started');
+                                var userId = '@Session["user"].ToString()';
+                                var projectId = $('input[type=hidden]', $(this).closest("tr")).val();
+                                var id = event.target.id;
+                                var url1 = "http://localhost:57996/Projects/Build?sourceURL=" + id + "&projectId=" + projectId + "&userId=" + userId;
+                                $.ajax({
+                                    url: url1,
+                                    type: 'GET',//type of posting the data
+                                    contentType: 'application/json',
+                                    dataType: 'html',
+                                    success: function (r) {
+                                        //console.log(r.ViewString);
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        //what to do in error
+                                        alert(thrownError);
+                                    }
+                                });
+
                             });
                         }
                     }

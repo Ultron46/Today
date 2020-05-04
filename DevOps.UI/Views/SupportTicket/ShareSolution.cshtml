@@ -1,0 +1,86 @@
+﻿@model DevOps.UI.Models.SupportTicket
+
+@{
+    ViewBag.Title = "ShareSolution";
+}
+
+<h2><center>ShareSolution</center></h2>
+<div class="login-content">
+    <!-- Login -->
+    <form>
+
+        <div class="nk-block toggled" id="l-register">
+            <input type="hidden" id="id" name="id" value="@Model.TicketId" />
+            <div class="nk-form rform">
+                @*<div class="input-group">
+                <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
+                <div class="nk-int-st">
+                    <input type="text" id="GeneratedBy" class="form-control" placeholder="GeneratedBy" name="GeneratedBy" value="">
+                </div>
+            </div>
+            <br />*@
+
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
+                    <div class="nk-int-st">
+                        <input type="text" id="Problem" class="form-control" placeholder="Problem" name="Problem" value="@ViewBag.Problem">
+                    </div>
+                </div>
+                <br />
+
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
+                    <div class="nk-int-st">
+                        <input type="text" id="Solution" class="form-control" placeholder="Solution" name="Solution">
+                    </div>
+                </div>
+                <br />
+
+                <input type="submit" id="Send" value="Send" class=" btn-success uloginbtn" />
+                <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
+            </div>
+        </div>
+    </form>
+</div>
+@*<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $('#Send').click(function (e) {
+        e.preventDefault();
+        var id = $('#id').val();
+        var Problem = $('#Problem').val();
+        var Solution = $('#Solution').val();
+        
+
+        var url1 = "http://localhost:60969/api/SupportTicket/UpdateTicket";
+        $.ajax({
+            url: url1,
+            type: 'POST',//type of posting the data
+            data: '{TicketId: "' + id + '",Problem: "' + Problem + '",Solution: "' + Solution + 
+                '"}',
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (r) {
+                alert('Your Response send Successfully');
+                //var url2 = "http://localhost:57996/Organization/Organization"
+                //$.ajax({
+    -+            //    url: url2,
+                //    type: 'GET',//type of posting the data
+                //    contentType: 'application/json',
+                //    dataType: 'html',
+                //    success: function (r) {
+                //        $("#partialbody").empty();
+                //        $("#partialbody").append(r);
+                //    },s
+                //    error: function (xhr, ajaxOptions, thrownError) {
+                //        //what to do in error
+                //    }
+                //});
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                //what to do in error
+                console.log(thrownError);
+            }
+        });
+
+    });
+</script>*@

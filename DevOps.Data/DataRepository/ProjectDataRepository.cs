@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DevOps.Data.DataRepository
 {
@@ -65,6 +64,75 @@ namespace DevOps.Data.DataRepository
                 status = true;
             }
             return status;
+        }
+
+        public bool BuildProject(string sourceURL, int projectId, int userId)
+        {
+            bool status = false;
+            BuildProject buildProject = new BuildProject();
+            try
+            {
+                BuildProject build = db.BuildProjects.Where(x => x.ProjectId == projectId).OrderByDescending(x => x.BuildDate).FirstOrDefault();
+                buildProject.BuildBy = userId;
+                buildProject.BuildDate = DateTime.Now;
+                buildProject.ProjectId = projectId;
+                buildProject.Build_Version = build == null ? 1001 : build.Build_Version + 1;
+                buildProject.Mejor_Version = build == null ? 1 : build.Mejor_Version;
+                buildProject.Minor_Version = build == null ? 1 : build.Minor_Version;
+                buildProject.DownloadURL = sourceURL;
+                buildProject.Status = "queued";
+                db.BuildProjects.Add(buildProject);
+                if (db.SaveChanges() > 0)
+                {
+                    status = true;
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+            
+            return status;
+        }
+
+        public List<BuildProject> builds(int id)
+        {
+            List<BuildProject> builds = new List<BuildProject>();
+            try
+            {
+                if (id == 0)
+                {
+                    builds = db.BuildProjects.Include(x => x.User).Include(x => x.Project).ToList();
+                }
+                else
+                {
+                    builds = db.BuildProjects.Where(x => x.Project.OrganisationId == id).Include(x => x.User).Include(x => x.Project).ToList();
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return builds;
+        }
+
+        public List<Project> GetOrganizationProject(int id)
+        {
+            List<Project> projects = db.Projects.Where(x => x.OrganisationId == id).ToList();
+            return projects;
+        }
+
+        public List<BuildProject> ProjectBuilds(int id)
+        {
+            List<BuildProject> builds = db.BuildProjects.Where(x => x.Project.OrganisationId == id).Include(x => x.User).Include(x => x.Project).ToList();
+            return builds;
+        }
+
+        public BuildProject ProjectBuild(int id)
+        {
+            BuildProject project = db.BuildProjects.Where(x => x.BuildId == id).Include(x => x.Project).SingleOrDefault();
+            return project;
         }
     }
 }

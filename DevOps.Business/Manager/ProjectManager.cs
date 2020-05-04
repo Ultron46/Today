@@ -46,5 +46,35 @@ namespace DevOps.Business.Manager
             bool status = _projectDataRepository.DeleteProject(id);
             return status;
         }
+
+        public bool BuildProject(string sourceURL, int projectId, int userId)
+        {
+            bool status = _projectDataRepository.BuildProject(sourceURL, projectId, userId);
+            return status;
+        }
+
+        public List<BuildProject> builds(int id)
+        {
+            List<BuildProject> builds = _projectDataRepository.builds(id);
+            return builds;
+        }
+
+        public List<Project> GetOrganizationProject(int id)
+        {
+            List<Project> projects = _projectDataRepository.GetOrganizationProject(id);
+            return projects;
+        }
+
+        public List<BuildProject> ProjectBuilds(int id)
+        {
+            List<BuildProject> builds = _projectDataRepository.ProjectBuilds(id);
+            return builds;
+        }
+
+        public BuildProject ProjectBuild(int id)
+        {
+            BuildProject project = _projectDataRepository.ProjectBuild(id);
+            return project;
+        }
     }
 }

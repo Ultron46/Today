@@ -68,7 +68,7 @@
                 <div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-sitemap"></i></span>
                     <div class="nk-int-st">
-                        @Html.DropDownList("OrganisationId", new SelectList(ViewBag.Organizations, "Value", "Text"), "--Select Organization--", new { @class = "udropdown" })
+                        @Html.DropDownList("OrganisationId", new SelectList(ViewBag.Organizations, "OrganisationId", "Name"), "--Select Organization--", new { @class = "udropdown" })
                     </div>
                 </div>
                 <br />
@@ -110,7 +110,7 @@
             type: 'POST',//type of posting the data
             data: '{UserId: "' + id + '",Name: "' + name + '",Address: "' + Address + '",Nationality: "' + Nationality +
                 '",Phone: "' + Phone + '",Email: "' + Email + '",Password: "' + Password + '",DateOfBirth: "' + DateOfBirth + '",RegistrationDate: "' + RegistrationDate + '",OrganisationId: "' + OrganisationId + '",RoleId: "' + RoleId +
-        '"}',
+                '"}',
             contentType: 'application/json',
             dataType: 'json',
             success: function (r) {
