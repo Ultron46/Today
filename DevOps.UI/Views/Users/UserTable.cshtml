@@ -7,9 +7,9 @@
                 <div class="data-table-list">
                     <div class="table-responsive">
                         <h4>Users</h4>
-                        <table id="data-table-basic" class="table table-striped">
+                        <table id="data-table-basic" class="table table-striped table-bordered">
                             <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th>Name</th>
                                     <th>Address</th>
                                     <th>Nationality</th>
@@ -18,10 +18,10 @@
                                     <th>Date of Birth</th>
                                     <th>Organization Name</th>
                                     <th>Date Of Registration </th>
-                                    <th>Action </th>
+                                    <th colspan="2">Action </th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="data-body">
                             </tbody>
 
                         </table>
@@ -45,6 +45,7 @@
                 },
                 success: function (data) {
                     console.log(data);
+                    $("#data-body").empty();
                     for (var i = 0, li = data.length; i < li; i++) {
                         var newTr = "<tr> <td>" + data[i].name + " </td><td>" + data[i].address + "</td><td>" + data[i].nationality + "</td><td>" + data[i].email + "</td> <td>" + data[i].phone + "</td> <td>" + data[i].dateOfBirth + "</td> <td>" + data[i].organisation.name + "</td><td>" + data[i].registrationDate + "</td><td> <input type='hidden' value=" + data[i].userId + ">";
                         if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {

@@ -12,7 +12,7 @@ namespace DevOps.Data.Interfaces
         List<SupportTicket> GetAllTicket();
         bool InsertTicket(SupportTicket supportTicket);
         SupportTicket GetSolution(int TicketId);
-        bool UpdateTicket(SupportTicket supportTicket);
+        bool GetTicket(int id, int tid);
         //bool DeleteTicket(int id);
 
 

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace DevOps.UI.Controllers
 {
-    
+
 
     public class SupportTicketController : Controller
     {
@@ -24,7 +24,7 @@ namespace DevOps.UI.Controllers
         // GET: SupportTickets
         public ActionResult TicketGenerate()
         {
-        
+
             return PartialView("TicketGenerate");
 
         }
@@ -51,7 +51,7 @@ namespace DevOps.UI.Controllers
             }
             return Json(new { error = true });
 
-        
+
 
         }
         [HttpGet]
@@ -64,6 +64,7 @@ namespace DevOps.UI.Controllers
         public async Task<ActionResult> ShareSolution(int id)
         {
             SupportTicket supportTicket = new SupportTicket();
+            User user1 = new User();
             var client = new HttpClient();
             client.BaseAddress = new Uri(baseUrl);
             client.DefaultRequestHeaders.Clear();
@@ -72,10 +73,15 @@ namespace DevOps.UI.Controllers
             HttpResponseMessage Res = await client.GetAsync(address);
             if (Res.IsSuccessStatusCode)
             {
+
                 var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
                 supportTicket = JsonConvert.DeserializeObject<SupportTicket>(MainMEnuResponse);
+
             }
             ViewBag.Problem = supportTicket.Description;
+            ViewBag.To = supportTicket.User1.Email;
+
+
             return PartialView(supportTicket);
         }
 

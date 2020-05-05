@@ -14,22 +14,37 @@ namespace DevOps.Controllers
 
     public class SupportTicketController : ApiController
     {
-         private ISupportTicketManager _supportTicketManager;
+        private ISupportTicketManager _supportTicketManager;
         public SupportTicketController() { }
         public SupportTicketController(ISupportTicketManager supportTicketManager)
         {
             _supportTicketManager = supportTicketManager;
         }
 
-       
-        public IHttpActionResult GetAllTicket(string role, int organization)
+
+        public IHttpActionResult GetAllTicket(string role, int organization, int id)
         {
             var ticket = _supportTicketManager.GetAllTicket();
-           
+
+            //int roles = Convert.ToInt32(role);
             //if (role != "Admin")
             //{
-            //    ticket = ticket.Where(x => x.User.OrganisationId == organization).ToList();
+            //    ticket = ticket.Where(x => x.User1.OrganisationId == organization).ToList();
             //}
+
+
+            if (role == "ReleaseManager")
+            {
+                ticket = ticket.Where(x => x.User1.OrganisationId == organization).ToList();
+            }
+            else if (role == "Admin")
+            {
+                ticket = ticket.ToList();
+            }
+            else
+            {
+                ticket = ticket.Where(x => x.User1.UserId == id).ToList();
+            }
             if (ticket == null)
             {
                 return NotFound();
@@ -55,14 +70,19 @@ namespace DevOps.Controllers
             }
             return Ok(supportTicket);
         }
-        [HttpPost]
-        public bool UpdateTicket(SupportTicket supportTicket)
+        [HttpGet]
+        public IHttpActionResult GetTicket(int id, int tid)
         {
-            return _supportTicketManager.UpdateTicket(supportTicket);
+            bool status = _supportTicketManager.GetTicket(id, tid);
+            if (status)
+            {
+                return Ok(status);
+            }
+            return NotFound();
         }
 
     }
 }
 
-    
+
 

@@ -4,15 +4,16 @@
     }
     <div class="login-content">
         <!-- Login -->
-        @using (Html.BeginForm("Registration", "Users", FormMethod.Post))
-        {
+        @*@using (Html.BeginForm("Registration", "Users", FormMethod.Post))
+        {*@        
+        <form id="userForm">
             <h2><center>Registration</center></h2>
             <div class="nk-block toggled" id="l-register">
-                <div class="nk-form rform">
+                <div class="nk-form rform">                   
                     <div class="input-group">
                         <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
                         <div class="nk-int-st">
-                            <input type="text" id="Name" class="form-control" placeholder="Name" name="Name">
+                            <input type="text" id="Name" class="form-control" placeholder="Name" name="Name">                                                    
                         </div>
                     </div>
                     <br />
@@ -20,7 +21,7 @@
                     <div class="input-group">
                         <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
                         <div class="nk-int-st">
-                            <input type="text" id="Address" class="form-control" placeholder="Address" name="Address">
+                            <input type="text" id="Address" class="form-control" placeholder="Address" name="Address">                            
                         </div>
                     </div>
                     <br />
@@ -29,8 +30,7 @@
                     <div class="input-group">
                         <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-flag"></i></span>
                         <div class="nk-int-st">
-
-                            <input type="text" id="Nationality" class="form-control" placeholder="Nationality" name="Nationality">
+                            <input type="text" id="Nationality" class="form-control" placeholder="Nationality" name="Nationality">                            
                         </div>
                     </div>
                     <br />
@@ -38,8 +38,7 @@
                     <div class="input-group">
                         <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-mobile-alt"></i></span>
                         <div class="nk-int-st">
-
-                            <input type="number" id="Phone" class="form-control" placeholder="Phone" name="Phone">
+                            <input type="number" id="Phone" class="form-control" placeholder="Phone" name="Phone">                            
                         </div>
                     </div>
                     <br />
@@ -48,7 +47,7 @@
                     <div class="input-group mg-t-15">
                         <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-envelope"></i></span>
                         <div class="nk-int-st">
-                            <input type="email" id="Email" class="form-control" placeholder="Email Address" name="Email">
+                            <input type="email" id="Email" class="form-control" placeholder="Email Address" name="Email">                            
                         </div>
                     </div>
                     <br />
@@ -56,7 +55,7 @@
                     <div class="input-group mg-t-15">
                         <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-unlock-alt"></i></span>
                         <div class="nk-int-st">
-                            <input type="password" id="Password" class="form-control" placeholder="Password" name="Password">
+                            <input type="password" id="Password" class="form-control" placeholder="Password" name="Password">                            
                         </div>
                     </div>
                     <br />
@@ -64,7 +63,7 @@
                     <div class="input-group mg-t-15">
                         <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-unlock-alt"></i></span>
                         <div class="nk-int-st">
-                            <input type="password" class="form-control" placeholder="Confirm Password" name="Cpassword">
+                            <input type="password" id="cPassword" class="form-control" placeholder="Confirm Password" name="cPassword">                           
                         </div>
                     </div>
                     <br />
@@ -72,7 +71,7 @@
                     <div class="input-group mg-t-15">
                         <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
                         <div class="nk-int-st">
-                            <input type="date" id="DateOfBirth" class="form-control" placeholder="Date" name="DateOfBirth">
+                            <input type="date" id="DateOfBirth" class="form-control" placeholder="Date" name="DateOfBirth">                            
                         </div>
                     </div>
                     <br />
@@ -98,53 +97,174 @@
 
                     <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
                 </div>
-            </div>
-        }
+            </div>    
+        </form>
     </div>
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
     <script>
-        $('#submit').click(function (e) {
-            e.preventDefault();
-            var name = $('#Name').val();
-            var Address = $('#Address').val();
-            var Nationality = $('#Nationality').val();
-            var Email = $('#Email').val();
-            var Password = $('#Password').val();
-            var dateofbirth = $('#DateOfBirth').val();
-            var orgid = $('#OrganisationId').val();
-            var roleid = $('#RoleId').val();
-            var url1 = "http://localhost:60969/api/Users/InsertUser";
-            $.ajax({
-                url: url1,
-                type: 'POST',//type of posting the data
-                data: '{Name: "' + name + '",Address: "' + Address + '",Nationality: "' + Nationality + '",Email: "' + Email +
-                    '",Password: "' + Password + '",DateOfBirth: "' + dateofbirth + '",OrganisationId: "' + orgid + '",RoleId: "' + roleid +
-                    '"}',
-                contentType: 'application/json',
-                dataType: 'json',
-                success: function (r) {
-                    alert('User Created Successfully');
-                    var url2 = "http://localhost:57996/Users/Users";
-                    $.ajax({
-                        url: url2,
-                        type: 'GET',//type of posting the data
-                        contentType: 'application/json',
-                        dataType: 'html',
-                        success: function (r) {
-                            $("#partialbody").empty();
-                            $("#partialbody").html(r);
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            //what to do in error
-                        }
-                    });
+        var validation = false;
+        function validatePassword() { 
+            $.validator.addMethod(
+                "regex",
+                function(value, element, regexp) {
+                    var re = new RegExp(regexp);
+                    return this.optional(element) || re.test(value);
                 },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    //what to do in error
-                    console.log(thrownError);
-                }
-            });
+                "Please check your input."
+        );
+        var validator = $("#userForm").validate({
+            rules: {
+                Name: "required",
+                Address: "required",
+                Nationality: "required",
+                Phone: "required",
+                Email: {
+                    required: true,        
+                    email: true,
+                },
+                Password: {
+                    required: true,
+                    regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!\$%\^&\*])/,
+                    minlength: 8,
+                },                  
+                cPassword: {
+                    required:true,
+                    minlength:8,
+                    equalTo: "#Password"              
+                },
+                DateOfBirth: "required",
+            },
+            messages: {
+                Name: "Enter Name",
+                Address: "Enter Address",
+                Nationality: "Enter Nationality",
+                Phone: "Enter Phone Number",
+                Email: {
+                    required: "Enter Email Id",
+                    email: "Invalid Email Id"
+                },
+                Password: {
+                    required: " Enter Password",
+                    regex : "password must contail atleas 1 uppercase, 1 lowercase, 1 digit and 1 Special Character",
+                    minLength: "Password Must be of minimun 8 Characters",
+                },
+                cPassword: {
+                    required: " Enter Password",
+                    minLength: "Confirm Password Must be of minimun 8 Characters",
+                    equalTo: " Enter Confirm Password Same as Password",
+                    
+                },
+                DateOfBirth:"Enter Date of Birth"
+            }
+        });
+        if (validator.form()) {            
+            validation = true;  
+        }
+    }
+        
+        //function checkValidation() {
+        //    $(".nk-int-st").find("span").remove();
+        //    var dom;
+        //    if ($("#DateOfBirth").val() == "") {                                               
+        //        validation = false;
+        //        $("#DateOfBirth").after('<span class="errorMessage text-danger">DateOfBirth is required</span>');
+        //        dom = $("#DateOfBirth");
+        //    }
 
+        //    if ($("#Password").val() == "") {
+        //        validation = false;
+        //        $("#Password").after('<span class="text-danger">Password is required</span>');
+        //        dom = $("#Password");
+        //    }
+        //    else if ($("Password").val() != $("cPassword").val) {
+        //            validation = false;
+        //            $("#cPassword").after('<span class="text-danger">Password and Confirm password is not match</span>');
+        //            dom = $("#cPassword");           
+        //    }
+
+        //    if ($("#Email").val() == "") {                                               
+        //        validation = false;
+        //        $("#Email").after('<span class="text-danger">Email is required</span>');
+        //        dom = $("#Email");
+        //    }
+
+        //    if ($("#Phone").val() == "") {                                               
+        //        validation = false;
+        //        $("#Phone").after('<span class="text-danger">Phone Number is required</span>');
+        //        dom = $("#Phone");
+        //    }
+        //    else if ($("#Phone").val().length != 10){                                               
+        //        validation = false;
+        //        $("#Phone").after('<span class="text-danger">Phone Number must be of 10 Degit</span>');
+        //        dom = $("#Phone");
+        //    }
+
+        //    if ($("#Nationality").val() == "") {                                               
+        //        validation = false;
+        //        $("#Nationality").after('<span class="text-danger">Nationality is required</span>');
+        //        dom = $("#Nationality");
+        //    }
+
+        //    if ($("#Address").val() == "") {                                               
+        //        validation = false;
+        //        $("#Address").after('<span class="text-danger">Address is required</span>');
+        //        dom = $("#Address");
+        //    }
+
+        //    if ($("#Name").val() == "") {                                               
+        //        validation = false;
+        //        $("#Name").after('<span class="errorMessage text-danger">Name is required</span>');
+        //        dom = $("#Name");
+        //    }     
+
+        //    dom.focus();
+        //};
+
+        $('#submit').click(function (e) {
+            validatePassword();            
+            if (validation) {
+                e.preventDefault();
+                var name = $('#Name').val();
+                var Address = $('#Address').val();
+                var Nationality = $('#Nationality').val();
+                var Email = $('#Email').val();
+                var Password = $('#Password').val();
+                var dateofbirth = $('#DateOfBirth').val();
+                var orgid = $('#OrganisationId').val();
+                var roleid = $('#RoleId').val();
+                var url1 = "http://localhost:60969/api/Users/InsertUser";
+                $.ajax({
+                    url: url1,
+                    type: 'POST',//type of posting the data
+                    data: '{Name: "' + name + '",Address: "' + Address + '",Nationality: "' + Nationality + '",Email: "' + Email +
+                        '",Password: "' + Password + '",DateOfBirth: "' + dateofbirth + '",OrganisationId: "' + orgid + '",RoleId: "' + roleid +
+                        '"}',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (r) {
+                        alert('User Created Successfully');
+                        var url2 = "http://localhost:57996/Users/Users";
+                        $.ajax({
+                            url: url2,
+                            type: 'GET',//type of posting the data
+                            contentType: 'application/json',
+                            dataType: 'html',
+                            success: function (r) {
+                                $("#partialbody").empty();
+                                $("#partialbody").html(r);
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                //what to do in error
+                            }
+                        });
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //what to do in error
+                        console.log(thrownError);
+                    }
+                });
+            }
         });
     </script>
    

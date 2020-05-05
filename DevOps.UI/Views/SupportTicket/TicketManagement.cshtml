@@ -20,7 +20,8 @@
                                     <th>Status</th>
                                     <th>GeneratedDate</th>
                                     <th>FixedDate</th>
-                                    <th>Action </th>
+                                    <th>FixTicket </th>
+                                    <th>Solution</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -39,24 +40,29 @@
 <script>
            $(document).ready(function () {
             var role = '@Session["Role"].ToString()';
-            var org = '@Session["Organization"].ToString()';
-            var urlg = "http://localhost:60969/api/SupportTicket/GetAllTicket?role=" + role + "&organization=" + org;
+               var org = '@Session["Organization"].ToString()';
+               var id = '@Session["user"]';
+            var urlg = "http://localhost:60969/api/SupportTicket/GetAllTicket?role=" + role + "&organization=" + org +"&id=" +id;
                  $.ajax({
                         url: urlg,
                         context: document.body,
                         success: function (data) {
                             console.log(data);
-                            for (var i = 0, li = data.length; i < li; i++) {
-                                var fixedby = data[i].user ?? 10;
-                                var name;
-                                if (fixedby == 10) {
+
+                              for (var i = 0, li = data.length; i < li; i++) {
+
+                                  var fixedby = data[i].user ?? 10;
+                                   var name;
+                                   if (fixedby == 10) {
                                     name = "not fixed";
-                                }
-                                else {
+                                    }
+                                   else {
                                     name = data[i].user.name;
-                                }
+                                    }
                                 console.log(fixedby);
                                 var newTr = "<tr> <td>" + data[i].user1.name + " </td><td>" + name + "</td><td>" + data[i].category + "</td><td>" + data[i].description + "</td><td>" + data[i].status + "</td><td>" + data[i].generatedDate + "</td><td>" + data[i].fixedDate + "</td><td> <input type='hidden' value=" + data[i].ticketId + ">";
+
+                                //var newTr = "<tr> <td>" + data[i].user1.name + " </td><td>" + data[i].user.hasOwnProperty("name") ? data[i].user.name : "not fixed" + "</td><td>" + data[i].category + "</td><td>" + data[i].description + "</td><td>" + data[i].status + "</td><td>" + data[i].generatedDate + "</td><td>" + data[i].fixedDate + "</td><td> <input type='hidden' value=" + data[i].ticketId + ">";
                         if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
                             newTr += "<a class='replyajax' id = '" + data[i].ticketId + "' href = '#' > Fix Ticket</a >";
                         }

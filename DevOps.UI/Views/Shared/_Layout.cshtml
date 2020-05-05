@@ -76,12 +76,13 @@
     <div class="header-top-area">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                     <div class="logo-area">
-                        <a href="#"><img src="~/img/logo/logo.png" alt="" /></a>
+                        <a href="#"><img src="~/img/logo/devops.png" alt="" style="height:50px;width:auto" /></a>
+                        <h2 style="color:white;display:inline;margin-left:20px" >@Session["Role"] Panel</h2>
                     </div>
                 </div>
-                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
                     <div class="header-top-menu">
                         <ul class="nav navbar-nav notika-top-nav">
                             <li class="nav-item dropdown">
@@ -348,6 +349,46 @@
                                     </div>
                                     <div class="hd-mg-va">
                                         <a href="#">View All</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><span><i class="fa fa-user"></i></span></a>
+                                <div role="menu" class="dropdown-menu message-dd chat-dd animated zoomIn">
+                                    <div class="hd-mg-tt">
+                                        <h2>Hello @Session["Role"] <b>@Session["username"]</b></h2>
+                                    </div>
+                                    <div class="hd-message-info">
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img chat-img">
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>Profile</h3>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img chat-img">
+                                                    <i class="fa fa-edit"></i>
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>Change password</h3>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="/User/LogOut">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img chat-img">
+                                                    <i class="fa fa-sign-out"></i>
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>Sign Out</h3>
+                                                </div>
+                                            </div>
+                                        </a>
                                     </div>
                                 </div>
                             </li>

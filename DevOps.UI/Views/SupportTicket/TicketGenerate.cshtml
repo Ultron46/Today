@@ -6,48 +6,48 @@
 
 <div class="login-content">
     <!-- Login -->
-     <form>
-         <h2><center>Registration</center></h2>
-         <div class="nk-block toggled" id="l-register">
-             <div class="nk-form rform">
-                 @*<div class="input-group">
-                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
-                     <div class="nk-int-st">
-                         <input type="text" id="GeneratedBy" class="form-control" placeholder="GeneratedBy" name="GeneratedBy" value="">
-                     </div>
-                 </div>
-                 <br />*@
+    <form>
+        <h2><center>Registration</center></h2>
+        <div class="nk-block toggled" id="l-register">
+            <div class="nk-form rform">
+                @*<div class="input-group">
+                        <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
+                        <div class="nk-int-st">
+                            <input type="text" id="GeneratedBy" class="form-control" placeholder="GeneratedBy" name="GeneratedBy" value="">
+                        </div>
+                    </div>
+                    <br />*@
 
-                 <div class="input-group">
-                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
-                     <div class="nk-int-st">
-                         <input type="text" id="Category" class="form-control" placeholder="Category" name="Category">
-                     </div>
-                 </div>
-                 <br />
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
+                    <div class="nk-int-st">
+                        <input type="text" id="Category" class="form-control" placeholder="Category" name="Category">
+                    </div>
+                </div>
+                <br />
 
-                 <div class="input-group">
-                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
-                     <div class="nk-int-st">
-                         <input type="text" id="Description" class="form-control" placeholder="Description" name="Description">
-                     </div>
-                 </div>
-                 <br />
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
+                    <div class="nk-int-st">
+                        <input type="text" id="Description" class="form-control" placeholder="Description" name="Description">
+                    </div>
+                </div>
+                <br />
 
-                 @*<div class="input-group">
-                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-flag"></i></span>
-                     <div class="nk-int-st">
-                         <input type="text" id="GeneratedDate" class="form-control" placeholder="GeneratedDate" name="GeneratedDate">
-                     </div>
-                 </div>
-                 <br />*@
+                @*<div class="input-group">
+                        <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-flag"></i></span>
+                        <div class="nk-int-st">
+                            <input type="text" id="GeneratedDate" class="form-control" placeholder="GeneratedDate" name="GeneratedDate">
+                        </div>
+                    </div>
+                    <br />*@
 
-                 <br /><br />
-                 <input type="submit" id="Send" value="Send" class=" btn-success uloginbtn" />
-                 <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
-             </div>
-         </div>
-     </form>
+                <br /><br />
+                <input type="submit" id="Send" value="Send" class=" btn-success uloginbtn" />
+                <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
+            </div>
+        </div>
+    </form>
 </div>
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script>
@@ -59,7 +59,7 @@
         $.ajax({
             url: url1,
             type: 'POST',//type of posting the data
-            data: '{Category: "' + Category + '",Description: "' + Description + 
+            data: '{Category: "' + Category + '",Description: "' + Description +
                 '"}',
             contentType: 'application/json',
             dataType: 'json',

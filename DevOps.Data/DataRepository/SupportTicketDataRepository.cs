@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DevOps.Data.DataRepository
 {
-    public class SupportTicketDataRepository:ISupportTicketDataRepository
+    public class SupportTicketDataRepository : ISupportTicketDataRepository
     {
         DevOpsEntities DbContext;
         public SupportTicketDataRepository()
@@ -24,7 +24,7 @@ namespace DevOps.Data.DataRepository
 
         public List<SupportTicket> GetAllTicket()
         {
-            List<SupportTicket> supportTickets = DbContext.SupportTickets.Include(x=>x.User).Include(x=>x.User1).ToList();
+            List<SupportTicket> supportTickets = DbContext.SupportTickets.Include(x => x.User).Include(x => x.User1).ToList();
             return supportTickets;
             //return DbContext.SupportTickets.AsNoTracking().ToList();
         }
@@ -41,16 +41,29 @@ namespace DevOps.Data.DataRepository
         }
         public SupportTicket GetSolution(int TicketId)
         {
-            return DbContext.SupportTickets.Where(p => p.TicketId == TicketId).FirstOrDefault();
+            SupportTicket ticket = new SupportTicket();
+            try
+            {
+                ticket = DbContext.SupportTickets.Where(x => x.TicketId == TicketId).Include(x => x.User1).FirstOrDefault();
+                return ticket;
+            }
+            catch (Exception e)
+            {
+                return ticket;
+            }
+            //return DbContext.SupportTickets.Where(p => p.TicketId == TicketId).FirstOrDefault();
         }
-        public bool UpdateTicket(SupportTicket supportTicket)
+        public bool GetTicket(int id, int tid)
         {
-            bool result = false;
-            supportTicket.Status = "Fixed";
+            SupportTicket supportTicket = DbContext.SupportTickets.Where(p => p.TicketId == tid).FirstOrDefault();
+            supportTicket.Status = "fixed";
+            supportTicket.FixedDate = DateTime.Now;
+            supportTicket.FixedBy = id;
+            //supportTicket.FixedBy = Session["user"];
             DbContext.Entry(supportTicket).State = EntityState.Modified;
             if (DbContext.SaveChanges() > 0)
-                result = true;
-            return result;
+                return true;
+            return false;
         }
 
     }

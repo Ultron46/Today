@@ -13,17 +13,24 @@
             <input type="hidden" id="id" name="id" value="@Model.TicketId" />
             <div class="nk-form rform">
                 @*<div class="input-group">
-                <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
-                <div class="nk-int-st">
-                    <input type="text" id="GeneratedBy" class="form-control" placeholder="GeneratedBy" name="GeneratedBy" value="">
-                </div>
-            </div>
-            <br />*@
+                        <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
+                        <div class="nk-int-st">
+                            <input type="text" id="GeneratedBy" class="form-control" placeholder="GeneratedBy" name="GeneratedBy" value="">
+                        </div>
+                    </div>
+                    <br />*@
 
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" id="Problem" class="form-control" placeholder="Problem" name="Problem" value="@ViewBag.Problem">
+                        <input type="text" id="Problem" class="form-control" placeholder="Problem" name="Problem" value="Your Problem is:-@ViewBag.Problem">
+                    </div>
+                </div>
+                <br />
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
+                    <div class="nk-int-st">
+                        <input type="text" id="to" class="form-control" placeholder="to" name="to" value="@ViewBag.To">
                     </div>
                 </div>
                 <br />
@@ -31,7 +38,7 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" id="Solution" class="form-control" placeholder="Solution" name="Solution">
+                        <input type="text" id="Solution" class="form-control" placeholder="Solution" name="Solution" value="">
                     </div>
                 </div>
                 <br />
@@ -42,39 +49,56 @@
         </div>
     </form>
 </div>
-@*<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script>
     $('#Send').click(function (e) {
         e.preventDefault();
-        var id = $('#id').val();
-        var Problem = $('#Problem').val();
-        var Solution = $('#Solution').val();
-        
-
-        var url1 = "http://localhost:60969/api/SupportTicket/UpdateTicket";
+        var id = '@Session["user"]';
+        var tid = $('#id').val();
+        var url1 = "http://localhost:60969/api/SupportTicket/GetTicket?id=" + id + "&tid=" + tid;
         $.ajax({
             url: url1,
-            type: 'POST',//type of posting the data
-            data: '{TicketId: "' + id + '",Problem: "' + Problem + '",Solution: "' + Solution + 
-                '"}',
-            contentType: 'application/json',
+            type: 'GET',//type of posting the data
+            //data: '{id: "' + id + '",tid: "' + tid + '"}',
             dataType: 'json',
             success: function (r) {
-                alert('Your Response send Successfully');
-                //var url2 = "http://localhost:57996/Organization/Organization"
-                //$.ajax({
-    -+            //    url: url2,
-                //    type: 'GET',//type of posting the data
-                //    contentType: 'application/json',
-                //    dataType: 'html',
-                //    success: function (r) {
-                //        $("#partialbody").empty();
-                //        $("#partialbody").append(r);
-                //    },s
-                //    error: function (xhr, ajaxOptions, thrownError) {
-                //        //what to do in error
-                //    }
-                //});
+                //alert('Your Response send Successfully');
+                var url2 = "http://localhost:57996/SupportTicket/TicketManagement";
+                $.ajax({
+                    url: url2,
+                    type: 'GET',//type of posting the data
+                    dataType: 'html',
+                    success: function (r) {
+                        $("#partialbody").empty();
+                        $("#partialbody").append(r);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //what to do in error
+                    }
+                });
+                var Subject = $('#Problem').val();
+                var To = $('#to').val();
+                var body = "Your SOlution is" +$('#Solution').val();
+                var url3 = "http://localhost:57996/Servers/ShareServerCredentials";
+                 $.ajax({
+                url: url3,
+                type: 'POST',//type of posting the data
+                data:'{Subject: "' + Subject + '",body: "' + body +  '",To: "' + To +  '"}',
+                 contentType: 'application/json',
+                dataType: 'json',
+                success: function (r) {
+                    alert('Email Send Successfully');
+
+                //data: '{organisationId: "' + organisationId + '",hostName: "' + hostName + '",password: "' + password + '",connectionString: "' + connectionString + '"}',
+                 var url2 = "http://localhost:57996/Servers/Servers";
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //what to do in error
+                    console.log(thrownError);
+                }
+            });
+
+
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 //what to do in error
@@ -83,4 +107,4 @@
         });
 
     });
-</script>*@
+</script>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DevOps.Business.Manager
 {
-   public class SupportTicketManager:ISupportTicketManager
+    public class SupportTicketManager : ISupportTicketManager
     {
 
         private ISupportTicketDataRepository _supportTicketDataRepository;
@@ -23,7 +23,7 @@ namespace DevOps.Business.Manager
 
 
 
-        
+
         public List<SupportTicket> GetAllTicket()
         {
             return _supportTicketDataRepository.GetAllTicket();
@@ -38,9 +38,9 @@ namespace DevOps.Business.Manager
         {
             return _supportTicketDataRepository.GetSolution(TicketId);
         }
-        public bool UpdateTicket(SupportTicket supportTicket)
+        public bool GetTicket(int id, int tid)
         {
-            return _supportTicketDataRepository.UpdateTicket(supportTicket);
+            return _supportTicketDataRepository.GetTicket(id, tid);
         }
 
 
