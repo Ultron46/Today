@@ -59,7 +59,7 @@
                                     <h2>Server</h2>
                                 </div>
                                 <div class="bootstrap-select fm-cmp-mg">
-                                    @Html.DropDownList("Server", new SelectList(ViewBag.Projects, "ServerId", "ServerName"), "--Select--", new { @class = "udropdown" })
+                                    @Html.DropDownList("Server", new SelectList(ViewBag.Servers, "ServerId", "ServerName"), "--Select--", new { @class = "udropdown" })
                                 </div>
                             }
                             <input type="submit" id="submit" value="Start Server Build" class=" btn-success" />
