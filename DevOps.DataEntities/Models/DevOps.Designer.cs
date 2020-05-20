@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Today\Today\DevOps.DataEntities\Models\DevOps.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Hardik\source\repos\DevOps_Build\DevOps.DataEntities\Models\DevOps.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

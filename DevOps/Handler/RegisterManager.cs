@@ -20,6 +20,10 @@ namespace DevOps.Handler
             containerBuilder.RegisterType(typeof(AuthorizationManager)).AsImplementedInterfaces();
             containerBuilder.RegisterTypes(typeof(SupportTicketManager)).AsImplementedInterfaces();
             containerBuilder.RegisterTypes(typeof(EmailMasterManager)).AsImplementedInterfaces();
+            containerBuilder.RegisterTypes(typeof(BranchManager)).AsImplementedInterfaces();
+            containerBuilder.RegisterTypes(typeof(PackageReleaseManager)).AsImplementedInterfaces();
+            containerBuilder.RegisterTypes(typeof(ElmahManager)).AsImplementedInterfaces();
+            containerBuilder.RegisterTypes(typeof(BuildStatusManager)).AsImplementedInterfaces();
         }
     }
 }

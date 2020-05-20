@@ -77,5 +77,17 @@ namespace DevOps.Controllers
             }
             return Ok(status);
         }
+
+        public IHttpActionResult GetTotalOrganizations()
+        {
+            int total = _organizationsManager.TotalOrganizations();
+            return Ok(total);
+        }
+
+        public IHttpActionResult GetRecentOrganizations()
+        {
+            List<Organisation> organisations = _organizationsManager.GetRecentOrganizations();
+            return Ok(organisations);
+        }
     }
 }

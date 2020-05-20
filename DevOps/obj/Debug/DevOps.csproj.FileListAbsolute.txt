@@ -2356,6 +2356,8 @@ C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\DevOps.UI.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Elmah.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\EntityFramework.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\EntityFramework.SqlServer.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Hangfire.Core.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Hangfire.SqlServer.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Microsoft.AspNet.Identity.Core.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Microsoft.AspNet.Identity.Owin.dll
@@ -2411,6 +2413,8 @@ C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Autofac.Integration.WebApi.
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Autofac.Integration.WebApi.xml
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\EntityFramework.xml
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\EntityFramework.SqlServer.xml
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Hangfire.Core.xml
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Hangfire.SqlServer.xml
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Microsoft.AspNet.Identity.Core.xml
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Microsoft.AspNet.Identity.EntityFramework.xml
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Microsoft.AspNet.Identity.Owin.xml
@@ -2443,6 +2447,14 @@ C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Microsoft.Owin.Security.Twi
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Microsoft.Owin.Security.OAuth.xml
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\es\Hangfire.Core.resources.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\fa\Hangfire.Core.resources.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\nl\Hangfire.Core.resources.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\pt\Hangfire.Core.resources.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\pt-BR\Hangfire.Core.resources.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\pt-PT\Hangfire.Core.resources.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\zh\Hangfire.Core.resources.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\zh-TW\Hangfire.Core.resources.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\obj\Debug\DevOps.csprojAssemblyReference.cache
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\obj\Debug\DevOps.csproj.CoreCompileInputs.cache
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\obj\Debug\DevOps.csproj.CopyComplete

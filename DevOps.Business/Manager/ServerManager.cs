@@ -100,5 +100,48 @@ namespace DevOps.Business.Manager
             bool status = _serverCredentialDataRepository.DeleteAllServerCredentials(id);
             return status;
         }
+
+        public bool UpdateServerBuildStatus(int id)
+        {
+            bool status = _serverConfigDataRepository.UpdateServerBuildStatus(id);
+            return status;
+        }
+
+        public ServerBuild QueuedBuild()
+        {
+            ServerBuild build = _serverConfigDataRepository.QueuedBuild();
+            return build;
+        }
+
+        public bool UpdateServerBuild(ServerBuild build)
+        {
+            bool status = _serverConfigDataRepository.UpdateServerBuild(build);
+            return status;
+        }
+
+        public ServerBuild GetServerBuild(int id)
+        {
+            ServerBuild build = _serverConfigDataRepository.GetServerBuild(id);
+            return build;
+        }
+
+        public int TotalBuilds(int id)
+        {
+            int total = _serverConfigDataRepository.TotalBuilds(id);
+            return total;
+        }
+
+        public int TotalServers(int id)
+        {
+            int total = _serverConfigDataRepository.TotalServers(id);
+            return total;
+        }
+
+        public List<ServerBuild> GetServerBuilds(int pid, int bid, int sid)
+        {
+            List<ServerBuild> serverBuilds = _serverConfigDataRepository.GetServerBuilds(pid, bid, sid);
+            return serverBuilds;
+
+        }
     }
 }

@@ -14,13 +14,12 @@ using System.Threading.Tasks;
 
 namespace DevOps.UI.Controllers
 {
-
-
     public class SupportTicketController : Controller
     {
         string baseUrl = Constants.baseurl;
 
         [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager", "User")]
         // GET: SupportTickets
         public ActionResult TicketGenerate()
         {
@@ -28,6 +27,7 @@ namespace DevOps.UI.Controllers
             return PartialView("TicketGenerate");
 
         }
+        [RoleAuth("Admin", "ReleaseManager", "User")]
         [HttpPost]
         public ActionResult TicketGenerate(SupportTicket supportTicket)
         {
@@ -55,12 +55,14 @@ namespace DevOps.UI.Controllers
 
         }
         [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager")]
         public ActionResult TicketManagement()
         {
             //var id=Convert.ToInt32(Session["user"].ToString());
             return PartialView("TicketManagement");
         }
         [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager")]
         public async Task<ActionResult> ShareSolution(int id)
         {
             SupportTicket supportTicket = new SupportTicket();
@@ -84,7 +86,5 @@ namespace DevOps.UI.Controllers
 
             return PartialView(supportTicket);
         }
-
-
     }
 }

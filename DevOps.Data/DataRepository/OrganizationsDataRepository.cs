@@ -69,5 +69,19 @@ namespace DevOps.Data.DataRepository
             }
             return status;
         }
+
+        public int TotalOrganizations()
+        {
+            int total = 0;
+            total = DbContext.Organisations.Count();
+            return total;
+        }
+
+        public List<Organisation> GetRecentOrganizations()
+        {
+            List<Organisation> organisations = new List<Organisation>();
+            organisations = DbContext.Organisations.OrderBy(x => x.Name).Take(5).ToList();
+            return organisations;
+        }
     }
 }

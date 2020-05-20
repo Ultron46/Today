@@ -16,5 +16,10 @@ namespace DevOps.Data.Interfaces
         bool UpdateUser(User user);
         bool DeleteUser(int id);
         List<User> GetAllUsersOfOrganization(int id);
+        int TotalUsers(int id);
+        List<User> GetRecentUsers(int id);
+        User ForgotPassword(string Email);
+        bool CheckEmail(string Email);
+        bool UpdatePassword(string Email, string Password);
     }
 }

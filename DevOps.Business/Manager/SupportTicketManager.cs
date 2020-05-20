@@ -28,7 +28,10 @@ namespace DevOps.Business.Manager
         {
             return _supportTicketDataRepository.GetAllTicket();
         }
-
+        public List<SupportTicket> GetAllTicketUnfixed()
+        {
+            return _supportTicketDataRepository.GetAllTicketUnfixed();
+        }
         public bool InsertTicket(SupportTicket supportTicket)
         {
             return _supportTicketDataRepository.InsertTicket(supportTicket);
@@ -43,6 +46,22 @@ namespace DevOps.Business.Manager
             return _supportTicketDataRepository.GetTicket(id, tid);
         }
 
+        public int TotalSupportTickets(int id)
+        {
+            int total = _supportTicketDataRepository.TotalSupportTickets(id);
+            return total;
+        }
 
+        public int TotalUserSupportTickets(int id)
+        {
+            int total = _supportTicketDataRepository.TotalUserSupportTickets(id);
+            return total;
+        }
+
+        public List<SupportTicket> UserSupportTickets(int id)
+        {
+            List<SupportTicket> tickets = _supportTicketDataRepository.UserSupportTickets(id);
+            return tickets;
+        }
     }
 }

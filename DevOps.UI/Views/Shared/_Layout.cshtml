@@ -60,7 +60,18 @@
     <link rel="stylesheet" href="~/Content/css/main.css">
     <!-- style CSS
         ============================================ -->
-    <link rel="stylesheet" href="~/Content/css/style.css">
+    @if (Session["Role"].ToString() == "Admin")
+    {
+        <link href="~/Content/css/stylecyan.css" rel="stylesheet" />
+    }
+    else if (Session["Role"].ToString() == "ReleaseManager")
+    {
+        <link href="~/Content/css/styleblue.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/Content/css/stylegreen.css" rel="stylesheet" />
+    }
     <!-- responsive CSS
         ============================================ -->
     <link rel="stylesheet" href="~/Content/css/responsive.css">
@@ -385,7 +396,7 @@
                                                     <i class="fa fa-sign-out"></i>
                                                 </div>
                                                 <div class="hd-mg-ctn">
-                                                    <h3>Sign Out</h3>
+                                                    @Html.ActionLink("Sign Out", "LogOut", "Users")
                                                 </div>
                                             </div>
                                         </a>
@@ -552,9 +563,6 @@
                                 }
                             }
                         }
-                        <li>
-                            @Html.ActionLink("Log Out", "LogOut", "Users")
-                        </li>
                     </ul>
                     <div class="tab-content custom-menu-content">
                         @foreach (var menu in menuss)

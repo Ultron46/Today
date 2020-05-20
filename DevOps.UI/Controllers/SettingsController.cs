@@ -14,6 +14,7 @@ using System.Web.Mvc;
 
 namespace DevOps.UI.Controllers
 {
+    [RoleAuth("Admin")]
     public class SettingsController : Controller
     {
         string baseUrl = Constants.baseurl;

@@ -19,18 +19,12 @@
                         </div>
                     </div>
                     <br />*@
-
+                <input type="hidden" id="userName" value="@Session["name"]" />
+                <input type="hidden" id="time" value="@Model.GeneratedDate" />
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" id="Problem" class="form-control" placeholder="Problem" name="Problem" value="Your Problem is:-@ViewBag.Problem">
-                    </div>
-                </div>
-                <br />
-                <div class="input-group">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
-                    <div class="nk-int-st">
-                        <input type="text" id="to" class="form-control" placeholder="to" name="to" value="@ViewBag.To">
+                        <input type="text" id="Problem" class="form-control" placeholder="Problem" name="Problem" value="Problem of : @ViewBag.Problem">
                     </div>
                 </div>
                 <br />
@@ -39,6 +33,14 @@
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
                     <div class="nk-int-st">
                         <input type="text" id="Solution" class="form-control" placeholder="Solution" name="Solution" value="">
+                    </div>
+                </div>
+                <br />
+
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
+                    <div class="nk-int-st">
+                        <input type="text" id="to" class="form-control" placeholder="to" name="to" value="@ViewBag.To">
                     </div>
                 </div>
                 <br />
@@ -76,9 +78,17 @@
                         //what to do in error
                     }
                 });
-                var Subject = $('#Problem').val();
+                var Subject = "[DevOps] Your Problem Solved..";
                 var To = $('#to').val();
-                var body = "Your SOlution is" +$('#Solution').val();
+                var body = '<html><body>' +
+
+                    '<center><img src=\'https://alln-extcloud-storage.cisco.com/ciscoblogs/5d37d7284e6e8.png \' height=\'200px \' width=\'auto \' /></center>'+
+                    '<h3>Hello <b> ' + $('#userName').val() + '!!!!</b>,</h3>' +
+                    '<p>You Generated the ticket for <b>' + $('#Problem').val() + '</p>' +
+                    '<p>At: ' + $('#time').val() + '</p>'+
+                    '<p>Now your problem is fixed. <p>' +
+                    '<p>The solution of your problem is given below<br/>' + $('#Solution').val() + '</p>' +
+                    '</body></html>';
                 var url3 = "http://localhost:57996/Servers/ShareServerCredentials";
                  $.ajax({
                 url: url3,

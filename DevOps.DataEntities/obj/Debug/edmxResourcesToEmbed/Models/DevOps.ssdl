@@ -21,6 +21,7 @@
     <Property Name="DownloadURL" Type="nvarchar(max)" />
     <Property Name="Status" Type="varchar" MaxLength="10" />
     <Property Name="BuildDate" Type="datetime" Nullable="false" />
+    <Property Name="BranchId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ELMAH_Error">
     <Key>
@@ -36,7 +37,7 @@
     <Property Name="StatusCode" Type="int" Nullable="false" />
     <Property Name="TimeUtc" Type="datetime" Nullable="false" />
     <Property Name="Sequence" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="AllXml" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AllXml" Type="ntext" Nullable="false" />
   </EntityType>
   <EntityType Name="EmailMaster">
     <Key>
@@ -89,6 +90,14 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
     <Property Name="Nationality" Type="varchar" MaxLength="50" />
     <Property Name="Type" Type="varchar" MaxLength="20" />
   </EntityType>
+  <EntityType Name="PackageRelease">
+    <Key>
+      <PropertyRef Name="PackageId" />
+    </Key>
+    <Property Name="PackageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PackageName" Type="nchar" MaxLength="50" Nullable="false" />
+    <Property Name="PackageVersion" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
   <EntityType Name="Permissions">
     <Key>
       <PropertyRef Name="PermissionId" />
@@ -122,12 +131,12 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
       <PropertyRef Name="ReleaseProjectId" />
     </Key>
     <Property Name="ReleaseProjectId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ServerBuildId" Type="int" />
+    <Property Name="BuildId" Type="int" />
     <Property Name="ReleaseBy" Type="int" />
-    <Property Name="Mejor_Version" Type="tinyint" />
-    <Property Name="Minor_Version" Type="tinyint" />
-    <Property Name="Build_Version" Type="int" />
+    <Property Name="ServerId" Type="int" />
     <Property Name="ReleaseDate" Type="datetime" />
+    <Property Name="PackageId" Type="int" />
+    <Property Name="Status" Type="varchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="Role">
     <Key>
@@ -148,6 +157,7 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
     <Property Name="Minor_Version" Type="tinyint" />
     <Property Name="Build_Version" Type="int" />
     <Property Name="PublishDate" Type="datetime" />
+    <Property Name="Status" Type="varchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="ServerConfig">
     <Key>
@@ -215,8 +225,20 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
     </Key>
     <Property Name="TokenId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
-    <Property Name="Token" Type="varchar(max)" Nullable="false" />
+    <Property Name="Token" Type="varchar(max)" />
   </EntityType>
+  <Association Name="FK_BuildProject_Branch">
+    <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
+    <End Role="BuildProject" Type="Self.BuildProject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Branch">
+        <PropertyRef Name="BranchId" />
+      </Principal>
+      <Dependent Role="BuildProject">
+        <PropertyRef Name="BranchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_BuildProject_ServerBuild_BuildId">
     <End Role="BuildProject" Type="Self.BuildProject" Multiplicity="0..1" />
     <End Role="ServerBuild" Type="Self.ServerBuild" Multiplicity="*" />
@@ -289,6 +311,30 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Permissions_Role">
+    <End Role="Role" Type="Self.Role" Multiplicity="1" />
+    <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="Permissions">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Permissions_SubMenu">
+    <End Role="SubMenu" Type="Self.SubMenu" Multiplicity="1" />
+    <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SubMenu">
+        <PropertyRef Name="SubMenuId" />
+      </Principal>
+      <Dependent Role="Permissions">
+        <PropertyRef Name="SubMenuId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Project_Branch_ProjectId">
     <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
     <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
@@ -313,6 +359,42 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_ReleaseProject_BuildProject">
+    <End Role="BuildProject" Type="Self.BuildProject" Multiplicity="0..1" />
+    <End Role="ReleaseProject" Type="Self.ReleaseProject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BuildProject">
+        <PropertyRef Name="BuildId" />
+      </Principal>
+      <Dependent Role="ReleaseProject">
+        <PropertyRef Name="BuildId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReleaseProject_PackageRelease">
+    <End Role="PackageRelease" Type="Self.PackageRelease" Multiplicity="0..1" />
+    <End Role="ReleaseProject" Type="Self.ReleaseProject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PackageRelease">
+        <PropertyRef Name="PackageId" />
+      </Principal>
+      <Dependent Role="ReleaseProject">
+        <PropertyRef Name="PackageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReleaseProject_ServerConfig">
+    <End Role="ServerConfig" Type="Self.ServerConfig" Multiplicity="0..1" />
+    <End Role="ReleaseProject" Type="Self.ReleaseProject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ServerConfig">
+        <PropertyRef Name="ServerId" />
+      </Principal>
+      <Dependent Role="ReleaseProject">
+        <PropertyRef Name="ServerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Role_User_RoleId">
     <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
     <End Role="User" Type="Self.User" Multiplicity="*" />
@@ -325,15 +407,15 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_ServerBuild_ReleaseProject_ServerBuildId">
-    <End Role="ServerBuild" Type="Self.ServerBuild" Multiplicity="0..1" />
-    <End Role="ReleaseProject" Type="Self.ReleaseProject" Multiplicity="*" />
+  <Association Name="FK_Server_ServerCredentials_ServerId">
+    <End Role="ServerConfig" Type="Self.ServerConfig" Multiplicity="0..1" />
+    <End Role="ServerCredentials" Type="Self.ServerCredentials" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="ServerBuild">
-        <PropertyRef Name="ServerBuildId" />
+      <Principal Role="ServerConfig">
+        <PropertyRef Name="ServerId" />
       </Principal>
-      <Dependent Role="ReleaseProject">
-        <PropertyRef Name="ServerBuildId" />
+      <Dependent Role="ServerCredentials">
+        <PropertyRef Name="ServerId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -409,6 +491,30 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_User_SupportTickets_FixedBy">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="SupportTickets" Type="Self.SupportTickets" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="SupportTickets">
+        <PropertyRef Name="FixedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_SupportTickets_GeneratedBy">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="SupportTickets" Type="Self.SupportTickets" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="SupportTickets">
+        <PropertyRef Name="GeneratedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_UserToken_User">
     <End Role="User" Type="Self.User" Multiplicity="1" />
     <End Role="UserToken" Type="Self.UserToken" Multiplicity="*" />
@@ -450,6 +556,7 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
     <EntitySet Name="EmailMaster" EntityType="Self.EmailMaster" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MainMenu" EntityType="Self.MainMenu" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Organisation" EntityType="Self.Organisation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PackageRelease" EntityType="Self.PackageRelease" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ReleaseProject" EntityType="Self.ReleaseProject" Schema="dbo" store:Type="Tables" />
@@ -475,6 +582,10 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
     [ErrorLog].[Sequence] AS [Sequence]
     FROM [dbo].[ErrorLog] AS [ErrorLog]</DefiningQuery>
     </EntitySet>
+    <AssociationSet Name="FK_BuildProject_Branch" Association="Self.FK_BuildProject_Branch">
+      <End Role="Branch" EntitySet="Branch" />
+      <End Role="BuildProject" EntitySet="BuildProject" />
+    </AssociationSet>
     <AssociationSet Name="FK_BuildProject_ServerBuild_BuildId" Association="Self.FK_BuildProject_ServerBuild_BuildId">
       <End Role="BuildProject" EntitySet="BuildProject" />
       <End Role="ServerBuild" EntitySet="ServerBuild" />
@@ -499,6 +610,14 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
       <End Role="Organisation" EntitySet="Organisation" />
       <End Role="User" EntitySet="User" />
     </AssociationSet>
+    <AssociationSet Name="FK_Permissions_Role" Association="Self.FK_Permissions_Role">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="Permissions" EntitySet="Permissions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Permissions_SubMenu" Association="Self.FK_Permissions_SubMenu">
+      <End Role="SubMenu" EntitySet="SubMenu" />
+      <End Role="Permissions" EntitySet="Permissions" />
+    </AssociationSet>
     <AssociationSet Name="FK_Project_Branch_ProjectId" Association="Self.FK_Project_Branch_ProjectId">
       <End Role="Project" EntitySet="Project" />
       <End Role="Branch" EntitySet="Branch" />
@@ -507,13 +626,25 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
       <End Role="Project" EntitySet="Project" />
       <End Role="BuildProject" EntitySet="BuildProject" />
     </AssociationSet>
+    <AssociationSet Name="FK_ReleaseProject_BuildProject" Association="Self.FK_ReleaseProject_BuildProject">
+      <End Role="BuildProject" EntitySet="BuildProject" />
+      <End Role="ReleaseProject" EntitySet="ReleaseProject" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReleaseProject_PackageRelease" Association="Self.FK_ReleaseProject_PackageRelease">
+      <End Role="PackageRelease" EntitySet="PackageRelease" />
+      <End Role="ReleaseProject" EntitySet="ReleaseProject" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReleaseProject_ServerConfig" Association="Self.FK_ReleaseProject_ServerConfig">
+      <End Role="ServerConfig" EntitySet="ServerConfig" />
+      <End Role="ReleaseProject" EntitySet="ReleaseProject" />
+    </AssociationSet>
     <AssociationSet Name="FK_Role_User_RoleId" Association="Self.FK_Role_User_RoleId">
       <End Role="Role" EntitySet="Role" />
       <End Role="User" EntitySet="User" />
     </AssociationSet>
-    <AssociationSet Name="FK_ServerBuild_ReleaseProject_ServerBuildId" Association="Self.FK_ServerBuild_ReleaseProject_ServerBuildId">
-      <End Role="ServerBuild" EntitySet="ServerBuild" />
-      <End Role="ReleaseProject" EntitySet="ReleaseProject" />
+    <AssociationSet Name="FK_Server_ServerCredentials_ServerId" Association="Self.FK_Server_ServerCredentials_ServerId">
+      <End Role="ServerConfig" EntitySet="ServerConfig" />
+      <End Role="ServerCredentials" EntitySet="ServerCredentials" />
     </AssociationSet>
     <AssociationSet Name="FK_ServerConfig_ServerBuild_ServerId" Association="Self.FK_ServerConfig_ServerBuild_ServerId">
       <End Role="ServerConfig" EntitySet="ServerConfig" />
@@ -538,6 +669,14 @@ warning 6002: The table/view 'DevOps.dbo.ErrorLog' does not have a primary key d
     <AssociationSet Name="FK_User_ServerBuild_PublishedBy" Association="Self.FK_User_ServerBuild_PublishedBy">
       <End Role="User" EntitySet="User" />
       <End Role="ServerBuild" EntitySet="ServerBuild" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_SupportTickets_FixedBy" Association="Self.FK_User_SupportTickets_FixedBy">
+      <End Role="User" EntitySet="User" />
+      <End Role="SupportTickets" EntitySet="SupportTickets" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_SupportTickets_GeneratedBy" Association="Self.FK_User_SupportTickets_GeneratedBy">
+      <End Role="User" EntitySet="User" />
+      <End Role="SupportTickets" EntitySet="SupportTickets" />
     </AssociationSet>
     <AssociationSet Name="FK_UserToken_User" Association="Self.FK_UserToken_User">
       <End Role="User" EntitySet="User" />

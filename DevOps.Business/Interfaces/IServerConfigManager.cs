@@ -15,6 +15,13 @@ namespace DevOps.Business.Interfaces
         bool UpdateServerConfig(ServerConfig serverConfig);
         bool DeleteServerConfig(int id);
         bool InsertServerBuild(int BuildId, int ServerId, int UserId);
+        bool UpdateServerBuildStatus(int id);
+        bool UpdateServerBuild(ServerBuild build);
+        ServerBuild QueuedBuild();
+        ServerBuild GetServerBuild(int id);
         List<ServerBuild> serverBuilds(int id);
+        int TotalBuilds(int id);
+        int TotalServers(int id);
+        List<ServerBuild> GetServerBuilds(int pid, int bid, int sid);
     }
 }

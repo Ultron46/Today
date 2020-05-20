@@ -1,0 +1,15 @@
+﻿using DevOps.DataEntities.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DevOps.Data.Interfaces
+{
+    public interface IElmahDataReposiotry
+    {
+        List<ELMAH_Error> GetELMAH_Errors();
+        ELMAH_Error GerErroByID(Guid id);
+    }
+}

@@ -67,9 +67,13 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Handler\RegisterRepository.cs" />
     <Compile Include="Interfaces\IAuthorizationManager.cs" />
+    <Compile Include="Interfaces\IBranchManager.cs" />
+    <Compile Include="Interfaces\IBuildStatusManager.cs" />
+    <Compile Include="Interfaces\IElmahManager.cs" />
     <Compile Include="Interfaces\IEmailMasterManager.cs" />
     <Compile Include="Interfaces\IMainMenuManager.cs" />
     <Compile Include="Interfaces\IOrganizationsManager.cs" />
+    <Compile Include="Interfaces\IPackageManager.cs" />
     <Compile Include="Interfaces\IProjectManager.cs" />
     <Compile Include="Interfaces\IServerCredentialManager.cs" />
     <Compile Include="Interfaces\IServerConfigManager.cs" />
@@ -78,9 +82,13 @@
     <Compile Include="Interfaces\ISupportTicketManager.cs" />
     <Compile Include="Interfaces\IUserManager.cs" />
     <Compile Include="Manager\AuthorizationManager.cs" />
+    <Compile Include="Manager\BranchManager.cs" />
+    <Compile Include="Manager\BuildStatusManager.cs" />
+    <Compile Include="Manager\ElmahManager.cs" />
     <Compile Include="Manager\EmailMasterManager.cs" />
     <Compile Include="Manager\MainMenuManager.cs" />
     <Compile Include="Manager\OrganizationsManager.cs" />
+    <Compile Include="Manager\PackageReleaseManager.cs" />
     <Compile Include="Manager\ProjectManager.cs" />
     <Compile Include="Manager\ServerManager.cs" />
     <Compile Include="Manager\SubMenuManager.cs" />

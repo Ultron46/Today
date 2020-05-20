@@ -14,5 +14,7 @@ namespace DevOps.Data.Interfaces
         bool InsertOrganization(Organisation organisation);
         bool UpdateOrganization(Organisation organisation);
         bool DeleteOrganization(int id);
+        int TotalOrganizations();
+        List<Organisation> GetRecentOrganizations();
     }
 }

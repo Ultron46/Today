@@ -1,0 +1,124 @@
+﻿@model DevOps.UI.Models.ElmahError
+
+@{
+    ViewBag.Title = "Error Log Detail";
+}
+<div class="data-table-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="data-table-list">
+                    <div class="table-responsive">
+                        <h4>Error Log Detail</h4>
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.ErrorId)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.ErrorId)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Application)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Application)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Host)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Host)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Type)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Type)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Source)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Source)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Message)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Message)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.User)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.User)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.StatusCode)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.StatusCode)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.TimeUtc)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.TimeUtc)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Sequence)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Sequence)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.AllXml)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.AllXml)
+                            </dd>
+
+                        </dl>
+                        @*<table id="data-table-basic" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Application</th>
+                                        <th>Host</th>
+                                        <th>Type</th>
+                                        <th>Source</th>
+                                        <th>Message</th>
+                                        <th>StatusCode</th>
+                                        <th>TimeUtc</th>
+                                        <th>Detail</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="databody">
+                                </tbody>
+                            </table>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

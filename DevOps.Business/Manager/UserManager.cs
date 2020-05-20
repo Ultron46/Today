@@ -54,6 +54,31 @@ namespace DevOps.Business.Manager
             return _userDataRepository.GetAllUsersOfOrganization(id);
         }
 
-        
+        public int TotalUsers(int id)
+        {
+            int total = _userDataRepository.TotalUsers(id);
+            return total;
+        }
+
+        public List<User> GetRecentUsers(int id)
+        {
+            List<User> users = _userDataRepository.GetRecentUsers(id);
+            return users;
+        }
+
+        public User ForgotPassword(String Email)
+        {
+            return _userDataRepository.ForgotPassword(Email);
+        }
+
+        public bool CheckEmail(string Email)
+        {
+            return _userDataRepository.CheckEmail(Email);
+        }
+
+        public bool UpdatePassword(string Email, string Password)
+        {
+            return _userDataRepository.UpdatePassword(Email, Password);
+        }
     }
 }

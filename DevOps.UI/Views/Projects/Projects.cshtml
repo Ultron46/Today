@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DevOps.UI.Models.Projects>
+﻿@model IEnumerable<DevOps.UI.Models.Project>
 <!-- Data Table area Start-->
 <div class="data-table-area">
     <div class="container">
@@ -22,6 +22,7 @@
                                     <th>Modified By</th>
                                     <th>Created Date</th>
                                     <th>Last Modified Date</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,9 +36,17 @@
 </div>
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script>
-        $(document).ready(function () {
-            $.ajax({
-                url: "http://localhost:60969/api/Projects/GetProjects",
+    $(document).ready(function () {
+            var i;
+        if ('@Session["Role"].ToString()' == 'Admin') {
+            i = 0;
+        }
+        else {
+            i = '@Session["Organization"].ToString()';
+        }
+        var urlb = "http://localhost:60969/api/Projects/GetProjects?id=" + i;
+        $.ajax({
+            url: urlb,
                 context: document.body,
                 success: function (data) {
                     console.log(data);
@@ -45,7 +54,7 @@
                     for (var i = 0, li = data.length; i < li; i++) {
                         var newTr = "<tr> <td>" + data[i].projectName + " </td><td>" + data[i].solutionName + "</td><td>" + data[i].organisation.name + "</td><td>" + data[i].sourceURL + "</td><td>" + data[i].fileFormat + "</td><td>" + data[i].status + "</td><td>" + data[i].type + "</td><td>" + data[i].plateform + "</td><td>" + data[i].user.name + "</td><td>" + data[i].user1.name + "</td><td>" + data[i].createdDate + "</td><td>" + data[i].lastModifiedDate + "</td><td> <input type='hidden' value=" + data[i].projectId + ">";
                         if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
-                            newTr += "<a class='editajax' id = '" + data[i].projectId + "' href = '#' > Edit</a ></td> <td><a class='deleteajax' id='" + data[i].projectId + "' href='#'>Delete</a></td> <td><a class='buildajax' id='" + data[i].sourceURL + "' href='#'>Build</a>";
+                            newTr += "<a class='editajax' id = '" + data[i].projectId + "' href = '#' > Edit</a ></td> <td><a class='deleteajax' id='" + data[i].projectId + "' href='#'>Delete</a></td> <td><a class='addajax' id='" + data[i].projectId + "' href='#'>Add Branch</a>";
                         }
                         newTr += "</td></tr>";
                         $("#data-table-basic").append(newTr);
@@ -105,20 +114,18 @@
                                     });
                                 }
                             });
-                            document.getElementsByClassName("buildajax")[i].addEventListener("click", function (event) {
+                            document.getElementsByClassName("addajax")[i].addEventListener("click", function (event) {
                                 event.preventDefault();
-                                alert('Build Started');
-                                var userId = '@Session["user"].ToString()';
-                                var projectId = $('input[type=hidden]', $(this).closest("tr")).val();
                                 var id = event.target.id;
-                                var url1 = "http://localhost:57996/Projects/Build?sourceURL=" + id + "&projectId=" + projectId + "&userId=" + userId;
+                                var url1 = "http://localhost:57996/Branch/InsertBranch?id=" + id;
                                 $.ajax({
                                     url: url1,
                                     type: 'GET',//type of posting the data
                                     contentType: 'application/json',
                                     dataType: 'html',
                                     success: function (r) {
-                                        //console.log(r.ViewString);
+                                        $("#partialbody").empty();
+                                        $("#partialbody").html(r);
                                     },
                                     error: function (xhr, ajaxOptions, thrownError) {
                                         //what to do in error

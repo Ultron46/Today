@@ -1,0 +1,157 @@
+﻿@model IEnumerable<DevOps.UI.Models.Branch>
+
+<!-- Data Table area Start-->
+<div class="breadcomb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="breadcomb-list">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="nk-int-mk sl-dp-mn sm-res-mg-t-10">
+                                <h2>Project</h2>
+                            </div>
+                            <div class="bootstrap-select fm-cmp-mg">
+                                @Html.DropDownList("Project", new SelectList(ViewBag.Projects, "ProjectId", "ProjectName"), "--Search--", new { @class = "udropdown" })
+                            </div>
+                            <input type="submit" id="submit" value="Get Branches" class=" btn-success" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="data-table-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="data-table-list">
+                    <div class="basic-tb-hd">
+                        <h2>Server Builds</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="data-table-basic" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Branch Name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="script">
+</div>
+<script>
+    function reload_js() {
+            var s = "<script src='/Scripts/js/data-table/jquery.dataTables.min.js'><\/script>";
+            s += "<script src='/Scripts/js/data-table/data-table-act.js'><\/script>";
+            $('#script').append(s);
+            console.log('Javascript is loaded successful!');
+    }
+    $('#submit').click(function (e) {
+        e.preventDefault();
+        var id = $('#Project').val();
+
+        var url1 = "http://localhost:60969/api/Branches/GetProjectBranches?id=" + id;
+        alert('New Server Build Started');
+        $.ajax({
+            url: url1,
+            type: 'GET',//type of posting the data
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (data) {
+                $("#data-table-basic tbody").empty();
+                console.log(data);
+                    for (var i = 0, li = data.length; i < li; i++) {
+                        var newTr = "<tr> <td>" + data[i].branchName + " </td><td> <input type='hidden' value=" + data[i].buildId + ">";
+                        if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+                            newTr += "<a class='editajax' id='" + data[i].branchId + "' href='#'>Edit</a>    <a class='deleteajax' id='" + data[i].branchId + "' href='#'>Delete</a> ";
+                        }
+                        newTr += "</td></tr >";
+                        $("#data-table-basic").append(newTr);
+                        if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+
+                            document.getElementsByClassName("editajax")[i].addEventListener("click", function (event) {
+                                event.preventDefault();
+                                var url1 = "http://localhost:57996/Branch/EditBranch/" + event.target.id;
+                                $.ajax({
+                                    url: url1,
+                                    type: 'GET',//type of posting the data
+                                    contentType: 'application/json',
+                                    dataType: 'html',
+                                    success: function (r) {
+                                        //console.log(r.ViewString);
+                                        $("#partialbody").empty();
+                                        $("#partialbody").html(r);
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        //what to do in error
+                                        alert(url1);
+                                    }
+                                });
+
+                            });
+
+
+
+                            document.getElementsByClassName("deleteajax")[i].addEventListener("click", function (event) {
+                                event.preventDefault();
+                                if (confirm("Are you Sure Want to delete?")) {
+                                    var id = event.target.id;
+                                    var url1 = "http://localhost:60969/api/Branches/DeleteBranch/" + id;
+                                    $.ajax({
+                                        url: url1,
+                                        type: 'POST',//type of posting the data
+                                        data: '{id: "' + id + '"}',
+                                        dataType: 'json',
+                                        success: function (r) {
+                                            alert('Branch Deleted Successfully');
+                                            var url2 = "http://localhost:57996/Branch/Branch"
+                                            $.ajax({
+                                                url: url2,
+                                                type: 'GET',//type of posting the data
+                                                contentType: 'application/json',
+                                                dataType: 'html',
+                                                success: function (r) {
+                                                    $("#partialbody").empty();
+                                                    $("#partialbody").append(r);
+                                                },
+                                                error: function (xhr, ajaxOptions, thrownError) {
+                                                    //what to do in error
+                                                }
+                                            });
+                                        },
+                                        error: function (xhr, ajaxOptions, thrownError) {
+                                            //what to do in error
+                                            alert(thrownError);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                }
+                reload_js();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                //what to do in error
+                console.log(thrownError);
+            }
+        });
+    });
+</script>
+<!-- Data Table JS
+        ============================================ -->
+@*<script src="~/Scripts/js/data-table/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/js/data-table/data-table-act.js"></script>*@
+
+
+

@@ -1,0 +1,209 @@
+﻿@model IEnumerable<DevOps.UI.Models.PackageRelease>
+<!-- Data Table area Start-->
+<div class="data-table-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="data-table-list">
+                    <div class="table-responsive">
+                        <h4><center>Project Release</center></h4>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="nk-int-mk sl-dp-mn sm-res-mg-t-10">
+                                <h2>Select  Project</h2>
+                            </div>
+                            <div class="bootstrap-select fm-cmp-mg">
+                                @Html.DropDownList("Project", new SelectList(ViewBag.Projects, "ProjectId", "ProjectName"), "Search", new { @class = "udropdown" })
+                            </div><br />
+                            <div class="nk-int-mk sl-dp-mn sm-res-mg-t-10">
+                                <h2>Select Server</h2>
+                            </div>
+                            <div class="bootstrap-select fm-cmp-mg">
+                                @Html.DropDownList("Server", new SelectList(ViewBag.Servers, "ServerId", "ServerName"), "Search", new { @class = "udropdown" })
+                            </div><br />
+                            <div class="nk-int-mk sl-dp-mn sm-res-mg-t-10">
+                                <h2>Select Build Version</h2>
+                            </div>
+                            <div class="bootstrap-select fm-cmp-mg">
+                                @Html.DropDownList("Version", new SelectList(ViewBag.Version, "BuildId", "Build_Version"), "Search", new { @class = "udropdown" })
+                            </div><br />
+                            <div class="nk-int-mk sl-dp-mn sm-res-mg-t-10">
+                                <h2>Select Packages</h2>
+                            </div>
+                            <div class="bootstrap-select fm-cmp-mg">
+                                @Html.DropDownList("Packages", new SelectList(ViewBag.Package, "PackageId", "PackageName"), "Search", new { @class = "udropdown" })
+                            </div>
+                            <input type="submit" id="submit" value="Release" class=" btn-success" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="data-table-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="data-table-list">
+                    <div class="basic-tb-hd">
+                        <h2>Server Builds</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="data-table-basic" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>ReleaseBy</th>
+                                    <th>ServerName</th>
+                                    <th>ReleseDate</th>
+                                    <th>PackageName</th>
+                                    <th>Status</th>
+                                    <th>Rebuild</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="script">
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+            id = '@Session["Organization"]';
+        userid = '@Session["user"]';
+        var urlb = "http://localhost:60969/api/Projects/GetReleaseProject?id=" + id;
+        $.ajax({
+            url: urlb,
+                context: document.body,
+                success: function (data) {
+                    console.log(data);
+                    for (var i = 0, li = data.length; i < li; i++) {
+
+                        var newTr = "<tr> <td>" + data[i].buildProject.project.projectName + " </td><td>" + data[i].user.name + "</td><td>" + data[i].serverConfig.serverName + "</td><td>" + data[i].releaseDate + "</td><td>" + data[i].packageRelease.packageName+ "</td><td>" + data[i].status + "</td><td> <input type='hidden' value=" + data[i].releaseProjectId + ">";
+                        if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+                            newTr += "<a class='rebuildajax' id='" + data[i].releaseProjectId + "' href='#'>ReBuild</a>";
+                        }
+                        newTr += "</td></tr >";
+                        $("#data-table-basic").append(newTr);
+                        if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+
+
+
+                            //document.getElementsByClassName("rebuildajax")[i].addEventListener("click", function (event) {
+                            //    event.preventDefault();
+                            //    var url1 = "http://localhost:60969/api/Projects/RebuildProject?userid=" +userid + "&id=" + event.target.id;
+                            //    $.ajax({
+                            //        url: url1,
+                            //        type: 'POST',//type of posting the data
+                            //        contentType: 'application/json',
+                            //        dataType: 'html',
+                            //        success: function (r) {
+                            //            alert("ReBuild Success");
+                            //            //console.log(r.ViewString);
+                            //            $("#partialbody").empty();
+                            //            $("#partialbody").html(r);
+                            //        },
+                            //        error: function (xhr, ajaxOptions, thrownError) {
+                            //            //what to do in error
+                            //            alert(url1);
+                            //        }
+                            //    });
+
+                            //});
+
+                            document.getElementsByClassName("rebuildajax")[i].addEventListener("click", function (event) {
+                                event.preventDefault();
+
+
+                                var url1 = "http://localhost:60969/api/Projects/RebuildProject?userid=" + userid + "&id=" + event.target.id;
+                                $.ajax({
+                                        url: url1,
+                                        type: 'POST',//type of posting the data
+                                        contentType: 'application/json',
+                                        dataType: 'html',
+                                        success: function (r) {
+                                            alert('Rebuid Successfully');
+                                            var url2 = "http://localhost:57996/Package/Release";
+                                            $.ajax({
+                                                url: url2,
+                                                type: 'GET',//type of posting the data
+                                                contentType: 'application/json',
+                                                dataType: 'html',
+                                                success: function (r) {
+                                                    $("#partialbody").empty();
+                                                    $("#partialbody").append(r);
+                                                },
+                                                error: function (xhr, ajaxOptions, thrownError) {
+                                                    //what to do in error
+                                                }
+                                            });
+                                        },
+                                        error: function (xhr, ajaxOptions, thrownError) {
+                                            //what to do in error
+                                            alert(thrownError);
+                                        }
+                                    });
+
+                            });
+
+
+                        }
+                    }
+                    reload_js();
+                }
+            });
+    });
+    function reload_js() {
+            var s = "<script src='/Scripts/js/data-table/jquery.dataTables.min.js'><\/script>";
+            s += "<script src='/Scripts/js/data-table/data-table-act.js'><\/script>";
+            $('#script').append(s);
+            console.log('Javascript is loaded successful!');
+    }
+$('#submit').click(function (e) {
+    e.preventDefault();
+    var ReleaseBy = '@Session["user"]';
+            var BuildId = $('#Version').val();
+            var ServerId = $('#Server').val();
+    var PackageId = $('#Packages').val();
+    alert(PackageId);
+            var url1 = "http://localhost:60969/api/Projects/ReleaseProject"
+            $.ajax({
+                url: url1,
+                type: 'POST',//type of posting the data
+                data: '{ReleaseBy: "' + ReleaseBy + '",BuildId: "' + BuildId + '",ServerId: "' + ServerId + '",PackageId: "' + PackageId +
+                    '"}',
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (r) {
+                    alert('Project publish Successfully');
+                    var url2 = "http://localhost:57996/Package/Release";
+                    $.ajax({
+                        url: url2,
+                        type: 'GET',//type of posting the data
+                        contentType: 'application/json',
+                        dataType: 'html',
+                        success: function (r) {
+                            $("#partialbody").empty();
+                            $("#partialbody").html(r);
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            //what to do in error
+                        }
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //what to do in error
+                    console.log(thrownError);
+                }
+            });
+
+        });</script>

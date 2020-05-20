@@ -92,8 +92,10 @@ C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Common\bin\Debug\DevOps.Common.
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Common\bin\Debug\DevOps.Common.pdb
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Common\bin\Debug\EntityFramework.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Common\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Common\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Common\bin\Debug\EntityFramework.xml
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Common\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Common\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Common\obj\Debug\DevOps.Common.csprojAssemblyReference.cache
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Common\obj\Debug\DevOps.Common.csproj.CoreCompileInputs.cache
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Common\obj\Debug\DevOps.Common.csproj.CopyComplete

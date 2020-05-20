@@ -16,6 +16,7 @@ using System.Web.Mvc;
 namespace DevOps.UI.Controllers
 {
     [EnableCorsAttribute("*", "*", "*")]
+    [RoleAuth("Admin")]
     public class OrganizationController : Controller
     {
         string baseUrl = Constants.baseurl;
@@ -27,7 +28,6 @@ namespace DevOps.UI.Controllers
         }
 
         [HttpGet]
-        [RoleAuth("Admin")]
         public ActionResult Organization()
         {
             return PartialView("OrganizationTable");

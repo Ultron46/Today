@@ -21,9 +21,9 @@ namespace DevOps.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetProjects()
+        public IHttpActionResult GetProjects(int id)
         {
-            List<Project> projects = _projectManager.GetProjects();
+            List<Project> projects = _projectManager.GetProjects(id);
             if(projects == null)
             {
                 return NotFound();
@@ -97,14 +97,21 @@ namespace DevOps.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public IHttpActionResult InsertBuildProject(string sourceURL, int projectId, int userId)
+        [HttpPost]
+        public IHttpActionResult InsertBuildProject(BuildProject build)
         {
-            bool status = _projectManager.BuildProject(sourceURL, projectId, userId);
+            bool status = _projectManager.BuildProject(build);
             if(status == false)
             {
                 return NotFound();
             }
+            return Ok(status);
+        }
+
+        [HttpPost]
+        public IHttpActionResult UpdateBuildProject(BuildProject build)
+        {
+            bool status = _projectManager.UpdateBuildProject(build);
             return Ok(status);
         }
 
@@ -120,6 +127,17 @@ namespace DevOps.Controllers
         }
 
         [HttpGet]
+        public IHttpActionResult BranchBuilds(int id)
+        {
+            List<BuildProject> builds = _projectManager.BranchBuilds(id);
+            if (builds == null)
+            {
+                return NotFound();
+            }
+            return Ok(builds);
+        }
+
+        [HttpGet]
         public IHttpActionResult GetProjectBuild(int id)
         {
             BuildProject project = _projectManager.ProjectBuild(id);
@@ -128,6 +146,89 @@ namespace DevOps.Controllers
                 return NotFound();
             }
             return Ok(project);
+        }
+
+        [HttpGet]
+        public IHttpActionResult UpdateProjectBuildStatus(int id)
+        {
+            bool status = _projectManager.UpdateProjectBuildStatus(id);
+            return Ok(status);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetQueuedBuild()
+        {
+            BuildProject build = _projectManager.QueuedProjectBuild();
+            return Ok(build);
+        }
+
+        [HttpPost]
+        public IHttpActionResult ReleaseProject(ReleaseProject releaseProject)
+        {
+            bool status = _projectManager.ReleaseProject(releaseProject);
+            if (status)
+                return Ok(status);
+            return NotFound();
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetReleaseProject(int id)
+        {
+            List<ReleaseProject> releaseProjects = _projectManager.GetReleaseProject(id);
+            if (releaseProjects == null)
+            {
+                return NotFound();
+            }
+            return Ok(releaseProjects);
+        }
+
+        [HttpPost]
+        public bool RebuildProject(int userid, int id)
+        {
+            return _projectManager.RebuildProject(userid, id);
+        }
+
+        public IHttpActionResult GetTotalProjects(int id)
+        {
+            int total = _projectManager.TotalProjects(id);
+            return Ok(total);
+        }
+
+        public IHttpActionResult GetTotalBuilds(int id)
+        {
+            int total = _projectManager.TotalBuilds(id);
+            return Ok(total);
+        }
+
+        public IHttpActionResult GetRecentProjects(int id)
+        {
+            List<Project> projects = _projectManager.GetRecentProjects(id);
+            return Ok(projects);
+        }
+
+        public IHttpActionResult GetUserBuilds(int id)
+        {
+            List<BuildProject> builds = _projectManager.UserBuilds(id);
+            return Ok(builds);
+        }
+
+        public IHttpActionResult GetTotalUserBuilds(int id)
+        {
+            int total = _projectManager.TotalUserBuilds(id);
+            return Ok(total);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetQueuedBuildProject()
+        {
+            ReleaseProject releaseProject = _projectManager.GetQueuedBuildProject();
+            return Ok(releaseProject);
+        }
+        [HttpGet]
+        public IHttpActionResult UpdateQueuedBuildProjectStatus(int id)
+        {
+            bool status = _projectManager.UpdateQueuedBuildProjectStatus(id);
+            return Ok(status);
         }
     }
 }

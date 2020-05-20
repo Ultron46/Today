@@ -10,21 +10,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="BuildProjects">
-      <EntityTypeMapping TypeName="DevOpsModel.BuildProject">
-        <MappingFragment StoreEntitySet="BuildProject">
-          <ScalarProperty Name="BuildId" ColumnName="BuildId" />
-          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
-          <ScalarProperty Name="BuildBy" ColumnName="BuildBy" />
-          <ScalarProperty Name="Mejor_Version" ColumnName="Mejor_Version" />
-          <ScalarProperty Name="Minor_Version" ColumnName="Minor_Version" />
-          <ScalarProperty Name="Build_Version" ColumnName="Build_Version" />
-          <ScalarProperty Name="DownloadURL" ColumnName="DownloadURL" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="BuildDate" ColumnName="BuildDate" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="ELMAH_Error">
       <EntityTypeMapping TypeName="DevOpsModel.ELMAH_Error">
         <MappingFragment StoreEntitySet="ELMAH_Error">
@@ -100,38 +85,11 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="ReleaseProjects">
-      <EntityTypeMapping TypeName="DevOpsModel.ReleaseProject">
-        <MappingFragment StoreEntitySet="ReleaseProject">
-          <ScalarProperty Name="ReleaseProjectId" ColumnName="ReleaseProjectId" />
-          <ScalarProperty Name="ServerBuildId" ColumnName="ServerBuildId" />
-          <ScalarProperty Name="ReleaseBy" ColumnName="ReleaseBy" />
-          <ScalarProperty Name="Mejor_Version" ColumnName="Mejor_Version" />
-          <ScalarProperty Name="Minor_Version" ColumnName="Minor_Version" />
-          <ScalarProperty Name="Build_Version" ColumnName="Build_Version" />
-          <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Roles">
       <EntityTypeMapping TypeName="DevOpsModel.Role">
         <MappingFragment StoreEntitySet="Role">
           <ScalarProperty Name="RoleId" ColumnName="RoleId" />
           <ScalarProperty Name="RoleName" ColumnName="RoleName" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="ServerBuilds">
-      <EntityTypeMapping TypeName="DevOpsModel.ServerBuild">
-        <MappingFragment StoreEntitySet="ServerBuild">
-          <ScalarProperty Name="ServerBuildId" ColumnName="ServerBuildId" />
-          <ScalarProperty Name="BuildId" ColumnName="BuildId" />
-          <ScalarProperty Name="ServerId" ColumnName="ServerId" />
-          <ScalarProperty Name="PublishedBy" ColumnName="PublishedBy" />
-          <ScalarProperty Name="Mejor_Version" ColumnName="Mejor_Version" />
-          <ScalarProperty Name="Minor_Version" ColumnName="Minor_Version" />
-          <ScalarProperty Name="Build_Version" ColumnName="Build_Version" />
-          <ScalarProperty Name="PublishDate" ColumnName="PublishDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -183,23 +141,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Users">
-      <EntityTypeMapping TypeName="DevOpsModel.User">
-        <MappingFragment StoreEntitySet="User">
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Address" ColumnName="Address" />
-          <ScalarProperty Name="Nationality" ColumnName="Nationality" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
-          <ScalarProperty Name="OrganisationId" ColumnName="OrganisationId" />
-          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-          <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="ErrorLogs">
       <EntityTypeMapping TypeName="DevOpsModel.ErrorLog">
         <MappingFragment StoreEntitySet="ErrorLog">
@@ -225,6 +166,76 @@
           <ScalarProperty Name="Token" ColumnName="Token" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="TokenId" ColumnName="TokenId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BuildProjects">
+      <EntityTypeMapping TypeName="DevOpsModel.BuildProject">
+        <MappingFragment StoreEntitySet="BuildProject">
+          <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+          <ScalarProperty Name="BuildDate" ColumnName="BuildDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="DownloadURL" ColumnName="DownloadURL" />
+          <ScalarProperty Name="Build_Version" ColumnName="Build_Version" />
+          <ScalarProperty Name="Minor_Version" ColumnName="Minor_Version" />
+          <ScalarProperty Name="Mejor_Version" ColumnName="Mejor_Version" />
+          <ScalarProperty Name="BuildBy" ColumnName="BuildBy" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="BuildId" ColumnName="BuildId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ServerBuilds">
+      <EntityTypeMapping TypeName="DevOpsModel.ServerBuild">
+        <MappingFragment StoreEntitySet="ServerBuild">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="PublishDate" ColumnName="PublishDate" />
+          <ScalarProperty Name="Build_Version" ColumnName="Build_Version" />
+          <ScalarProperty Name="Minor_Version" ColumnName="Minor_Version" />
+          <ScalarProperty Name="Mejor_Version" ColumnName="Mejor_Version" />
+          <ScalarProperty Name="PublishedBy" ColumnName="PublishedBy" />
+          <ScalarProperty Name="ServerId" ColumnName="ServerId" />
+          <ScalarProperty Name="BuildId" ColumnName="BuildId" />
+          <ScalarProperty Name="ServerBuildId" ColumnName="ServerBuildId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PackageReleases">
+      <EntityTypeMapping TypeName="DevOpsModel.PackageRelease">
+        <MappingFragment StoreEntitySet="PackageRelease">
+          <ScalarProperty Name="PackageVersion" ColumnName="PackageVersion" />
+          <ScalarProperty Name="PackageName" ColumnName="PackageName" />
+          <ScalarProperty Name="PackageId" ColumnName="PackageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReleaseProjects">
+      <EntityTypeMapping TypeName="DevOpsModel.ReleaseProject">
+        <MappingFragment StoreEntitySet="ReleaseProject">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="PackageId" ColumnName="PackageId" />
+          <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
+          <ScalarProperty Name="ServerId" ColumnName="ServerId" />
+          <ScalarProperty Name="ReleaseBy" ColumnName="ReleaseBy" />
+          <ScalarProperty Name="BuildId" ColumnName="BuildId" />
+          <ScalarProperty Name="ReleaseProjectId" ColumnName="ReleaseProjectId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="DevOpsModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="OrganisationId" ColumnName="OrganisationId" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Nationality" ColumnName="Nationality" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

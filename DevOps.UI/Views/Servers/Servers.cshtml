@@ -33,9 +33,16 @@
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script>
     $(document).ready(function () {
-
-            $.ajax({
-                url: "http://localhost:60969/api/Servers/GetServerConfigs?Organization=@Session["Organization"].ToString()",
+        var i;
+        if ('@Session["Role"].ToString()' == 'Admin') {
+            i = 0;
+        }
+        else {
+            i = '@Session["Organization"].ToString()';
+        }
+        var urlb = "http://localhost:60969/api/Servers/GetServerConfigs?Organization=" + i;
+        $.ajax({
+            url: urlb,
                 context: document.body,
                 success: function (data) {
                     console.log(data);

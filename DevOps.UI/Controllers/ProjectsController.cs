@@ -1,5 +1,4 @@
 ﻿using DevOps.Common;
-using DevOps.DataEntities.Models;
 using DevOps.UI.Models;
 using Newtonsoft.Json;
 using System;
@@ -22,18 +21,21 @@ namespace DevOps.UI.Controllers
         string baseUrl = Constants.baseurl;
 
         [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager", "User")]
         public ActionResult Projects()
         {
             return PartialView("Projects");
         }
 
         [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager")]
         public ActionResult Registration()
         {
             return PartialView("Registration");
         }
 
         [HttpPost]
+        [RoleAuth("Admin", "ReleaseManager")]
         public ActionResult Registration(Project project)
         {
             project.CreatedBy = Convert.ToInt32(Session["user"].ToString());
@@ -56,6 +58,7 @@ namespace DevOps.UI.Controllers
         }
 
         [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager")]
         public async Task<ActionResult> EditProject(int id)
         {
             Project projects = new Project();
@@ -78,8 +81,11 @@ namespace DevOps.UI.Controllers
             return PartialView(projects);
         }
 
-        public async Task<ActionResult> Build(string sourceURL, int projectId, int userId)
+        [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager")]
+        public async Task<ActionResult> Build(int projectId, int branchId)
         {
+            int userId = Convert.ToInt32(Session["user"].ToString());
             var client = new HttpClient();
 
             client.BaseAddress = new Uri(baseUrl);
@@ -111,14 +117,17 @@ namespace DevOps.UI.Controllers
                 project = JsonConvert.DeserializeObject<Project>(Project);
             }
             Helpers.SendEmail(emailIds, project.ProjectName, "New Build Started for the project");
-            string address = ConfigurationManager.AppSettings["ProjectBuildAPI"] + sourceURL;
+            string address = ConfigurationManager.AppSettings["ProjectBuildAPI"] + project.SourceURL;
             Res = await client.GetAsync(address);
 
             if (Res.IsSuccessStatusCode)
             {
                 client.DefaultRequestHeaders.Clear();
-                address = "api/Projects/InsertBuildProject?sourceURL="+ sourceURL +"&projectId=" + projectId + "&userId=" + userId;
-                Res = await client.GetAsync(address);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                BuildProject build = new BuildProject { BuildBy = userId, BuildDate = DateTime.Now, DownloadURL = project.SourceURL, ProjectId = projectId, Status = "queued", BranchId = branchId};
+                var stringContent = new StringContent(JsonConvert.SerializeObject(build), Encoding.UTF8, "application/json");
+                var addressUri = new Uri("api/Projects/InsertBuildProject", UriKind.Relative);
+                Res = client.PostAsync(addressUri, stringContent).Result;
                 if (Res.IsSuccessStatusCode)
                 {
                     return Json(new { success = true }, JsonRequestBehavior.AllowGet);
@@ -128,6 +137,8 @@ namespace DevOps.UI.Controllers
             return Json(new { error = true }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager","User")]
         public async Task<ActionResult> Builds()
         {
             string address;
@@ -138,23 +149,88 @@ namespace DevOps.UI.Controllers
             client.DefaultRequestHeaders.Clear();
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            if(Session["Role"].ToString() == "Admin")
+            HttpResponseMessage Res;
+            if (Session["Role"].ToString() == "Admin")
             {
-                address = "api/Projects/GetProjects";
+                address = "api/Organizations/GetAllOrganization";
+                List<Organization> organizations = new List<Organization>();
+                Res = await client.GetAsync(address);
+                if (Res.IsSuccessStatusCode)
+                {
+                    var Projects = Res.Content.ReadAsStringAsync().Result;
+                    organizations = JsonConvert.DeserializeObject<List<Organization>>(Projects);
+                }
+                ViewBag.Orgs = organizations;
             }
             else
             {
                 address = "api/Projects/GetOrganizationProject?id=" + Session["Organization"].ToString();
+                List<Project> projects = new List<Project>(); 
+                Res = await client.GetAsync(address);
+                if (Res.IsSuccessStatusCode)
+                {
+                    var Projects = Res.Content.ReadAsStringAsync().Result;
+                    projects = JsonConvert.DeserializeObject<List<Project>>(Projects);
+                }
+                ViewBag.Projects = projects;
             }
-            List<Project> projects = new List<Project>();
-            HttpResponseMessage Res = await client.GetAsync(address);
+            return PartialView();
+        }
+
+        [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager", "User")]
+        public async Task<ActionResult> Rebuild(int id)
+        {
+            var client = new HttpClient();
+
+            client.BaseAddress = new Uri(baseUrl);
+
+            client.DefaultRequestHeaders.Clear();
+
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            string addressUrl = "api/EmailMaster/GetEmails?id=" + Session["Organization"].ToString();
+            List<EmailMaster> emails = new List<EmailMaster>();
+            HttpResponseMessage Res = await client.GetAsync(addressUrl);
             if (Res.IsSuccessStatusCode)
             {
-                var Projects = Res.Content.ReadAsStringAsync().Result;
-                projects = JsonConvert.DeserializeObject<List<Project>>(Projects);
+                var Emails = Res.Content.ReadAsStringAsync().Result;
+                emails = JsonConvert.DeserializeObject<List<EmailMaster>>(Emails);
             }
-            ViewBag.Projects = projects;
-            return PartialView();
+            List<string> emailIds = emails.Select(x => x.EmailId).ToList();
+            if (!emailIds.Contains(Session["Username"].ToString()))
+            {
+                emailIds.Add(Session["Username"].ToString());
+            }
+            client.DefaultRequestHeaders.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            addressUrl = "api/Projects/GetProjectBuild?id=" + id;
+            BuildProject buildProject = new BuildProject();
+            Res = await client.GetAsync(addressUrl);
+            if (Res.IsSuccessStatusCode)
+            {
+                var BuildResponse = Res.Content.ReadAsStringAsync().Result;
+                buildProject = JsonConvert.DeserializeObject<BuildProject>(BuildResponse);
+            }
+            Helpers.SendEmail(emailIds, buildProject.Project.ProjectName, "New Build Started for the project");
+            string address = ConfigurationManager.AppSettings["ProjectBuildAPI"] + buildProject.Project.SourceURL;
+            Res = await client.GetAsync(address);
+
+            if (Res.IsSuccessStatusCode)
+            {
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                int userid = Convert.ToInt32(Session["user"].ToString());
+                BuildProject build = new BuildProject {BuildId = buildProject.BuildId, BuildBy = userid, BuildDate = DateTime.Now, DownloadURL =buildProject.Project.SourceURL, ProjectId = buildProject.ProjectId, Status = "queued", BranchId = buildProject.BranchId };
+                var stringContent = new StringContent(JsonConvert.SerializeObject(build), Encoding.UTF8, "application/json");
+                var addressUri = new Uri("api/Projects/UpdateBuildProject", UriKind.Relative);
+                Res = client.PostAsync(addressUri, stringContent).Result;
+                if (Res.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new { error = true }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { error = true }, JsonRequestBehavior.AllowGet);
         }
     }
 }

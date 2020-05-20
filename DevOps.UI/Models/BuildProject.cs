@@ -16,6 +16,8 @@ namespace DevOps.UI.Models
         public string DownloadURL { get; set; }
         public string Status { get; set; }
         public System.DateTime BuildDate { get; set; }
-        public Projects Project { get; set; }
+        public Project Project { get; set; }
+        public int BranchId { get; set; }
+        public Branch Branch { get; set; }
     }
 }

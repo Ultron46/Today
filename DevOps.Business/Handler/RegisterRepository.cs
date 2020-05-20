@@ -22,6 +22,10 @@ namespace DevOps.Business.Handler
             containerBuilder.RegisterType(typeof(AuthorizationDataRepository)).AsImplementedInterfaces();
             containerBuilder.RegisterType(typeof(SupportTicketDataRepository)).AsImplementedInterfaces();
             containerBuilder.RegisterType(typeof(EmailMasterRepository)).AsImplementedInterfaces();
+            containerBuilder.RegisterType(typeof(BranchDataRepository)).AsImplementedInterfaces();
+            containerBuilder.RegisterType(typeof(PackageReleaseDataRepository)).AsImplementedInterfaces();
+            containerBuilder.RegisterType(typeof(ElmahDataReposiotry)).AsImplementedInterfaces();
+            containerBuilder.RegisterType(typeof(BuildStatus)).AsImplementedInterfaces();
         }
     }
 }

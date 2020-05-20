@@ -113,7 +113,7 @@ namespace DevOps.Controllers
             return Ok(status);
         }
         [HttpPost]
-        public IHttpActionResult InsertEmail(DataEntities.Models.EmailMaster emails)
+        public IHttpActionResult InsertEmail(EmailMaster emails)
         {
             bool status = _serverManager.InsertEmail(emails);
             if (status == false)
@@ -143,8 +143,59 @@ namespace DevOps.Controllers
         [HttpGet]
         public IHttpActionResult GetServerBuilds(int id)
         {
-            List<DataEntities.Models.ServerBuild> serverBuilds = _serverManager.serverBuilds(id);
+            List<ServerBuild> serverBuilds = _serverManager.serverBuilds(id);
             if(serverBuilds == null)
+            {
+                return NotFound();
+            }
+            return Ok(serverBuilds);
+        }
+
+        [HttpGet]
+        public IHttpActionResult UpdateServerBuildStatus(int id)
+        {
+            bool status = _serverManager.UpdateServerBuildStatus(id);
+            return Ok(status);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetQueuedBuild()
+        {
+            ServerBuild build = _serverManager.QueuedBuild();
+            return Ok(build);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetServerBuild(int id)
+        {
+            ServerBuild build = _serverManager.GetServerBuild(id);
+            return Ok(build);
+        }
+
+        [HttpPost]
+        public IHttpActionResult UpdateServerBuild(ServerBuild build)
+        {
+            bool status = _serverManager.UpdateServerBuild(build);
+            return Ok(status);
+        }
+
+        public IHttpActionResult GetTotalBuilds(int id)
+        {
+            int total = _serverManager.TotalBuilds(id);
+            return Ok(total);
+        }
+
+        public IHttpActionResult GetTotalServers(int id)
+        {
+            int total = _serverManager.TotalServers(id);
+            return Ok(total);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetServerBuilds(int pid, int bid, int sid)
+        {
+            List<ServerBuild> serverBuilds = _serverManager.GetServerBuilds(pid, bid, sid);
+            if (serverBuilds == null)
             {
                 return NotFound();
             }

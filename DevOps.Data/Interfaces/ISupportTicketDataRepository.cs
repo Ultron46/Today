@@ -14,9 +14,9 @@ namespace DevOps.Data.Interfaces
         SupportTicket GetSolution(int TicketId);
         bool GetTicket(int id, int tid);
         //bool DeleteTicket(int id);
-
-
-
-
+        List<SupportTicket> GetAllTicketUnfixed();
+        int TotalSupportTickets(int id);
+        int TotalUserSupportTickets(int id);
+        List<SupportTicket> UserSupportTickets(int id);
     }
 }

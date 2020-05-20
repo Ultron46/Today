@@ -66,5 +66,37 @@ namespace DevOps.Data.DataRepository
             return false;
         }
 
+        public List<SupportTicket> GetAllTicketUnfixed()
+        {
+            List<SupportTicket> supportTickets = DbContext.SupportTickets.Where(x => x.Status == "Paynding").Include(x => x.User).Include(x => x.User1).ToList();
+            return supportTickets;
+        }
+
+        public int TotalSupportTickets(int id)
+        {
+            int total = 0;
+            if(id == 0)
+            {
+                total = DbContext.SupportTickets.Count();
+            }
+            else
+            {
+                total = DbContext.SupportTickets.Where(x => x.User1.OrganisationId == id).Count();
+            }
+            return total;
+        }
+
+        public int TotalUserSupportTickets(int id)
+        {
+            int total = 0;
+            total = DbContext.SupportTickets.Where(x => x.GeneratedBy == id).Count();
+            return total;
+        }
+
+        public List<SupportTicket> UserSupportTickets(int id)
+        {
+            List<SupportTicket> tickets = DbContext.SupportTickets.Where(x => x.GeneratedBy == id).OrderByDescending(x => x.GeneratedDate).Take(5).ToList();
+            return tickets;
+        }
     }
 }

@@ -5,8 +5,10 @@ using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -36,6 +38,7 @@ namespace DevOps.UI.Controllers
         }
 
         [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager")]
         public async Task<ActionResult> Registration()
         {
             Array values = Enum.GetValues(typeof(Enums.Roles));
@@ -99,9 +102,20 @@ namespace DevOps.UI.Controllers
             }
             if (principal != null)
             {
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                AddressUri = "api/Organizations/GetOrganization?OrganisationId=" + principal.OrganisationId.ToString();
+                HttpResponseMessage Res = await client.GetAsync(AddressUri);
+                Organization organisations = new Organization();
+                if (Res.IsSuccessStatusCode)
+                {
+                    var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
+                    organisations = JsonConvert.DeserializeObject<Organization>(MainMEnuResponse);
+                }
                 int role = Convert.ToInt32(principal.RoleId);
                 Session["Role"] = ((Enums.Roles)role).ToString();
                 Session["Organization"] = principal.OrganisationId.ToString();
+                Session["OrganizationName"] = organisations.Name;
                 Session["user"] = principal.UserId;
                 Session["name"] = principal.Name;
                 Session["Username"] = principal.Email;
@@ -169,12 +183,14 @@ namespace DevOps.UI.Controllers
         }
 
         [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager")]
         public ActionResult Users()
         {
             return PartialView("UserTable");
         }
 
         [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager")]
         public async Task<ActionResult> EditUser(int id)
         {
             Array values = Enum.GetValues(typeof(Enums.Roles));
@@ -227,6 +243,8 @@ namespace DevOps.UI.Controllers
             return PartialView(user);
         }
 
+        [HttpGet]
+        [RoleAuth("Admin", "ReleaseManager", "User")]
         public async Task<ActionResult> LogOut()
         {
             int id = Convert.ToInt32(Session["user"].ToString());
@@ -251,6 +269,83 @@ namespace DevOps.UI.Controllers
                 return RedirectToAction("Login", new { returnurl = "LogOut" });
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            return PartialView("ForgotPassword");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> CheckEmail(string Email)
+        {
+            User users = new User();
+            var client = new HttpClient();
+
+            client.BaseAddress = new Uri(baseUrl);
+
+            client.DefaultRequestHeaders.Clear();
+
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            string address = "api/Users/CheckEmail?Email=" + Email.ToString();
+            HttpResponseMessage Res = await client.GetAsync(address);
+
+            if (Res.IsSuccessStatusCode)
+            {
+                return Json(new { success = "true" }, JsonRequestBehavior.AllowGet);
+
+            }
+            return Json(new { error = "true" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult SendResetLink(string email)
+        {
+
+            try
+            {
+                string mes = "";
+                mes = "<html><body><a href=\"LINK\">Reset Password Here</a></body></html>";
+                var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, "/Users/ResetPassword?Email=" + email + "");
+                mes = mes.Replace("LINK", link);
+                var message = new MailMessage();
+
+                message.To.Add(new MailAddress(email));
+
+                message.From = new MailAddress("CMS@GMAIL");
+                message.Subject = "Reset Password";
+                message.Body = mes;
+                message.IsBodyHtml = true;
+
+                using (var smtp = new SmtpClient())
+                {
+                    var credential = new NetworkCredential
+
+                    {
+                        UserName = "GDevOpsBuild@gmail.com",
+                        Password = "DevopsBuildabcd"
+                    };
+                    smtp.Credentials = credential;
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.Port = 587;
+                    smtp.EnableSsl = true;
+                    smtp.Send(message);
+                }
+
+                TempData["Message"] = "Please Check your Email to Reset Password!!";
+                return Json(new { success = "true" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new { error = "true" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult ResetPassword()
+        {
+            return PartialView("ResetPassword");
         }
     }
 }

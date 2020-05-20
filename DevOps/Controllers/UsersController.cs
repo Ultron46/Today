@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using System.Data.Entity;
 using System.Web.Http.Cors;
+using DevOps.Model;
 
 namespace DevOps.Controllers
 {
@@ -103,6 +104,45 @@ namespace DevOps.Controllers
             }
             return Ok(users);
         }
-        
+
+        public IHttpActionResult GetTotalUsers(int id)
+        {
+            int total = _userManager.TotalUsers(id);
+            return Ok(total);
+        }
+
+        public IHttpActionResult GetRecentUsers(int id)
+        {
+            List<User> users = _userManager.GetRecentUsers(id);
+            return Ok(users);
+        }
+
+        public IHttpActionResult ForgotPassword(String Email)
+        {
+            var forgetPassword = _userManager.ForgotPassword(Email);
+            if (forgetPassword == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(forgetPassword);
+            }
+        }
+        [HttpGet]
+        public IHttpActionResult CheckEmail(string Email)
+        {
+            bool status = _userManager.CheckEmail(Email);
+            if (status == false)
+            {
+                return NotFound();
+            }
+            return Ok(status);
+        }
+        [HttpPost]
+        public IHttpActionResult UpdatePassword(ResetPassword reset)
+        {
+            return Ok(_userManager.UpdatePassword(reset.Email, reset.Password));
+        }
     }
 }

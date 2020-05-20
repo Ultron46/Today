@@ -14,5 +14,9 @@ namespace DevOps.Business.Interfaces
         bool InsertTicket(SupportTicket supportTicket);
         bool GetTicket(int id, int tid);
         //bool DeleteTicket(int id);
+        List<SupportTicket> GetAllTicketUnfixed();
+        int TotalSupportTickets(int id);
+        int TotalUserSupportTickets(int id);
+        List<SupportTicket> UserSupportTickets(int id);
     }
 }

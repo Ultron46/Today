@@ -90,6 +90,9 @@
     <Compile Include="Models\Organisation.cs">
       <DependentUpon>DevOps.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PackageRelease.cs">
+      <DependentUpon>DevOps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Permission.cs">
       <DependentUpon>DevOps.tt</DependentUpon>
     </Compile>

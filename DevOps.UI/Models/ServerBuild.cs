@@ -15,5 +15,7 @@ namespace DevOps.UI.Models
         public Nullable<byte> Minor_Version { get; set; }
         public Nullable<int> Build_Version { get; set; }
         public Nullable<System.DateTime> PublishDate { get; set; }
+        public BuildProject BuildProject { get; set; }
+        public string Status { get; set; }
     }
 }

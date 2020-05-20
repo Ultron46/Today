@@ -80,14 +80,15 @@ namespace DevOps.Data.DataRepository
             ServerBuild serverBuild = new ServerBuild();
             try
             {
-                ServerBuild build = db.ServerBuilds.Where(x => x.BuildId == BuildId).OrderByDescending(x => x.PublishDate).FirstOrDefault();
+                BuildProject build = db.BuildProjects.Where(x => x.BuildId == BuildId).FirstOrDefault();
                 serverBuild.BuildId = BuildId;
-                serverBuild.Build_Version = build == null ? 1001 : build.Build_Version + 1;
-                serverBuild.Mejor_Version = build == null ? 1 : build.Mejor_Version;
-                serverBuild.Minor_Version = build == null ? 1 : build.Minor_Version;
+                serverBuild.Build_Version = build.Build_Version;
+                serverBuild.Mejor_Version = build.Mejor_Version;
+                serverBuild.Minor_Version = build.Minor_Version;
                 serverBuild.PublishedBy = UserId;
                 serverBuild.ServerId = ServerId;
                 serverBuild.PublishDate = DateTime.Now;
+                serverBuild.Status = "queued";
                 db.ServerBuilds.Add(serverBuild);
                 if(db.SaveChanges() > 0)
                 {
@@ -107,12 +108,86 @@ namespace DevOps.Data.DataRepository
             List<ServerBuild> serverBuilds = new List<ServerBuild>();
             if(id == 0)
             {
-                serverBuilds = db.ServerBuilds.Include(x => x.BuildProject).Include(x => x.User).Include(x => x.BuildProject.Project).Include(x => x.ServerConfig).ToList();
+                serverBuilds = db.ServerBuilds.Include(x => x.BuildProject).Include(x => x.User).Include(x => x.BuildProject.Project).Include(x => x.ServerConfig).Include(x => x.BuildProject.Branch).ToList();
             }
             else
             {
-                serverBuilds = db.ServerBuilds.Where(x => x.BuildProject.Project.OrganisationId == id).Include(x => x.BuildProject).Include(x => x.User).Include(x => x.BuildProject.Project).Include(x => x.ServerConfig).ToList();
+                serverBuilds = db.ServerBuilds.Where(x => x.BuildProject.Project.OrganisationId == id).Include(x => x.BuildProject).Include(x => x.User).Include(x => x.BuildProject.Project).Include(x => x.ServerConfig).Include(x => x.BuildProject.Branch).ToList();
             }
+            return serverBuilds;
+        }
+
+        public bool UpdateServerBuildStatus(int id)
+        {
+            ServerBuild build = db.ServerBuilds.Find(id);
+            if (build != null)
+            {
+                if (build.ServerBuildId % 2 == 0 || build.Status.Equals("failure"))
+                {
+                    build.Status = "success";
+                }
+                else
+                {
+                    build.Status = "failure";
+                }
+                db.Entry(build).State = EntityState.Modified;
+                bool status = false;
+                if (db.SaveChanges() > 0)
+                {
+                    status = true;
+                }
+                return status;
+            }
+            return true;
+        }
+
+        public ServerBuild QueuedBuild()
+        {
+            ServerBuild build = db.ServerBuilds.Where(x => x.Status.Equals("queued")).AsNoTracking().OrderBy(x => x.PublishDate).FirstOrDefault();
+            return build;
+        }
+
+        public ServerBuild GetServerBuild(int id)
+        {
+            ServerBuild build = db.ServerBuilds.Where(x => x.ServerBuildId == id).AsNoTracking().Include(x => x.BuildProject).Include(x => x.BuildProject.Project).FirstOrDefault();
+            return build;
+        }
+
+        public bool UpdateServerBuild(ServerBuild build)
+        {
+            db.Entry(build).State = EntityState.Modified;
+            bool status = false;
+            if(db.SaveChanges() > 0)
+            {
+                status = true;
+            }
+            return status;
+        }
+
+        public int TotalBuilds(int id)
+        {
+            int total = 0;
+            if(id == 0)
+            {
+                total = db.ServerBuilds.Count();
+            }
+            else
+            {
+                total = db.ServerBuilds.Where(x => x.BuildProject.Project.OrganisationId == id).Count();
+            }
+            return total;
+        }
+
+        public int TotalServers(int id)
+        {
+            int total = 0;
+            total = db.ServerConfigs.Where(x => x.OrganisationId == id).Count();
+            return total;
+        }
+
+        public List<ServerBuild> GetServerBuilds(int pid, int bid, int sid)
+        {
+            List<ServerBuild> serverBuilds = db.ServerBuilds.Where(x => x.BuildProject.ProjectId == pid && x.ServerConfig.ServerId == sid && x.BuildProject.BranchId == bid).Include(x => x.BuildProject).Include(x => x.User).Include(x => x.BuildProject.Project).Include(x => x.ServerConfig).Include(x => x.BuildProject.Branch).ToList();
             return serverBuilds;
         }
     }

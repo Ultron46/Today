@@ -46,5 +46,17 @@ namespace DevOps.Business.Manager
         {
             return _organizationsDataRepository.DeleteOrganization(id);
         }
+
+        public int TotalOrganizations()
+        {
+            int total = _organizationsDataRepository.TotalOrganizations();
+            return total;
+        }
+
+        public List<Organisation> GetRecentOrganizations()
+        {
+            List<Organisation> organisations = _organizationsDataRepository.GetRecentOrganizations();
+            return organisations;
+        }
     }
 }
