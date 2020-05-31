@@ -104,7 +104,7 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script>
         var validation = false;
-        function validatePassword() { 
+        function validatePassword() {
             $.validator.addMethod(
                 "regex",
                 function(value, element, regexp) {
@@ -120,18 +120,18 @@
                 Nationality: "required",
                 Phone: "required",
                 Email: {
-                    required: true,        
+                    required: true,
                     email: true,
                 },
                 Password: {
                     required: true,
                     regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!\$%\^&\*])/,
                     minlength: 8,
-                },                  
+                },
                 cPassword: {
                     required:true,
                     minlength:8,
-                    equalTo: "#Password"              
+                    equalTo: "#Password"
                 },
                 DateOfBirth: "required",
             },
@@ -153,20 +153,20 @@
                     required: " Enter Password",
                     minLength: "Confirm Password Must be of minimun 8 Characters",
                     equalTo: " Enter Confirm Password Same as Password",
-                    
+
                 },
                 DateOfBirth:"Enter Date of Birth"
             }
         });
-        if (validator.form()) {            
-            validation = true;  
+        if (validator.form()) {
+            validation = true;
         }
     }
-        
+
         //function checkValidation() {
         //    $(".nk-int-st").find("span").remove();
         //    var dom;
-        //    if ($("#DateOfBirth").val() == "") {                                               
+        //    if ($("#DateOfBirth").val() == "") {
         //        validation = false;
         //        $("#DateOfBirth").after('<span class="errorMessage text-danger">DateOfBirth is required</span>');
         //        dom = $("#DateOfBirth");
@@ -180,54 +180,55 @@
         //    else if ($("Password").val() != $("cPassword").val) {
         //            validation = false;
         //            $("#cPassword").after('<span class="text-danger">Password and Confirm password is not match</span>');
-        //            dom = $("#cPassword");           
+        //            dom = $("#cPassword");
         //    }
 
-        //    if ($("#Email").val() == "") {                                               
+        //    if ($("#Email").val() == "") {
         //        validation = false;
         //        $("#Email").after('<span class="text-danger">Email is required</span>');
         //        dom = $("#Email");
         //    }
 
-        //    if ($("#Phone").val() == "") {                                               
+        //    if ($("#Phone").val() == "") {
         //        validation = false;
         //        $("#Phone").after('<span class="text-danger">Phone Number is required</span>');
         //        dom = $("#Phone");
         //    }
-        //    else if ($("#Phone").val().length != 10){                                               
+        //    else if ($("#Phone").val().length != 10){
         //        validation = false;
         //        $("#Phone").after('<span class="text-danger">Phone Number must be of 10 Degit</span>');
         //        dom = $("#Phone");
         //    }
 
-        //    if ($("#Nationality").val() == "") {                                               
+        //    if ($("#Nationality").val() == "") {
         //        validation = false;
         //        $("#Nationality").after('<span class="text-danger">Nationality is required</span>');
         //        dom = $("#Nationality");
         //    }
 
-        //    if ($("#Address").val() == "") {                                               
+        //    if ($("#Address").val() == "") {
         //        validation = false;
         //        $("#Address").after('<span class="text-danger">Address is required</span>');
         //        dom = $("#Address");
         //    }
 
-        //    if ($("#Name").val() == "") {                                               
+        //    if ($("#Name").val() == "") {
         //        validation = false;
         //        $("#Name").after('<span class="errorMessage text-danger">Name is required</span>');
         //        dom = $("#Name");
-        //    }     
+        //    }
 
         //    dom.focus();
         //};
 
         $('#submit').click(function (e) {
-            validatePassword();            
+            validatePassword();
             if (validation) {
                 e.preventDefault();
                 var name = $('#Name').val();
                 var Address = $('#Address').val();
                 var Nationality = $('#Nationality').val();
+                var Phone = $('#Phone').val();
                 var Email = $('#Email').val();
                 var Password = $('#Password').val();
                 var dateofbirth = $('#DateOfBirth').val();
@@ -237,13 +238,15 @@
                 $.ajax({
                     url: url1,
                     type: 'POST',//type of posting the data
-                    data: '{Name: "' + name + '",Address: "' + Address + '",Nationality: "' + Nationality + '",Email: "' + Email +
+                    data: '{Name: "' + name + '",Address: "' + Address + '",Nationality: "' + Nationality + '",Phone: "' + Phone + '",Email: "' + Email +
                         '",Password: "' + Password + '",DateOfBirth: "' + dateofbirth + '",OrganisationId: "' + orgid + '",RoleId: "' + roleid +
                         '"}',
                     contentType: 'application/json',
                     dataType: 'json',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", "Bearer " + '@Session["UserToken"]');
+                    },
                     success: function (r) {
-                        alert('User Created Successfully');
                         var url2 = "http://localhost:57996/Users/Users";
                         $.ajax({
                             url: url2,

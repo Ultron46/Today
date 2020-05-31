@@ -15,11 +15,9 @@ namespace DevOps.UI.Controllers
     [RoleAuth("Admin")]
     public class ErrorLogController : Controller
     {
-        string baseUrl = Constants.baseurl;
-
         // GET: Elmah
         [HttpGet]
-        public ActionResult ErrorLogList()
+        public ActionResult ErrorLog()
         {
             return PartialView();
         }
@@ -27,19 +25,14 @@ namespace DevOps.UI.Controllers
         [HttpGet]
         public async Task<ActionResult> ErrorLogDetail(Guid id)
         {
-            var client = new HttpClient();
             ElmahError elmah = new ElmahError();
-            client.BaseAddress = new Uri(baseUrl);
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            string token = Session["UserToken"].ToString();
             string address = "api/Elmah/GetElmahErrorById/" + id.ToString();
-            HttpResponseMessage Res = await client.GetAsync(address);
+            HttpResponseMessage Res = await Helpers.Get(address, token);
             if (Res.IsSuccessStatusCode)
             {
-
                 var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
                 elmah = JsonConvert.DeserializeObject<ElmahError>(MainMEnuResponse);
-
             }
             return PartialView(elmah);
         }

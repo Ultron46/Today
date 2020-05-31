@@ -18,5 +18,10 @@ namespace DevOps.Data.Interfaces
         int TotalSupportTickets(int id);
         int TotalUserSupportTickets(int id);
         List<SupportTicket> UserSupportTickets(int id);
+        //for chart
+        int GetTotalFixSupportTickets(int id);
+        int GetTotalNotFixedSupportTicket(int id);
+        int GetTotalFixSupportTicketsOfUsers(int id);
+        int GetTotalNotFixedSupportTicketOfUsers(int id);
     }
 }

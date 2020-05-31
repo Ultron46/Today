@@ -4,6 +4,23 @@
     ViewBag.Title = "TicketGenerate";
 }
 
+    <style type="text/css">
+
+
+
+        .High {
+            color: red !important;
+        }
+
+        .Medium {
+            color: orange !important;
+        }
+
+        .Low {
+            color: yellowgreen !important;
+        }
+    </style>
+
 <div class="login-content">
     <!-- Login -->
     <form>
@@ -21,7 +38,12 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
                     <div class="nk-int-st">
-                        <input type="text" id="Category" class="form-control" placeholder="Category" name="Category">
+                        <select id="Category" class="form-control" name="Category">
+                            <option selected="selected" disabled="disabled">---Category---</option>
+                            <option value="High" class="High">High</option>
+                            <option value="Medium" class="Medium">Medium</option>
+                            <option value="Low" class="Low">Low</option>
+                        </select>
                     </div>
                 </div>
                 <br />

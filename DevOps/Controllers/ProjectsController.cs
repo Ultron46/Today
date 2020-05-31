@@ -1,12 +1,16 @@
 ﻿using DevOps.Business.Interfaces;
 using DevOps.DataEntities.Models;
+using DevOps.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Script.Serialization;
 
 namespace DevOps.Controllers
 {
@@ -100,6 +104,7 @@ namespace DevOps.Controllers
         [HttpPost]
         public IHttpActionResult InsertBuildProject(BuildProject build)
         {
+            build.DownloadURL = HostingEnvironment.MapPath("~/Builds");
             bool status = _projectManager.BuildProject(build);
             if(status == false)
             {
@@ -165,6 +170,7 @@ namespace DevOps.Controllers
         [HttpPost]
         public IHttpActionResult ReleaseProject(ReleaseProject releaseProject)
         {
+            releaseProject.DownloadURL = HostingEnvironment.MapPath("~/Releases");
             bool status = _projectManager.ReleaseProject(releaseProject);
             if (status)
                 return Ok(status);
@@ -229,6 +235,48 @@ namespace DevOps.Controllers
         {
             bool status = _projectManager.UpdateQueuedBuildProjectStatus(id);
             return Ok(status);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetSuccessBuildProject(int id)
+        {
+            List<ServerBuild> serverBuilds = _projectManager.GetSuccessBuildProject(id);
+            if (serverBuilds == null)
+            {
+                return NotFound();
+            }
+            return Ok(serverBuilds);
+
+        }
+        [HttpGet]
+        public IHttpActionResult GetBuildSuccessVersion(int id)
+        {
+            ServerBuild serverBuild = _projectManager.GetBuildSuccessVersion(id);
+            if (serverBuild == null)
+            {
+                return NotFound();
+            }
+            return Ok(serverBuild);
+        }
+
+        [HttpPost]
+        public IHttpActionResult InsertReleaseProjectPackage(Object _object)
+        {
+            var serializer = new JavaScriptSerializer();
+            var releaseProjectPackages = JsonConvert.DeserializeObject<ReleaseProjectPackages>(_object.ToString());
+            List<ReleaseProjectPackage> releasesPackages = releaseProjectPackages.releases;
+            bool status = _projectManager.InsertReleaseProjectPackage(releasesPackages);
+            if (status == false)
+            {
+                return NotFound();
+            }
+            return Ok(status);
+        }
+
+        [HttpPost]
+        public bool UpdateStatus(int id)
+        {
+            return _projectManager.UpdateStatus(id);
         }
     }
 }

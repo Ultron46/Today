@@ -1,4 +1,4 @@
-﻿@model DevOps.UI.Models.Projects
+﻿@model DevOps.UI.Models.Project
     @{
         Layout = null;
     }
@@ -66,7 +66,24 @@
                     </div>
                     <br />
 
-                    <br /><br />
+                    @if (Session["Role"].ToString() == "Admin")
+                    {
+                        <div class="input-group mg-t-15">
+                            <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-sitemap"></i></span>
+                            <div class="nk-int-st">
+                                @Html.DropDownList("Organizations", new SelectList(ViewBag.Orgs, "OrganisationId", "Name"), "--Select--", new { @class = "udropdown" })
+                            </div>
+                        </div>
+                    }
+                    @if (Session["Role"].ToString() != "Admin")
+                    {
+                        <div class="input-group mg-t-15">
+                            @*<span class="input-group-addon nk-ic-st-pro"><i class="fas fa-sitemap"></i></span>*@
+                            <div class="nk-int-st">
+                                <input type="hidden" id="Organizations" name="Organizations" value="@Session["Organization"].ToString()" />
+                            </div>
+                        </div>
+                    }
                     <input type="submit" id="submit" value="Submit" class=" btn-success uloginbtn" />
 
                     <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
@@ -85,16 +102,16 @@
             var Status = $('#Status').val();
             var Type = $('#Type').val();
             var Plateform = $('#Plateform').val();
+            var OrganizationId = $('#Organizations').val();
             var url1 = "http://localhost:57996/Projects/Registration";
             $.ajax({
                 url: url1,
                 type: 'POST',//type of posting the data
-                data: '{ProjectName: "' + ProjectName + '",SolutionName: "' + SolutionName + '",SourceURL: "' + SourceURL + '",FileFormat: "' + FileFormat + '",Status: "' + Status + '",Type: "' + Type + '",Plateform: "' + Plateform +
+                data: '{ProjectName: "' + ProjectName + '",SolutionName: "' + SolutionName + '",SourceURL: "' + SourceURL + '",FileFormat: "' + FileFormat + '",Status: "' + Status + '",Type: "' + Type + '",Plateform: "' + Plateform + '",OrganisationId:"' + OrganizationId +
                     '"}',
                 contentType: 'application/json',
                 dataType: 'json',
                 success: function (r) {
-                    alert('User Created Successfully');
                     var url2 = "http://localhost:57996/Projects/Projects";
                     $.ajax({
                         url: url2,

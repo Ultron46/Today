@@ -24,6 +24,8 @@ public partial class Branch
 
         this.BuildProjects = new HashSet<BuildProject>();
 
+        this.ReleaseProjects = new HashSet<ReleaseProject>();
+
     }
 
 
@@ -33,13 +35,23 @@ public partial class Branch
 
     public Nullable<int> ProjectId { get; set; }
 
+    public Nullable<byte> Mejor_Version { get; set; }
 
+    public Nullable<byte> Minor_Version { get; set; }
+
+    public Nullable<int> Build_Version { get; set; }
+
+
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<BuildProject> BuildProjects { get; set; }
 
     public virtual Project Project { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<BuildProject> BuildProjects { get; set; }
+    public virtual ICollection<ReleaseProject> ReleaseProjects { get; set; }
 
 }
 

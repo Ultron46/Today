@@ -19,8 +19,6 @@ namespace DevOps.UI.Controllers
     [RoleAuth("Admin")]
     public class OrganizationController : Controller
     {
-        string baseUrl = Constants.baseurl;
-
         [HttpGet]
         public ActionResult Registration()
         {
@@ -36,13 +34,10 @@ namespace DevOps.UI.Controllers
         [HttpGet]
         public async Task<ActionResult> EditOrganization(int id)
         {
+            string token = Session["UserToken"].ToString();
             Organization organisations = new Organization();
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(baseUrl);
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             string address = "api/Organizations/GetOrganization?OrganisationId=" + id.ToString();
-            HttpResponseMessage Res = await client.GetAsync(address);
+            HttpResponseMessage Res = await Helpers.Get(address, token);
             if (Res.IsSuccessStatusCode)
             {
                 var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;

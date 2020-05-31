@@ -234,6 +234,8 @@
     <Compile Include="Controllers\EmailMasterController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\SupportTicketController.cs" />
+    <Compile Include="Model\ChangePassword.cs" />
+    <Compile Include="Model\RelaseProjectPackages.cs" />
     <Compile Include="Model\ResetPassword.cs" />
     <Compile Include="TokenAuthAttribute.cs" />
     <Compile Include="Controllers\AuthorizationController.cs" />
@@ -266,9 +268,13 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Builds\" />
+    <Folder Include="Releases\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DevOps.Business\DevOps.Business.csproj">

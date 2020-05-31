@@ -19,7 +19,7 @@
                 <div class="input-group">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-map-marker-alt"></i></span>
                     <div class="nk-int-st">
-                        @Html.DropDownList("OrganisationId", new SelectList(ViewBag.Organizations, "OrganisationId", "Name"), "Search", new { @class = "udropdown" })
+                        @Html.DropDownList("OrganisationId", new SelectList(ViewBag.Organizations, "OrganisationId", "Name"), "--Select Organization--", new { @class = "udropdown" })
                     </div>
                 </div>
                 <br />
@@ -44,7 +44,6 @@
             type: 'POST',//type of posting the data
             data: { "EmailMasterId": EmailMasterId ,"EmailID": EmailID, OrganisationId: OrganisationId },
             success: function (r) {
-                alert('Server Credentials Added Successfully');
                 var url2 = "http://localhost:57996/Settings/EmailMaster";
                 $.ajax({
                     url: url2,

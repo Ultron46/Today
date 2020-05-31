@@ -6,29 +6,37 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="data-table-list">
+                    <h4>Servers</h4>
+                    <a class="ajaxclass" href="/Servers/Registration">
+                        <h4>
+                            <i class="fa fa-plus"></i>     Add New
+                        </h4>
+                    </a>
                     <div class="table-responsive">
-                        <h4>Organizations</h4>
-                        <table id="data-table-basic" class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>ServerName</th>
-                                    <th>IPAddress</th>
-                                    <th>RAM</th>
-                                    <th>Processor</th>
-                                    <th>OS </th>
-                                    <th>Version</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
+                        @*<h4>Servers</h4>
+            <table id="data-table-basic" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ServerName</th>
+                        <th>IPAddress</th>
+                        <th>RAM</th>
+                        <th>Processor</th>
+                        <th>OS </th>
+                        <th>Version</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
 
-                        </table>
+            </table>*@
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div id="script">
 </div>
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script>
@@ -45,11 +53,16 @@
             url: urlb,
                 context: document.body,
                 success: function (data) {
-                    console.log(data);
+                    var tbl = "<table id='data-table-basic' class='table table-striped'><thead><tr><th>Server Name</th><th>IPAddress</th><th>RAM</th><th>Processor</th><th>OS</th><th>Version</th>";
+                    if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+                        tbl += "<th>Actions</th>";
+                    }
+                    tbl += "</tr ></thead > <tbody></tbody></table > ";
+                      $('.table-responsive').append(tbl);
                     for (var i = 0, li = data.length; i < li; i++) {
                         var newTr = "<tr> <td>" + data[i].serverName + " </td><td>" + data[i].ipAddress + "</td><td>" + data[i].ram + "</td><td>" + data[i].processer + "</td><td>" + data[i].os + "</td><td>" + data[i].version + "</td><td> <input type='hidden' value=" + data[i].serverId + ">";
                         if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
-                            newTr += "<a class='createajax' id='" + data[i].serverId + "' href='#'>Add Server Credentials</a></td ><td><a class='editajax' id='" + data[i].serverId + "' href='#'>Edit</a></td > <td><a class='deleteajax' id='" + data[i].serverId + "' href='#'>Delete</a>";
+                            newTr += "<a class='createajax' id='" + data[i].serverId + "' href='#'>Add Server Credentials</a>   <a class='editajax' id='" + data[i].serverId + "' href='#'>Edit</a>    <a class='deleteajax' id='" + data[i].serverId + "' href='#'>Delete</a>";
                         }
                         newTr += "</td></tr >";
                         $("#data-table-basic").append(newTr);
@@ -108,7 +121,6 @@
                                         data: '{id: "' + id + '"}',
                                         dataType: 'json',
                                         success: function (r) {
-                                            alert('Server Deleted Successfully');
                                             var url2 = "http://localhost:57996/Servers/Servers"
                                             $.ajax({
                                                 url: url2,
@@ -133,8 +145,34 @@
                             });
                         }
                     }
-
+                    reload_js();
                 }
             });
+    });
+    function reload_js() {
+        console.log("function exceute");
+        var s = "<script src='/Scripts/js/data-table/jquery.dataTables.min.js'><\/script>";
+        s += "<script src='/Scripts/js/data-table/data-table-act.js'><\/script>";
+        $('#script').append(s);
+        console.log('Javascript is loaded successful!');
+    };
+    $('.ajaxclass').click(function (e) {
+        e.preventDefault();
+        //var id = window.location.href.split('/').pop(-1);
+        //var url1 = "/Customers/Index";
+        $.ajax({
+            url: $(this).attr("href"),
+            type: 'GET',//type of posting the data
+            contentType: 'application/json',
+            dataType: 'html',
+            success: function (r) {
+                $("#partialbody").empty();
+                $("#partialbody").html(r);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                //what to do in error
+            }
         });
+
+    });
 </script>

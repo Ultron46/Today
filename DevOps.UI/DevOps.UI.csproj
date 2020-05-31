@@ -46,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.13.8.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.13.8\lib\net40\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -180,6 +183,7 @@
     </Compile>
     <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\BuildProject.cs" />
+    <Compile Include="Models\Chart.cs" />
     <Compile Include="Models\ElmahError.cs" />
     <Compile Include="Models\EmailMaster.cs" />
     <Compile Include="Models\Emails.cs" />
@@ -1986,7 +1990,10 @@
     <Content Include="Content\font\webfonts\fa-solid-900.ttf" />
     <Content Include="Content\font\webfonts\fa-solid-900.woff" />
     <Content Include="Content\font\webfonts\fa-solid-900.woff2" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\canvasjs.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -2107,10 +2114,13 @@
     <Content Include="Views\Package\Packages.cshtml" />
     <Content Include="Views\Package\EditPackage.cshtml" />
     <Content Include="Views\Package\Release.cshtml" />
-    <Content Include="Views\ErrorLog\ErrorLogList.cshtml" />
+    <Content Include="Views\ErrorLog\ErrorLog.cshtml" />
     <Content Include="Views\ErrorLog\ErrorLogDetail.cshtml" />
     <Content Include="Views\Users\ForgotPassword.cshtml" />
     <Content Include="Views\Users\ResetPassword.cshtml" />
+    <Content Include="Views\Users\ChangePassword.cshtml" />
+    <Content Include="Views\Servers\EditCredential.cshtml" />
+    <Content Include="Views\Package\GetAllPackage.cshtml" />
     <None Include="Views\Users\UserTable.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -2131,6 +2141,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\" />
+    <Folder Include="Builds\" />
+    <Folder Include="Releases\" />
     <Folder Include="Views\SupportTickets\" />
   </ItemGroup>
   <ItemGroup>

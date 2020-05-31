@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<DevOps.UI.Models.EmailMaster>
 
 <!-- Data Table area Start-->
-<div class="breadcomb-area">
+@*<div class="breadcomb-area">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="breadcomb-list">
                     <div class="row">
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                            @*<a href="/Settings/AddEmailMaster">Add</a>*@
+                            <a href="/Settings/AddEmailMaster">Add</a>
                             <input type="button" id="submit" value="Add" class=" btn-success" />
                         </div>
                     </div>
@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
 <div class="data-table-area">
     <div class="container">
@@ -24,7 +24,12 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="data-table-list">
                     <div class="basic-tb-hd">
-                        <h2>Email Master</h2>
+                        <h4>Email Master</h4>
+                        <a class="ajaxclass" href="/Settings/AddEmailMaster">
+                            <h4>
+                                <i class="fa fa-plus"></i>     Add New
+                            </h4>
+                        </a>
                     </div>
                     <div class="table-responsive">
                         <table id="data-table-basic" class="table table-striped">
@@ -105,7 +110,6 @@
                                         data: '{id: "' + id + '"}',
                                         dataType: 'json',
                                         success: function (r) {
-                                            alert('Server Deleted Successfully');
                                             var url2 = "http://localhost:57996/Settings/EmailMaster"
                                             $.ajax({
                                                 url: url2,
@@ -140,10 +144,12 @@
             $('#script').append(s);
             console.log('Javascript is loaded successful!');
     };
-    $('#submit').click(function (e) {
+    $('.ajaxclass').click(function (e) {
         e.preventDefault();
+        //var id = window.location.href.split('/').pop(-1);
+        //var url1 = "/Customers/Index";
         $.ajax({
-            url: "http://localhost:57996/Settings/AddEmailMaster",
+            url: $(this).attr("href"),
             type: 'GET',//type of posting the data
             contentType: 'application/json',
             dataType: 'html',
@@ -153,7 +159,6 @@
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 //what to do in error
-                console.log(thrownError);
             }
         });
 

@@ -2460,3 +2460,6 @@ C:\Users\Hardik\source\repos\DevOps_Build\DevOps\obj\Debug\DevOps.csproj.CoreCom
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\obj\Debug\DevOps.csproj.CopyComplete
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\obj\Debug\DevOps.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps\obj\Debug\DevOps.pdb
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\DotNetZip.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\DotNetZip.pdb
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps\bin\DotNetZip.xml

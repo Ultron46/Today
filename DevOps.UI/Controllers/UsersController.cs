@@ -21,26 +21,12 @@ namespace DevOps.UI.Controllers
     [EnableCorsAttribute("*", "*", "*")]
     public class UsersController : Controller
     {
-        private string baseUrl;
-        private HttpClient client;
-        private HttpResponseMessage Res;
-        private string AddressUri;
-        private StringContent StringContent;
-        private Uri addressUri;
-        public UsersController()
-        {
-            baseUrl = Constants.baseurl;
-            client = new HttpClient();
-            client.DefaultRequestHeaders.Clear();
-            client.BaseAddress = new Uri(baseUrl);
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        }
-
         [HttpGet]
         [RoleAuth("Admin", "ReleaseManager")]
         public async Task<ActionResult> Registration()
         {
+            string token = Session["UserToken"].ToString();
+            string address = "api/Organizations/GetAllOrganization";
             Array values = Enum.GetValues(typeof(Enums.Roles));
             List<SelectListItem> roles = new List<SelectListItem>(values.Length);
             foreach (var i in values)
@@ -53,8 +39,7 @@ namespace DevOps.UI.Controllers
             }
             ViewBag.Roles = roles;
             List<Organization> organisations = new List<Organization>();
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Session["UserToken"].ToString());
-            Res = await client.GetAsync("api/Organizations/GetAllOrganization");
+            HttpResponseMessage Res = await Helpers.Get(address, token);
             if (Res.IsSuccessStatusCode)
             {
                 var OrganizationResponse = Res.Content.ReadAsStringAsync().Result;
@@ -91,10 +76,11 @@ namespace DevOps.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(FormCollection collection)
         {
+            string token = "";
             string cookiecheck = collection["Check"];
             User principal = null;
-            AddressUri = "api/Users/GetAuthUser?email=" + collection["Email"] + "&password=" + collection["Password"];
-            Res = await client.GetAsync(AddressUri);
+            string AddressUri = "api/Users/GetAuthUser?email=" + collection["Email"] + "&password=" + collection["Password"];
+            HttpResponseMessage Res = await Helpers.Get(AddressUri, token);
             if (Res.IsSuccessStatusCode)
             {
                 var UserResponse = Res.Content.ReadAsStringAsync().Result;
@@ -102,10 +88,8 @@ namespace DevOps.UI.Controllers
             }
             if (principal != null)
             {
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 AddressUri = "api/Organizations/GetOrganization?OrganisationId=" + principal.OrganisationId.ToString();
-                HttpResponseMessage Res = await client.GetAsync(AddressUri);
+                Res = await Helpers.Get(AddressUri, token);
                 Organization organisations = new Organization();
                 if (Res.IsSuccessStatusCode)
                 {
@@ -121,7 +105,7 @@ namespace DevOps.UI.Controllers
                 Session["Username"] = principal.Email;
                 AddressUri = "api/Authorization/GetUserToken?id=" + principal.UserId.ToString();
                 UserToken token1 = new UserToken();
-                Res = await client.GetAsync(AddressUri);
+                Res = await Helpers.Get(AddressUri, token);
                 if (Res.IsSuccessStatusCode)
                 {
                     var TokenResponse = Res.Content.ReadAsStringAsync().Result;
@@ -129,16 +113,16 @@ namespace DevOps.UI.Controllers
                 }
                 if (String.IsNullOrEmpty(token1.Token))
                 {
-                    string token = Helpers.GenerateToken(principal.UserId, principal.Password);
-                    UserToken userToken = new UserToken { UserID = principal.UserId, Token = token };
-                    StringContent = new StringContent(JsonConvert.SerializeObject(userToken), Encoding.UTF8, "application/json");
-                    addressUri = new Uri("api/Authorization/InsertToken", UriKind.Relative);
-                    Res = client.PostAsync(addressUri, StringContent).Result;
+                    string t = Helpers.GenerateToken(principal.UserId, principal.Password);
+                    UserToken userToken = new UserToken { UserID = principal.UserId, Token = t };
+                    var StringContent = new StringContent(JsonConvert.SerializeObject(userToken), Encoding.UTF8, "application/json");
+                    var addressUri = new Uri("api/Authorization/InsertToken", UriKind.Relative);
+                    Res = Helpers.Post(addressUri, StringContent, token);
                     if (!Res.IsSuccessStatusCode)
                     {
                         return View();
                     }
-                    Session["UserToken"] = token;
+                    Session["UserToken"] = t;
                 }
                 else
                 {
@@ -146,16 +130,16 @@ namespace DevOps.UI.Controllers
                 }
                 List<MainMenu> mainMenus = new List<MainMenu>();
                 List<SubMenu> subs = new List<SubMenu>();
-                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Session["UserToken"].ToString());
-                Res = await client.GetAsync("api/MainMenu/GetMainMenus");
+                token = Session["UserToken"].ToString();
+                AddressUri = "api/MainMenu/GetMainMenus";
+                Res = await Helpers.Get(AddressUri, token);
                 if (Res.IsSuccessStatusCode)
                 {
                     var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
                     mainMenus = JsonConvert.DeserializeObject<List<MainMenu>>(MainMEnuResponse);
                 }
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                Res = await client.GetAsync("api/SubMenu/GetSubMenus?id=" + role);
+                AddressUri = "api/SubMenu/GetSubMenus?id=" + role;
+                Res = await Helpers.Get(AddressUri, token);
                 if (Res.IsSuccessStatusCode)
                 {
                     var MainMEnuResponse = Res.Content.ReadAsStringAsync().Result;
@@ -190,9 +174,15 @@ namespace DevOps.UI.Controllers
         }
 
         [HttpGet]
-        [RoleAuth("Admin", "ReleaseManager")]
+        [RoleAuth("Admin", "ReleaseManager", "User")]
         public async Task<ActionResult> EditUser(int id)
         {
+            if(Convert.ToInt32(Session["user"]) != id && Session["Role"].ToString() == "User")
+            {
+                return new HttpUnauthorizedResult();
+            }
+            string token = Session["UserToken"].ToString();
+            string AddressUri;
             Array values = Enum.GetValues(typeof(Enums.Roles));
             List<SelectListItem> roles = new List<SelectListItem>(values.Length);
             foreach (var i in values)
@@ -205,10 +195,11 @@ namespace DevOps.UI.Controllers
             }
             ViewBag.Roles = roles;
             List<Organization> organisations = new List<Organization>();
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Session["UserToken"].ToString());
+            HttpResponseMessage Res;
             if (Session["Role"].ToString() == "Admin")
             {
-                Res = await client.GetAsync("api/Organizations/GetAllOrganization");
+                AddressUri = "api/Organizations/GetAllOrganization";
+                Res = await Helpers.Get(AddressUri, token);
                 if (Res.IsSuccessStatusCode)
                 {
                     var OrganizationResponse = Res.Content.ReadAsStringAsync().Result;
@@ -219,7 +210,7 @@ namespace DevOps.UI.Controllers
             {
                 Organization organization = new Organization();
                 AddressUri = "api/Organizations/GetOrganization?OrganisationId=" + Session["Organization"].ToString();
-                Res = await client.GetAsync(AddressUri);
+                Res = await Helpers.Get(AddressUri, token);
                 if (Res.IsSuccessStatusCode)
                 {
                     var OrganizationResponse = Res.Content.ReadAsStringAsync().Result;
@@ -232,7 +223,7 @@ namespace DevOps.UI.Controllers
                 roles.Remove(roles.First());
             }
             AddressUri = "api/Users/GetUser?userId=" + id.ToString();
-            Res = await client.GetAsync(AddressUri);
+            Res = await Helpers.Get(AddressUri, token);
             User user = new User();
             if (Res.IsSuccessStatusCode)
             {
@@ -247,10 +238,10 @@ namespace DevOps.UI.Controllers
         [RoleAuth("Admin", "ReleaseManager", "User")]
         public async Task<ActionResult> LogOut()
         {
+            string token = Session["UserToken"].ToString();
             int id = Convert.ToInt32(Session["user"].ToString());
-            AddressUri = "api/Authorization/DeleteToken?id=" + id.ToString();
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Session["UserToken"].ToString());
-            Res = await client.GetAsync(AddressUri);
+            string AddressUri = "api/Authorization/DeleteToken?id=" + id.ToString();
+            HttpResponseMessage Res = await Helpers.Get(AddressUri, token);
             if (Res.IsSuccessStatusCode)
             {
                 Session.Clear();
@@ -280,21 +271,12 @@ namespace DevOps.UI.Controllers
         [HttpGet]
         public async Task<ActionResult> CheckEmail(string Email)
         {
-            User users = new User();
-            var client = new HttpClient();
-
-            client.BaseAddress = new Uri(baseUrl);
-
-            client.DefaultRequestHeaders.Clear();
-
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            string token = Session["UserToken"].ToString();
             string address = "api/Users/CheckEmail?Email=" + Email.ToString();
-            HttpResponseMessage Res = await client.GetAsync(address);
-
+            HttpResponseMessage Res = await Helpers.Get(address, token);
             if (Res.IsSuccessStatusCode)
             {
                 return Json(new { success = "true" }, JsonRequestBehavior.AllowGet);
-
             }
             return Json(new { error = "true" }, JsonRequestBehavior.AllowGet);
         }
@@ -302,7 +284,6 @@ namespace DevOps.UI.Controllers
         [HttpGet]
         public ActionResult SendResetLink(string email)
         {
-
             try
             {
                 string mes = "";
@@ -310,18 +291,14 @@ namespace DevOps.UI.Controllers
                 var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, "/Users/ResetPassword?Email=" + email + "");
                 mes = mes.Replace("LINK", link);
                 var message = new MailMessage();
-
                 message.To.Add(new MailAddress(email));
-
                 message.From = new MailAddress("CMS@GMAIL");
                 message.Subject = "Reset Password";
                 message.Body = mes;
                 message.IsBodyHtml = true;
-
                 using (var smtp = new SmtpClient())
                 {
                     var credential = new NetworkCredential
-
                     {
                         UserName = "GDevOpsBuild@gmail.com",
                         Password = "DevopsBuildabcd"
@@ -332,7 +309,6 @@ namespace DevOps.UI.Controllers
                     smtp.EnableSsl = true;
                     smtp.Send(message);
                 }
-
                 TempData["Message"] = "Please Check your Email to Reset Password!!";
                 return Json(new { success = "true" }, JsonRequestBehavior.AllowGet);
             }
@@ -346,6 +322,12 @@ namespace DevOps.UI.Controllers
         public ActionResult ResetPassword()
         {
             return PartialView("ResetPassword");
+        }
+
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            return PartialView("ChangePassword");
         }
     }
 }

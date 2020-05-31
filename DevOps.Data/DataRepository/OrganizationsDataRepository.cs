@@ -83,5 +83,15 @@ namespace DevOps.Data.DataRepository
             organisations = DbContext.Organisations.OrderBy(x => x.Name).Take(5).ToList();
             return organisations;
         }
+
+        public List<Organisation> NumberOfUserInEachOrganization()
+        {
+            return DbContext.Organisations.Include("Users").OrderBy(q => q.OrganisationId).ToList();
+        }
+
+        public List<Organisation> NumberOfProjectInEachOrganization()
+        {
+            return DbContext.Organisations.Include("Projects").OrderBy(q => q.OrganisationId).ToList();
+        }
     }
 }

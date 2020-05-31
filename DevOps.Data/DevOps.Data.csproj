@@ -37,6 +37,9 @@
     <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetZip, Version=1.13.8.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.13.8\lib\net40\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -87,6 +90,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\DevOps.Common\DevOps.Common.csproj">
+      <Project>{A797D3FE-49DB-4C97-8FC0-15708E0EA632}</Project>
+      <Name>DevOps.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DevOps.DataEntities\DevOps.DataEntities.csproj">
       <Project>{835CB1D5-C155-4295-8C08-7D6226E1A0AE}</Project>
       <Name>DevOps.DataEntities</Name>

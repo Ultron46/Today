@@ -33,5 +33,9 @@ namespace DevOps.Data.Interfaces
         List<Project> GetRecentProjects(int id);
         bool UpdateQueuedBuildProjectStatus(int id);
         ReleaseProject GetQueuedBuildProject();
+        List<ServerBuild> GetSuccessBuildProject(int id);
+        ServerBuild GetBuildSuccessVersion(int id);
+        bool InsertReleaseProjectPackage(List<ReleaseProjectPackage> projectPackages);
+        bool UpdateStatus(int id);
     }
 }

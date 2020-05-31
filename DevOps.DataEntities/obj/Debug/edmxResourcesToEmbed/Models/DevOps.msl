@@ -1,15 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="DevOpsModelStoreContainer" CdmEntityContainer="DevOpsEntities">
-    <EntitySetMapping Name="Branches">
-      <EntityTypeMapping TypeName="DevOpsModel.Branch">
-        <MappingFragment StoreEntitySet="Branch">
-          <ScalarProperty Name="BranchId" ColumnName="BranchId" />
-          <ScalarProperty Name="BranchName" ColumnName="BranchName" />
-          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="ELMAH_Error">
       <EntityTypeMapping TypeName="DevOpsModel.ELMAH_Error">
         <MappingFragment StoreEntitySet="ELMAH_Error">
@@ -157,9 +148,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="ELMAH_GetErrorsXml" FunctionName="DevOpsModel.Store.ELMAH_GetErrorsXml" />
-    <FunctionImportMapping FunctionImportName="ELMAH_GetErrorXml" FunctionName="DevOpsModel.Store.ELMAH_GetErrorXml" />
-    <FunctionImportMapping FunctionImportName="ELMAH_LogError" FunctionName="DevOpsModel.Store.ELMAH_LogError" />
     <EntitySetMapping Name="UserTokens">
       <EntityTypeMapping TypeName="DevOpsModel.UserToken">
         <MappingFragment StoreEntitySet="UserToken">
@@ -209,19 +197,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="ReleaseProjects">
-      <EntityTypeMapping TypeName="DevOpsModel.ReleaseProject">
-        <MappingFragment StoreEntitySet="ReleaseProject">
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="PackageId" ColumnName="PackageId" />
-          <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
-          <ScalarProperty Name="ServerId" ColumnName="ServerId" />
-          <ScalarProperty Name="ReleaseBy" ColumnName="ReleaseBy" />
-          <ScalarProperty Name="BuildId" ColumnName="BuildId" />
-          <ScalarProperty Name="ReleaseProjectId" ColumnName="ReleaseProjectId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="DevOpsModel.User">
         <MappingFragment StoreEntitySet="User">
@@ -236,6 +211,42 @@
           <ScalarProperty Name="Address" ColumnName="Address" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Branches">
+      <EntityTypeMapping TypeName="DevOpsModel.Branch">
+        <MappingFragment StoreEntitySet="Branch">
+          <ScalarProperty Name="Build_Version" ColumnName="Build_Version" />
+          <ScalarProperty Name="Minor_Version" ColumnName="Minor_Version" />
+          <ScalarProperty Name="Mejor_Version" ColumnName="Mejor_Version" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+          <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReleaseProjectPackages">
+      <EntityTypeMapping TypeName="DevOpsModel.ReleaseProjectPackage">
+        <MappingFragment StoreEntitySet="ReleaseProjectPackage">
+          <ScalarProperty Name="PackageId" ColumnName="PackageId" />
+          <ScalarProperty Name="ReleaseProjectId" ColumnName="ReleaseProjectId" />
+          <ScalarProperty Name="ReleaseProjectPackageId" ColumnName="ReleaseProjectPackageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReleaseProjects">
+      <EntityTypeMapping TypeName="DevOpsModel.ReleaseProject">
+        <MappingFragment StoreEntitySet="ReleaseProject">
+          <ScalarProperty Name="ReleaseNotes" ColumnName="ReleaseNotes" />
+          <ScalarProperty Name="DownloadURL" ColumnName="DownloadURL" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
+          <ScalarProperty Name="ReleaseBy" ColumnName="ReleaseBy" />
+          <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+          <ScalarProperty Name="ServerBuildId" ColumnName="ServerBuildId" />
+          <ScalarProperty Name="ReleaseName" ColumnName="ReleaseName" />
+          <ScalarProperty Name="ReleaseProjectId" ColumnName="ReleaseProjectId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

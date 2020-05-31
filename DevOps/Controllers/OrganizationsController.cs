@@ -89,5 +89,17 @@ namespace DevOps.Controllers
             List<Organisation> organisations = _organizationsManager.GetRecentOrganizations();
             return Ok(organisations);
         }
+
+        public IHttpActionResult GetNumberOfProjectInOrganization()
+        {
+            List<Organisation> organisations = _organizationsManager.NumberOfProjectInEachOrganization();
+            return Ok(organisations);
+        }
+
+        public IHttpActionResult GetNumberOfUserInOrganization()
+        {
+            List<Organisation> organisations = _organizationsManager.NumberOfUserInEachOrganization();
+            return Ok(organisations);
+        }
     }
 }

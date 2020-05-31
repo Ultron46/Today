@@ -77,6 +77,38 @@ namespace DevOps.Controllers
             return Ok(status);
         }
 
+        [HttpGet]
+        public IHttpActionResult GetCredential(int id)
+        {
+            ServerCredential credential = _serverManager.GetServerCredential(id);
+            if (credential == null)
+            {
+                return NotFound();
+            }
+            return Ok(credential);
+        }
+
+        [HttpPost]
+        public IHttpActionResult UpdateServerCredentials(ServerCredential serverCredential)
+        {
+            bool status = _serverManager.UpdateServerCredential(serverCredential);
+            if (status == false)
+            {
+                return NotFound();
+            }
+            return Ok(status);
+        }
+
+        [HttpPost]
+        public IHttpActionResult DeleteServerCredentials(int id)
+        {
+            bool status = _serverManager.DeleteServerCredential(id);
+            if (status == false)
+            {
+                return NotFound();
+            }
+            return Ok(status);
+        }
         [HttpPost]
         public IHttpActionResult UpdateServer(ServerConfig serverConfig)
         {

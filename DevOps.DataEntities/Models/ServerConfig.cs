@@ -26,8 +26,6 @@ public partial class ServerConfig
 
         this.ServerBuilds = new HashSet<ServerBuild>();
 
-        this.ReleaseProjects = new HashSet<ReleaseProject>();
-
     }
 
 
@@ -58,10 +56,6 @@ public partial class ServerConfig
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<ServerBuild> ServerBuilds { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<ReleaseProject> ReleaseProjects { get; set; }
 
 }
 

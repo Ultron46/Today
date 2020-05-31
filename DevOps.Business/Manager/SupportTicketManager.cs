@@ -63,5 +63,30 @@ namespace DevOps.Business.Manager
             List<SupportTicket> tickets = _supportTicketDataRepository.UserSupportTickets(id);
             return tickets;
         }
+
+        public int GetTotalFixSupportTickets(int id)
+        {
+            int total = _supportTicketDataRepository.GetTotalFixSupportTickets(id);
+            return total;
+        }
+
+        public int GetTotalNotFixedSupportTicket(int id)
+        {
+            int total = _supportTicketDataRepository.GetTotalNotFixedSupportTicket(id);
+            return total;
+
+        }
+
+        public int GetTotalFixSupportTicketsOfUsers(int id)
+        {
+            int total = _supportTicketDataRepository.GetTotalFixSupportTicketsOfUsers(id);
+            return total;
+        }
+
+        public int GetTotalNotFixedSupportTicketOfUsers(int id)
+        {
+            int total = _supportTicketDataRepository.GetTotalNotFixedSupportTicketOfUsers(id);
+            return total;
+        }
     }
 }

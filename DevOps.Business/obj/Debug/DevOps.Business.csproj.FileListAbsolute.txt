@@ -1255,3 +1255,6 @@ C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Business\obj\Debug\DevOps.Busin
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Business\obj\Debug\DevOps.Business.csproj.CopyComplete
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Business\obj\Debug\DevOps.Business.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Business\obj\Debug\DevOps.Business.pdb
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Business\bin\Debug\DotNetZip.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Business\bin\Debug\DotNetZip.pdb
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Business\bin\Debug\DotNetZip.xml

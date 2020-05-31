@@ -58,5 +58,15 @@ namespace DevOps.Business.Manager
             List<Organisation> organisations = _organizationsDataRepository.GetRecentOrganizations();
             return organisations;
         }
+
+        public List<Organisation> NumberOfUserInEachOrganization()
+        {
+            return _organizationsDataRepository.NumberOfUserInEachOrganization();
+        }
+
+        public List<Organisation> NumberOfProjectInEachOrganization()
+        {
+            return _organizationsDataRepository.NumberOfProjectInEachOrganization();
+        }
     }
 }

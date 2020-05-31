@@ -36,8 +36,6 @@ public partial class DevOpsEntities : DbContext
     }
 
 
-    public virtual DbSet<Branch> Branches { get; set; }
-
     public virtual DbSet<ELMAH_Error> ELMAH_Error { get; set; }
 
     public virtual DbSet<EmailMaster> EmailMasters { get; set; }
@@ -70,9 +68,13 @@ public partial class DevOpsEntities : DbContext
 
     public virtual DbSet<PackageRelease> PackageReleases { get; set; }
 
-    public virtual DbSet<ReleaseProject> ReleaseProjects { get; set; }
-
     public virtual DbSet<User> Users { get; set; }
+
+    public virtual DbSet<Branch> Branches { get; set; }
+
+    public virtual DbSet<ReleaseProjectPackage> ReleaseProjectPackages { get; set; }
+
+    public virtual DbSet<ReleaseProject> ReleaseProjects { get; set; }
 
 
     public virtual ObjectResult<string> ELMAH_GetErrorsXml(string application, Nullable<int> pageIndex, Nullable<int> pageSize, ObjectParameter totalCount)

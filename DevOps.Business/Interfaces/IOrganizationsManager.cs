@@ -16,5 +16,7 @@ namespace DevOps.Business.Interfaces
         bool DeleteOrganization(int id);
         int TotalOrganizations();
         List<Organisation> GetRecentOrganizations();
+        List<Organisation> NumberOfUserInEachOrganization();
+        List<Organisation> NumberOfProjectInEachOrganization();
     }
 }

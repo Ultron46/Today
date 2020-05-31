@@ -16,6 +16,30 @@
                 </div>
                 <br />
 
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
+                    <div class="nk-int-st">
+                        @Html.EditorFor(model => model.Mejor_Version, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <br />
+
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
+                    <div class="nk-int-st">
+                        @Html.EditorFor(model => model.Minor_Version, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <br />
+
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-user"></i></span>
+                    <div class="nk-int-st">
+                        @Html.EditorFor(model => model.Build_Version, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <br />
+
                 <input type="submit" id="editbtn" value="Submit" class=" btn-success uloginbtn" />
 
                 <a href="#l-login" data-ma-action="nk-login-switch" data-ma-block="#l-login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
@@ -29,16 +53,17 @@
         var BranchId = $('#id').val();
         var ProjectId = $('#ProjectId').val();
         var BranchName = $('#BranchName').val();
-
+        var Mejor_Version = $('#Mejor_Version').val();
+        var Minor_Version = $('#Minor_Version').val();
+        var Build_Version = $('#Build_Version').val();
         var url1 = "http://localhost:60969/api/Branches/UpdateBranch";
         $.ajax({
             url: url1,
             type: 'POST',//type of posting the data
-            data: '{BranchId: "' + BranchId + '",ProjectId: "' + ProjectId + '",BranchName: "' + BranchName + '"}',
+            data: '{BranchId: "' + BranchId + '",ProjectId: "' + ProjectId + '",BranchName: "' + BranchName + '",Mejor_Version: "' + Mejor_Version + '",Minor_Version: "' + Minor_Version + '",Build_Version: "' + Build_Version + '"}',
             contentType: 'application/json',
             dataType: 'json',
             success: function (r) {
-                alert('Branch Name Updated Successfully');
                 var url2 = "http://localhost:57996/Branch/Branch"
                 $.ajax({
                     url: url2,

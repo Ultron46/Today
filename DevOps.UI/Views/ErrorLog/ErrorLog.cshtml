@@ -1,0 +1,97 @@
+﻿@model IEnumerable<DevOps.UI.Models.ElmahError>
+
+
+
+@{
+    ViewBag.Title = "Error Log List";
+}
+<div class="data-table-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="data-table-list">
+                    <div class="basic-tb-hd">
+                        <h2>Error Log List</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="data-table-basic" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    @*<th>Application</th>*@
+                                    <th>Host</th>
+                                    <th>Type</th>
+                                    <th>Source</th>
+                                    @*<th>Message</th>*@
+                                    <th>StatusCode</th>
+                                    <th>TimeUtc</th>
+                                    <th>Detail</th>
+                                </tr>
+                            </thead>
+                            <tbody id="databody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="script">
+</div>
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var urlg = "http://localhost:60969/api/Elmah/GetElmahErrors";
+        $.ajax({
+            url: urlg,
+            context: document.body,
+            success: function (data) {
+                //console.log(data);
+                $("#databody").empty();
+                $.each(data, function (index, val) {
+                    console.log(val);
+                    console.log(index);
+                    var row = "<tr>";
+                    //row += "<td>" + val.application + "</td>";
+                    row += "<td>" + val.host + "</td>";
+                    row += "<td>" + val.type + "</td>";
+                    row += "<td>" + val.source + "</td>";
+                    //row += "<td>" + val.message + "</td>";
+                    row += "<td>" + val.statusCode + "</td>";
+                    row += "<td>" + val.timeUtc + "</td>";
+                    row += "<td>" + "<a class='detailajax' id = '" + val.errorId + "' href = '#' > Detail</a >" + "</td>";
+                    $("#databody").append(row);
+
+                    document.getElementsByClassName("detailajax")[index].addEventListener("click", function (event) {
+                        event.preventDefault();
+                        var url1 = "http://localhost:57996/ErrorLog/ErrorLogDetail/" + event.target.id;
+                        $.ajax({
+                            url: url1,
+                            type: 'GET',//type of posting the data
+                            contentType: 'application/json',
+                            dataType: 'html',
+                            success: function (r) {
+                                $("#partialbody").empty();
+                                $("#partialbody").html(r);
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                alert(url1);
+                            }
+                        });
+                    });
+                });
+                reload_js();
+            }
+        });
+
+        function reload_js() {
+            var s = "<script src='/Scripts/js/data-table/jquery.dataTables.min.js'><\/script>";
+            s += "<script src='/Scripts/js/data-table/data-table-act.js'><\/script>";
+            $('#script').append(s);
+        };
+
+
+    });
+</script>

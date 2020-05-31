@@ -21,7 +21,7 @@ namespace DevOps.Data.DataRepository
             int builds = 0;
             int sbuilds = 0;
             int release = 0;
-            if(id == 0)
+            if (id == 0)
             {
                 builds = db.BuildProjects.Where(x => x.Status.Equals("failure")).Count();
                 sbuilds = db.ServerBuilds.Where(x => x.Status.Equals("failure")).Count();
@@ -31,7 +31,7 @@ namespace DevOps.Data.DataRepository
             {
                 builds = db.BuildProjects.Where(x => x.Status.Equals("failure") && x.Project.OrganisationId == id).Count();
                 sbuilds = db.ServerBuilds.Where(x => x.Status.Equals("failure") && x.BuildProject.Project.OrganisationId == id).Count();
-                release = db.ReleaseProjects.Where(x => x.Status.Equals("failure") && x.BuildProject.Project.OrganisationId == id).Count();
+                release = db.ReleaseProjects.Where(x => x.Status.Equals("failure") && x.ServerBuild.BuildProject.Project.OrganisationId == id).Count();
             }
             total = builds + sbuilds + release;
             return total;
@@ -53,7 +53,7 @@ namespace DevOps.Data.DataRepository
             {
                 builds = db.BuildProjects.Where(x => x.Status.Equals("queued") && x.Project.OrganisationId == id).Count();
                 sbuilds = db.ServerBuilds.Where(x => x.Status.Equals("queued") && x.BuildProject.Project.OrganisationId == id).Count();
-                release = db.ReleaseProjects.Where(x => x.Status.Equals("queued") && x.BuildProject.Project.OrganisationId == id).Count();
+                release = db.ReleaseProjects.Where(x => x.Status.Equals("queued") && x.ServerBuild.BuildProject.Project.OrganisationId == id).Count();
             }
             total = builds + sbuilds + release;
             return total;
@@ -75,7 +75,7 @@ namespace DevOps.Data.DataRepository
             {
                 builds = db.BuildProjects.Where(x => x.Status.Equals("success") && x.Project.OrganisationId == id).Count();
                 sbuilds = db.ServerBuilds.Where(x => x.Status.Equals("success") && x.BuildProject.Project.OrganisationId == id).Count();
-                release = db.ReleaseProjects.Where(x => x.Status.Equals("success") && x.BuildProject.Project.OrganisationId == id).Count();
+                release = db.ReleaseProjects.Where(x => x.Status.Equals("success") && x.ServerBuild.BuildProject.Project.OrganisationId == id).Count();
             }
             total = builds + sbuilds + release;
             return total;

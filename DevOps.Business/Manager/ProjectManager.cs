@@ -160,5 +160,29 @@ namespace DevOps.Business.Manager
             ReleaseProject releaseProject = _projectDataRepository.GetQueuedBuildProject();
             return releaseProject;
         }
+
+        public List<ServerBuild> GetSuccessBuildProject(int id)
+        {
+            List<ServerBuild> serverBuilds = _projectDataRepository.GetSuccessBuildProject(id);
+            return serverBuilds;
+        }
+
+        public ServerBuild GetBuildSuccessVersion(int id)
+        {
+            ServerBuild serverBuild = _projectDataRepository.GetBuildSuccessVersion(id);
+            return serverBuild;
+        }
+
+        public bool InsertReleaseProjectPackage(List<ReleaseProjectPackage> projectPackages)
+        {
+            bool status = _projectDataRepository.InsertReleaseProjectPackage(projectPackages);
+            return status;
+        }
+
+        public bool UpdateStatus(int id)
+        {
+            bool status = _projectDataRepository.UpdateStatus(id);
+            return status;
+        }
     }
 }

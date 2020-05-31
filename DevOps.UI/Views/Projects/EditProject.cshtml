@@ -1,4 +1,4 @@
-﻿@model DevOps.DataEntities.Models.Project
+﻿@model DevOps.UI.Models.Project
 <div class="login-content">
     <!-- Login -->
     @using (Html.BeginForm())
@@ -95,7 +95,6 @@
             contentType: 'application/json',
             dataType: 'json',
             success: function (r) {
-                alert('Project Details Updated Successfully');
                 var urlg = "http://localhost:57996/Projects/Projects";
                 $.ajax({
                     url: urlg,

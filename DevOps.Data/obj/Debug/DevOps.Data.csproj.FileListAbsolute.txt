@@ -172,3 +172,11 @@ C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Data\obj\Debug\DevOps.Data.cspr
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Data\obj\Debug\DevOps.Data.csproj.CopyComplete
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Data\obj\Debug\DevOps.Data.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Data\obj\Debug\DevOps.Data.pdb
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Data\bin\Debug\DevOps.Common.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Data\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Data\bin\Debug\DevOps.Common.pdb
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Data\bin\Debug\DevOps.Common.dll.config
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Data\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Data\bin\Debug\DotNetZip.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Data\bin\Debug\DotNetZip.pdb
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.Data\bin\Debug\DotNetZip.xml

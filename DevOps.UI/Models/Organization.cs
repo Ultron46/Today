@@ -12,5 +12,7 @@ namespace DevOps.UI.Models
         public string Address { get; set; }
         public string Nationality { get; set; }
         public string Type { get; set; }
+        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }

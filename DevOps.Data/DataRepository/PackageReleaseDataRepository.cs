@@ -81,13 +81,13 @@ namespace DevOps.Data.DataRepository
         public int TotalBuilds(int id)
         {
             int total = 0;
-            if(id == 0)
+            if (id == 0)
             {
                 total = DbContext.ReleaseProjects.Count();
             }
             else
             {
-                total = DbContext.ReleaseProjects.Where(x => x.BuildProject.Project.OrganisationId == id).Count();
+                total = DbContext.ReleaseProjects.Where(x => x.ServerBuild.BuildProject.Project.OrganisationId == id).Count();
             }
             return total;
         }

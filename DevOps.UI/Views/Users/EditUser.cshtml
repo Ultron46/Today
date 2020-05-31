@@ -49,13 +49,13 @@
                 </div>
                 <br />
 
-                <div class="input-group mg-t-15">
+                @*<div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-unlock-alt"></i></span>
                     <div class="nk-int-st">
                         @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password" } })
                     </div>
                 </div>
-                <br />
+                <br />*@
 
                 <div class="input-group mg-t-15">
                     <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
@@ -99,7 +99,7 @@
         var Nationality = $('#Nationality').val();
         var Phone = $('#Phone').val();
         var Email = $('#Email').val();
-        var Password = $('#Password').val();
+        //var Password = $('#Password').val();
         var DateOfBirth = $('#DateOfBirth').val();
         var RegistrationDate = $('#RegistrationDate').val();
         var OrganisationId = $("#OrganisationId").val();
@@ -109,12 +109,11 @@
             url: url1,
             type: 'POST',//type of posting the data
             data: '{UserId: "' + id + '",Name: "' + name + '",Address: "' + Address + '",Nationality: "' + Nationality +
-                '",Phone: "' + Phone + '",Email: "' + Email + '",Password: "' + Password + '",DateOfBirth: "' + DateOfBirth + '",RegistrationDate: "' + RegistrationDate + '",OrganisationId: "' + OrganisationId + '",RoleId: "' + RoleId +
+                '",Phone: "' + Phone + '",Email: "' + Email + '",DateOfBirth: "' + DateOfBirth + '",RegistrationDate: "' + RegistrationDate + '",OrganisationId: "' + OrganisationId + '",RoleId: "' + RoleId +
                 '"}',
             contentType: 'application/json',
             dataType: 'json',
             success: function (r) {
-                alert('User Details Updated Successfully');
                 var urlg = "http://localhost:57996/Users/Users";
                 $.ajax({
                     url: urlg,

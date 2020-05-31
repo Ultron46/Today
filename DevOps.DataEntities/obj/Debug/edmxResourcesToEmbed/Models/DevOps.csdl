@@ -1,15 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="DevOpsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityType Name="Branch">
-    <Key>
-      <PropertyRef Name="BranchId" />
-    </Key>
-    <Property Name="BranchId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="BranchName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="ProjectId" Type="Int32" />
-    <NavigationProperty Name="Project" Relationship="Self.FK_Project_Branch_ProjectId" FromRole="Branch" ToRole="Project" />
-    <NavigationProperty Name="BuildProjects" Relationship="DevOpsModel.FK_BuildProject_Branch" FromRole="Branch" ToRole="BuildProject" />
-  </EntityType>
   <EntityType Name="ELMAH_Error">
     <Key>
       <PropertyRef Name="ErrorId" />
@@ -86,11 +76,11 @@
     <Property Name="LastModifiedBy" Type="Int32" />
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="LastModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <NavigationProperty Name="Branches" Relationship="Self.FK_Project_Branch_ProjectId" FromRole="Project" ToRole="Branch" />
     <NavigationProperty Name="Organisation" Relationship="Self.FK_Organisation_Poeject_OrganisationId" FromRole="Project" ToRole="Organisation" />
     <NavigationProperty Name="BuildProjects" Relationship="DevOpsModel.FK_Project_BuildProject_ProjectId" FromRole="Project" ToRole="BuildProject" />
     <NavigationProperty Name="User" Relationship="DevOpsModel.FK_User_Project_CreatedBy" FromRole="Project" ToRole="User" />
     <NavigationProperty Name="User1" Relationship="DevOpsModel.FK_User_Project_LastModifiedBy" FromRole="Project" ToRole="User" />
+    <NavigationProperty Name="Branches" Relationship="DevOpsModel.FK_Project_Branch_ProjectId" FromRole="Project" ToRole="Branch" />
   </EntityType>
   <EntityType Name="Role">
     <Key>
@@ -116,7 +106,6 @@
     <NavigationProperty Name="Organisation" Relationship="Self.FK_Organisation_ServerConfig_OrganisationId" FromRole="ServerConfig" ToRole="Organisation" />
     <NavigationProperty Name="ServerCredentials" Relationship="Self.FK_Server_ServerCredentials_ServerId" FromRole="ServerConfig" ToRole="ServerCredentials" />
     <NavigationProperty Name="ServerBuilds" Relationship="DevOpsModel.FK_ServerConfig_ServerBuild_ServerId" FromRole="ServerConfig" ToRole="ServerBuild" />
-    <NavigationProperty Name="ReleaseProjects" Relationship="DevOpsModel.FK_ReleaseProject_ServerConfig" FromRole="ServerConfig" ToRole="ReleaseProject" />
   </EntityType>
   <EntityType Name="ServerCredential">
     <Key>
@@ -178,18 +167,6 @@
     <Property Name="TimeUtc" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="Sequence" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
   </EntityType>
-  <Association Name="FK_Project_Branch_ProjectId">
-    <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
-    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Project">
-        <PropertyRef Name="ProjectId" />
-      </Principal>
-      <Dependent Role="Branch">
-        <PropertyRef Name="ProjectId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Organisation_EmailMaster_OrganisationId">
     <End Role="Organisation" Type="Self.Organisation" Multiplicity="0..1" />
     <End Role="EmailMaster" Type="Self.EmailMaster" Multiplicity="*" />
@@ -251,7 +228,6 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="DevOpsEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="Branches" EntityType="Self.Branch" />
     <EntitySet Name="ELMAH_Error" EntityType="Self.ELMAH_Error" />
     <EntitySet Name="EmailMasters" EntityType="Self.EmailMaster" />
     <EntitySet Name="MainMenus" EntityType="Self.MainMenu" />
@@ -264,10 +240,6 @@
     <EntitySet Name="SubMenus" EntityType="Self.SubMenu" />
     <EntitySet Name="SupportTickets" EntityType="Self.SupportTicket" />
     <EntitySet Name="ErrorLogs" EntityType="Self.ErrorLog" />
-    <AssociationSet Name="FK_Project_Branch_ProjectId" Association="Self.FK_Project_Branch_ProjectId">
-      <End Role="Project" EntitySet="Projects" />
-      <End Role="Branch" EntitySet="Branches" />
-    </AssociationSet>
     <AssociationSet Name="FK_Organisation_EmailMaster_OrganisationId" Association="Self.FK_Organisation_EmailMaster_OrganisationId">
       <End Role="Organisation" EntitySet="Organisations" />
       <End Role="EmailMaster" EntitySet="EmailMasters" />
@@ -321,10 +293,6 @@
     <EntitySet Name="UserTokens" EntityType="DevOpsModel.UserToken" />
     <EntitySet Name="BuildProjects" EntityType="DevOpsModel.BuildProject" />
     <EntitySet Name="ServerBuilds" EntityType="DevOpsModel.ServerBuild" />
-    <AssociationSet Name="FK_BuildProject_Branch" Association="DevOpsModel.FK_BuildProject_Branch">
-      <End Role="Branch" EntitySet="Branches" />
-      <End Role="BuildProject" EntitySet="BuildProjects" />
-    </AssociationSet>
     <AssociationSet Name="FK_BuildProject_ServerBuild_BuildId" Association="DevOpsModel.FK_BuildProject_ServerBuild_BuildId">
       <End Role="BuildProject" EntitySet="BuildProjects" />
       <End Role="ServerBuild" EntitySet="ServerBuilds" />
@@ -338,19 +306,6 @@
       <End Role="ServerBuild" EntitySet="ServerBuilds" />
     </AssociationSet>
     <EntitySet Name="PackageReleases" EntityType="DevOpsModel.PackageRelease" />
-    <EntitySet Name="ReleaseProjects" EntityType="DevOpsModel.ReleaseProject" />
-    <AssociationSet Name="FK_ReleaseProject_BuildProject" Association="DevOpsModel.FK_ReleaseProject_BuildProject">
-      <End Role="BuildProject" EntitySet="BuildProjects" />
-      <End Role="ReleaseProject" EntitySet="ReleaseProjects" />
-    </AssociationSet>
-    <AssociationSet Name="FK_ReleaseProject_PackageRelease" Association="DevOpsModel.FK_ReleaseProject_PackageRelease">
-      <End Role="PackageRelease" EntitySet="PackageReleases" />
-      <End Role="ReleaseProject" EntitySet="ReleaseProjects" />
-    </AssociationSet>
-    <AssociationSet Name="FK_ReleaseProject_ServerConfig" Association="DevOpsModel.FK_ReleaseProject_ServerConfig">
-      <End Role="ServerConfig" EntitySet="ServerConfigs" />
-      <End Role="ReleaseProject" EntitySet="ReleaseProjects" />
-    </AssociationSet>
     <EntitySet Name="Users" EntityType="DevOpsModel.User" />
     <AssociationSet Name="FK_User_BuildProject_BuildBy" Association="DevOpsModel.FK_User_BuildProject_BuildBy">
       <End Role="User" EntitySet="Users" />
@@ -367,10 +322,6 @@
     <AssociationSet Name="FK_User_Project_LastModifiedBy" Association="DevOpsModel.FK_User_Project_LastModifiedBy">
       <End Role="User" EntitySet="Users" />
       <End Role="Project" EntitySet="Projects" />
-    </AssociationSet>
-    <AssociationSet Name="FK_User_ReleaseProject_ReleaseBy" Association="DevOpsModel.FK_User_ReleaseProject_ReleaseBy">
-      <End Role="User" EntitySet="Users" />
-      <End Role="ReleaseProject" EntitySet="ReleaseProjects" />
     </AssociationSet>
     <AssociationSet Name="FK_Role_User_RoleId" Association="DevOpsModel.FK_Role_User_RoleId">
       <End Role="Role" EntitySet="Roles" />
@@ -391,6 +342,33 @@
     <AssociationSet Name="FK_UserToken_User" Association="DevOpsModel.FK_UserToken_User">
       <End Role="User" EntitySet="Users" />
       <End Role="UserToken" EntitySet="UserTokens" />
+    </AssociationSet>
+    <EntitySet Name="Branches" EntityType="DevOpsModel.Branch" />
+    <AssociationSet Name="FK_BuildProject_Branch" Association="DevOpsModel.FK_BuildProject_Branch">
+      <End Role="Branch" EntitySet="Branches" />
+      <End Role="BuildProject" EntitySet="BuildProjects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Project_Branch_ProjectId" Association="DevOpsModel.FK_Project_Branch_ProjectId">
+      <End Role="Project" EntitySet="Projects" />
+      <End Role="Branch" EntitySet="Branches" />
+    </AssociationSet>
+    <EntitySet Name="ReleaseProjectPackages" EntityType="DevOpsModel.ReleaseProjectPackage" />
+    <EntitySet Name="ReleaseProjects" EntityType="DevOpsModel.ReleaseProject" />
+    <AssociationSet Name="FK_ReleaseProject_Branch" Association="DevOpsModel.FK_ReleaseProject_Branch">
+      <End Role="Branch" EntitySet="Branches" />
+      <End Role="ReleaseProject" EntitySet="ReleaseProjects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReleaseProject_ServerBuild" Association="DevOpsModel.FK_ReleaseProject_ServerBuild">
+      <End Role="ServerBuild" EntitySet="ServerBuilds" />
+      <End Role="ReleaseProject" EntitySet="ReleaseProjects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReleaseProject_User" Association="DevOpsModel.FK_ReleaseProject_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="ReleaseProject" EntitySet="ReleaseProjects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReleaseProjectPackage_ReleaseProject" Association="DevOpsModel.FK_ReleaseProjectPackage_ReleaseProject">
+      <End Role="ReleaseProject" EntitySet="ReleaseProjects" />
+      <End Role="ReleaseProjectPackage" EntitySet="ReleaseProjectPackages" />
     </AssociationSet>
   </EntityContainer>
   <Association Name="FK_Permissions_Role">
@@ -440,11 +418,10 @@
     <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="BuildDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="BranchId" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Branch" Relationship="DevOpsModel.FK_BuildProject_Branch" FromRole="BuildProject" ToRole="Branch" />
     <NavigationProperty Name="ServerBuilds" Relationship="DevOpsModel.FK_BuildProject_ServerBuild_BuildId" FromRole="BuildProject" ToRole="ServerBuild" />
     <NavigationProperty Name="Project" Relationship="DevOpsModel.FK_Project_BuildProject_ProjectId" FromRole="BuildProject" ToRole="Project" />
-    <NavigationProperty Name="ReleaseProjects" Relationship="DevOpsModel.FK_ReleaseProject_BuildProject" FromRole="BuildProject" ToRole="ReleaseProject" />
     <NavigationProperty Name="User" Relationship="DevOpsModel.FK_User_BuildProject_BuildBy" FromRole="BuildProject" ToRole="User" />
+    <NavigationProperty Name="Branch" Relationship="DevOpsModel.FK_BuildProject_Branch" FromRole="BuildProject" ToRole="Branch" />
   </EntityType>
   <EntityType Name="ServerBuild">
     <Key>
@@ -462,19 +439,8 @@
     <NavigationProperty Name="BuildProject" Relationship="DevOpsModel.FK_BuildProject_ServerBuild_BuildId" FromRole="ServerBuild" ToRole="BuildProject" />
     <NavigationProperty Name="ServerConfig" Relationship="DevOpsModel.FK_ServerConfig_ServerBuild_ServerId" FromRole="ServerBuild" ToRole="ServerConfig" />
     <NavigationProperty Name="User" Relationship="DevOpsModel.FK_User_ServerBuild_PublishedBy" FromRole="ServerBuild" ToRole="User" />
+    <NavigationProperty Name="ReleaseProjects" Relationship="DevOpsModel.FK_ReleaseProject_ServerBuild" FromRole="ServerBuild" ToRole="ReleaseProject" />
   </EntityType>
-  <Association Name="FK_BuildProject_Branch">
-    <End Type="DevOpsModel.Branch" Role="Branch" Multiplicity="1" />
-    <End Type="DevOpsModel.BuildProject" Role="BuildProject" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Branch">
-        <PropertyRef Name="BranchId" />
-      </Principal>
-      <Dependent Role="BuildProject">
-        <PropertyRef Name="BranchId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_BuildProject_ServerBuild_BuildId">
     <End Type="DevOpsModel.BuildProject" Role="BuildProject" Multiplicity="0..1" />
     <End Type="DevOpsModel.ServerBuild" Role="ServerBuild" Multiplicity="*" />
@@ -518,60 +484,7 @@
     <Property Name="PackageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="PackageName" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
     <Property Name="PackageVersion" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="ReleaseProjects" Relationship="DevOpsModel.FK_ReleaseProject_PackageRelease" FromRole="PackageRelease" ToRole="ReleaseProject" />
   </EntityType>
-  <EntityType Name="ReleaseProject">
-    <Key>
-      <PropertyRef Name="ReleaseProjectId" />
-    </Key>
-    <Property Name="ReleaseProjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="BuildId" Type="Int32" />
-    <Property Name="ReleaseBy" Type="Int32" />
-    <Property Name="ServerId" Type="Int32" />
-    <Property Name="ReleaseDate" Type="DateTime" Precision="3" />
-    <Property Name="PackageId" Type="Int32" />
-    <NavigationProperty Name="BuildProject" Relationship="DevOpsModel.FK_ReleaseProject_BuildProject" FromRole="ReleaseProject" ToRole="BuildProject" />
-    <NavigationProperty Name="PackageRelease" Relationship="DevOpsModel.FK_ReleaseProject_PackageRelease" FromRole="ReleaseProject" ToRole="PackageRelease" />
-    <NavigationProperty Name="ServerConfig" Relationship="DevOpsModel.FK_ReleaseProject_ServerConfig" FromRole="ReleaseProject" ToRole="ServerConfig" />
-    <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="User" Relationship="DevOpsModel.FK_User_ReleaseProject_ReleaseBy" FromRole="ReleaseProject" ToRole="User" />
-  </EntityType>
-  <Association Name="FK_ReleaseProject_BuildProject">
-    <End Type="DevOpsModel.BuildProject" Role="BuildProject" Multiplicity="0..1" />
-    <End Type="DevOpsModel.ReleaseProject" Role="ReleaseProject" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="BuildProject">
-        <PropertyRef Name="BuildId" />
-      </Principal>
-      <Dependent Role="ReleaseProject">
-        <PropertyRef Name="BuildId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_ReleaseProject_PackageRelease">
-    <End Type="DevOpsModel.PackageRelease" Role="PackageRelease" Multiplicity="0..1" />
-    <End Type="DevOpsModel.ReleaseProject" Role="ReleaseProject" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PackageRelease">
-        <PropertyRef Name="PackageId" />
-      </Principal>
-      <Dependent Role="ReleaseProject">
-        <PropertyRef Name="PackageId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_ReleaseProject_ServerConfig">
-    <End Type="DevOpsModel.ServerConfig" Role="ServerConfig" Multiplicity="0..1" />
-    <End Type="DevOpsModel.ReleaseProject" Role="ReleaseProject" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ServerConfig">
-        <PropertyRef Name="ServerId" />
-      </Principal>
-      <Dependent Role="ReleaseProject">
-        <PropertyRef Name="ServerId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityType Name="User">
     <Key>
       <PropertyRef Name="UserId" />
@@ -591,12 +504,12 @@
     <NavigationProperty Name="Organisation" Relationship="DevOpsModel.FK_Organisation_User_OrganisationId" FromRole="User" ToRole="Organisation" />
     <NavigationProperty Name="Projects" Relationship="DevOpsModel.FK_User_Project_CreatedBy" FromRole="User" ToRole="Project" />
     <NavigationProperty Name="Projects1" Relationship="DevOpsModel.FK_User_Project_LastModifiedBy" FromRole="User" ToRole="Project" />
-    <NavigationProperty Name="ReleaseProjects" Relationship="DevOpsModel.FK_User_ReleaseProject_ReleaseBy" FromRole="User" ToRole="ReleaseProject" />
     <NavigationProperty Name="Role" Relationship="DevOpsModel.FK_Role_User_RoleId" FromRole="User" ToRole="Role" />
     <NavigationProperty Name="ServerBuilds" Relationship="DevOpsModel.FK_User_ServerBuild_PublishedBy" FromRole="User" ToRole="ServerBuild" />
     <NavigationProperty Name="SupportTickets" Relationship="DevOpsModel.FK_User_SupportTickets_FixedBy" FromRole="User" ToRole="SupportTicket" />
     <NavigationProperty Name="SupportTickets1" Relationship="DevOpsModel.FK_User_SupportTickets_GeneratedBy" FromRole="User" ToRole="SupportTicket" />
     <NavigationProperty Name="UserTokens" Relationship="DevOpsModel.FK_UserToken_User" FromRole="User" ToRole="UserToken" />
+    <NavigationProperty Name="ReleaseProjects" Relationship="DevOpsModel.FK_ReleaseProject_User" FromRole="User" ToRole="ReleaseProject" />
   </EntityType>
   <Association Name="FK_User_BuildProject_BuildBy">
     <End Type="DevOpsModel.User" Role="User" Multiplicity="0..1" />
@@ -643,18 +556,6 @@
       </Principal>
       <Dependent Role="Project">
         <PropertyRef Name="LastModifiedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_User_ReleaseProject_ReleaseBy">
-    <End Type="DevOpsModel.User" Role="User" Multiplicity="0..1" />
-    <End Type="DevOpsModel.ReleaseProject" Role="ReleaseProject" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="UserId" />
-      </Principal>
-      <Dependent Role="ReleaseProject">
-        <PropertyRef Name="ReleaseBy" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -715,6 +616,119 @@
       </Principal>
       <Dependent Role="UserToken">
         <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Branch">
+    <Key>
+      <PropertyRef Name="BranchId" />
+    </Key>
+    <Property Name="BranchId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BranchName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="ProjectId" Type="Int32" />
+    <Property Name="Mejor_Version" Type="Byte" />
+    <Property Name="Minor_Version" Type="Byte" />
+    <Property Name="Build_Version" Type="Int32" />
+    <NavigationProperty Name="BuildProjects" Relationship="DevOpsModel.FK_BuildProject_Branch" FromRole="Branch" ToRole="BuildProject" />
+    <NavigationProperty Name="Project" Relationship="DevOpsModel.FK_Project_Branch_ProjectId" FromRole="Branch" ToRole="Project" />
+    <NavigationProperty Name="ReleaseProjects" Relationship="DevOpsModel.FK_ReleaseProject_Branch" FromRole="Branch" ToRole="ReleaseProject" />
+  </EntityType>
+  <Association Name="FK_BuildProject_Branch">
+    <End Type="DevOpsModel.Branch" Role="Branch" Multiplicity="1" />
+    <End Type="DevOpsModel.BuildProject" Role="BuildProject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Branch">
+        <PropertyRef Name="BranchId" />
+      </Principal>
+      <Dependent Role="BuildProject">
+        <PropertyRef Name="BranchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Project_Branch_ProjectId">
+    <End Type="DevOpsModel.Project" Role="Project" Multiplicity="0..1" />
+    <End Type="DevOpsModel.Branch" Role="Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Project">
+        <PropertyRef Name="ProjectId" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ReleaseProjectPackage">
+    <Key>
+      <PropertyRef Name="ReleaseProjectPackageId" />
+    </Key>
+    <Property Name="ReleaseProjectPackageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ReleaseProjectId" Type="Int32" Nullable="false" />
+    <Property Name="PackageId" Type="Int32" />
+    <NavigationProperty Name="ReleaseProject" Relationship="DevOpsModel.FK_ReleaseProjectPackage_ReleaseProject" FromRole="ReleaseProjectPackage" ToRole="ReleaseProject" />
+  </EntityType>
+  <EntityType Name="ReleaseProject">
+    <Key>
+      <PropertyRef Name="ReleaseProjectId" />
+    </Key>
+    <Property Name="ReleaseProjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ReleaseName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ServerBuildId" Type="Int32" Nullable="false" />
+    <Property Name="BranchId" Type="Int32" Nullable="false" />
+    <Property Name="ReleaseBy" Type="Int32" Nullable="false" />
+    <Property Name="ReleaseDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DownloadURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ReleaseNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Branch" Relationship="DevOpsModel.FK_ReleaseProject_Branch" FromRole="ReleaseProject" ToRole="Branch" />
+    <NavigationProperty Name="ServerBuild" Relationship="DevOpsModel.FK_ReleaseProject_ServerBuild" FromRole="ReleaseProject" ToRole="ServerBuild" />
+    <NavigationProperty Name="User" Relationship="DevOpsModel.FK_ReleaseProject_User" FromRole="ReleaseProject" ToRole="User" />
+    <NavigationProperty Name="ReleaseProjectPackages" Relationship="DevOpsModel.FK_ReleaseProjectPackage_ReleaseProject" FromRole="ReleaseProject" ToRole="ReleaseProjectPackage" />
+  </EntityType>
+  <Association Name="FK_ReleaseProject_Branch">
+    <End Type="DevOpsModel.Branch" Role="Branch" Multiplicity="1" />
+    <End Type="DevOpsModel.ReleaseProject" Role="ReleaseProject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Branch">
+        <PropertyRef Name="BranchId" />
+      </Principal>
+      <Dependent Role="ReleaseProject">
+        <PropertyRef Name="BranchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReleaseProject_ServerBuild">
+    <End Type="DevOpsModel.ServerBuild" Role="ServerBuild" Multiplicity="1" />
+    <End Type="DevOpsModel.ReleaseProject" Role="ReleaseProject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ServerBuild">
+        <PropertyRef Name="ServerBuildId" />
+      </Principal>
+      <Dependent Role="ReleaseProject">
+        <PropertyRef Name="ServerBuildId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReleaseProject_User">
+    <End Type="DevOpsModel.User" Role="User" Multiplicity="1" />
+    <End Type="DevOpsModel.ReleaseProject" Role="ReleaseProject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="ReleaseProject">
+        <PropertyRef Name="ReleaseBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReleaseProjectPackage_ReleaseProject">
+    <End Type="DevOpsModel.ReleaseProject" Role="ReleaseProject" Multiplicity="1" />
+    <End Type="DevOpsModel.ReleaseProjectPackage" Role="ReleaseProjectPackage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReleaseProject">
+        <PropertyRef Name="ReleaseProjectId" />
+      </Principal>
+      <Dependent Role="ReleaseProjectPackage">
+        <PropertyRef Name="ReleaseProjectId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

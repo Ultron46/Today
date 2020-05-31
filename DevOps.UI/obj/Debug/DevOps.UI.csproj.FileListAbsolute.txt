@@ -1029,3 +1029,6 @@ C:\Users\Hardik\source\repos\DevOps_Build\DevOps.UI\obj\Debug\DevOps.UI.csproj.C
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.UI\obj\Debug\DevOps.UI.csproj.CopyComplete
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.UI\obj\Debug\DevOps.UI.dll
 C:\Users\Hardik\source\repos\DevOps_Build\DevOps.UI\obj\Debug\DevOps.UI.pdb
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.UI\bin\DotNetZip.dll
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.UI\bin\DotNetZip.pdb
+C:\Users\Hardik\source\repos\DevOps_Build\DevOps.UI\bin\DotNetZip.xml

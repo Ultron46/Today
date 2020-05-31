@@ -88,9 +88,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                    <div class="logo-area">
-                        <a href="#"><img src="~/img/logo/devops.png" alt="" style="height:50px;width:auto" /></a>
-                        <h2 style="color:white;display:inline;margin-left:20px" >@Session["Role"] Panel</h2>
+                    <div class="logo-area row">
+                        <div class="col-lg-3">
+                            <a href="#"><img src="~/img/logo/devops.png" alt="" style="height:50px;width:auto" /></a>
+                        </div>
+                        <div class="col-lg-9">
+                            <h2 style="color:white;display:inline;margin-left:20px">
+                                @if (Session["Role"].ToString() != "Admin")
+                                {
+                                    @Session["OrganizationName"]
+                                }
+                                @Session["Role"] Panel
+                            </h2>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
@@ -376,7 +386,7 @@
                                                     <i class="fa fa-user"></i>
                                                 </div>
                                                 <div class="hd-mg-ctn">
-                                                    <h3>Profile</h3>
+                                                    @Html.ActionLink("Edit Profile","EditUser","Users",new { id = Session["user"].ToString()}, new { @class = "ajaxclass"})
                                                 </div>
                                             </div>
                                         </a>
@@ -386,7 +396,7 @@
                                                     <i class="fa fa-edit"></i>
                                                 </div>
                                                 <div class="hd-mg-ctn">
-                                                    <h3>Change password</h3>
+                                                    @Html.ActionLink("Change Password", "ChangePassword", "Users")
                                                 </div>
                                             </div>
                                         </a>
@@ -549,17 +559,40 @@
                             var subs = (List<SubMenu>)Session["Subs"];
                             foreach (var menu in menuss)
                             {
+                                int c = subs.Where(x => x.MainMenuId == menu.MainMenuId).Count();
                                 if (menu == menuss.First())
                                 {
-                                    <li class="active">
-                                        <a data-toggle="tab" href="#@menu.MainMenuName"><i class="notika-icon notika-house"></i> @menu.MainMenuName</a>
-                                    </li>
+                                    if (c > 1)
+                                    {
+                                        <li class="active">
+                                            <a data-toggle="tab" href="#@menu.MainMenuName"><i class="notika-icon notika-house"></i> @menu.MainMenuName</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="active">
+                                            <a href="@Url.Action( subs.Where(x => x.MainMenuId == menu.MainMenuId).FirstOrDefault().SubMenuName,menu.MainMenuName)" class="ajaxclass"><i class="notika-icon notika-house"></i>@menu.MainMenuName</a>
+                                        </li>
+                                    }
                                 }
                                 else
                                 {
-                                    <li>
-                                        <a data-toggle="tab" href="#@menu.MainMenuName"><i class="notika-icon notika-house"></i> @menu.MainMenuName</a>
-                                    </li>
+                                    if (c > 1)
+                                    {
+                                        <li>
+                                            <a data-toggle="tab" href="#@menu.MainMenuName"><i class="notika-icon notika-house"></i> @menu.MainMenuName</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a href="@Url.Action(subs.Where(x => x.MainMenuId == menu.MainMenuId).FirstOrDefault().SubMenuName, menu.MainMenuName)" class="ajaxclass"><i class="notika-icon notika-house"></i>@menu.MainMenuName</a>
+                                        </li>
+                                    }
+                                }
+                                if (c == 1)
+                                {
+                                    subs = subs.Where(x => x.MainMenuId != menu.MainMenuId).ToList();
                                 }
                             }
                         }
@@ -684,14 +717,14 @@
     <script src="~/Scripts/js/plugins.js"></script>
     <!--  Chat JS
         ============================================ -->
-    <script src="~/Scripts/js/chat/moment.min.js"></script>
-    <script src="~/Scripts/js/chat/jquery.chat.js"></script>
+    @*<script src="~/Scripts/js/chat/moment.min.js"></script>
+    <script src="~/Scripts/js/chat/jquery.chat.js"></script>*@
     <!-- main JS
         ============================================ -->
     <script src="~/Scripts/js/main.js"></script>
     <!-- tawk chat JS
         ============================================ -->
-    <script src="~/Scripts/js/tawk-chat.js"></script>
+    @*<script src="~/Scripts/js/tawk-chat.js"></script>*@
     <script>
         $('.ajaxclass').click(function (e) {
             e.preventDefault();

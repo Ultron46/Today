@@ -61,37 +61,24 @@
                 </div>
                 <br />
 
-                @*<div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-unlock-alt"></i></span>
-                    <div class="nk-int-st">
-                        <input type="text" id="OrganisationId" class="form-control" placeholder="OrganisationId" name="OrganisationId">
+                @if (Session["Role"].ToString() == "Admin")
+                {
+                    <div class="input-group mg-t-15">
+                        <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-sitemap"></i></span>
+                        <div class="nk-int-st">
+                            @Html.DropDownList("Organizations", new SelectList(ViewBag.Orgs, "OrganisationId", "Name"), "--Select--", new { @class = "udropdown" })
+                        </div>
                     </div>
-                </div>
-                <br />*@
+                }
+                @if (Session["Role"].ToString() != "Admin")
+                {
+                    <div class="input-group mg-t-15">
+                        <div class="nk-int-st">
+                            <input type="hidden" id="Organizations" name="Organizations" value="@Session["Organization"].ToString()" />
+                        </div>
+                    </div>
+                }
 
-                <div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
-                    <div class="nk-int-st">
-                        <input type="text" id="HostName" class="form-control" placeholder="HostName" name="HostName">
-                    </div>
-                </div>
-                <br />
-
-                <div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
-                    <div class="nk-int-st">
-                        <input type="password" id="Password" class="form-control" placeholder="Password" name="Password">
-                    </div>
-                </div>
-                <br />
-
-                <div class="input-group mg-t-15">
-                    <span class="input-group-addon nk-ic-st-pro"><i class="fas fa-calendar-alt"></i></span>
-                    <div class="nk-int-st">
-                        <input type="text" id="ConnectionString" class="form-control" placeholder="ConnectionString" name="ConnectionString">
-                    </div>
-                </div>
-                <br />
 
                 <input type="submit" id="submit" value="Submit" class=" btn-success uloginbtn" />
 
@@ -110,20 +97,17 @@
         var Processer = $('#Processer').val();
         var OS = $('#OS').val();
         var Version = $('#Version').val();
-        var HostName = $('#HostName').val();
-        var Password = $('#Password').val();
-        var ConnectionString = $('#ConnectionString').val();
+        var OrganisationId = $('#Organizations').val();
         var url1 = "http://localhost:57996/Servers/Registration";
         $.ajax({
             url: url1,
             type: 'POST',//type of posting the data
             data: '{ServerName: "' + ServerName + '",IPAddress: "' + IPAddress + '",RAM: "' + RAM + '",Processer: "' + Processer +
-                '",OS: "' + OS + '",Version: "' + Version + '",HostName: "' + HostName + '",Password: "' + Password +  '",ConnectionString: "' + ConnectionString +
+                '",OS: "' + OS + '",Version: "' + Version + '",OrganisationId: "' + OrganisationId + 
                 '"}',
             contentType: 'application/json',
             dataType: 'json',
             success: function (r) {
-                alert('Server Created Successfully');
                 var url2 = "http://localhost:57996/Servers/Servers";
                 $.ajax({
                     url: url2,

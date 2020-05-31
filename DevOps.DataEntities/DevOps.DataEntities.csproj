@@ -102,6 +102,9 @@
     <Compile Include="Models\ReleaseProject.cs">
       <DependentUpon>DevOps.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReleaseProjectPackage.cs">
+      <DependentUpon>DevOps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Role.cs">
       <DependentUpon>DevOps.tt</DependentUpon>
     </Compile>

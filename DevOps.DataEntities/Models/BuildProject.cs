@@ -24,8 +24,6 @@ public partial class BuildProject
 
         this.ServerBuilds = new HashSet<ServerBuild>();
 
-        this.ReleaseProjects = new HashSet<ReleaseProject>();
-
     }
 
 
@@ -51,19 +49,15 @@ public partial class BuildProject
 
 
 
-    public virtual Branch Branch { get; set; }
-
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<ServerBuild> ServerBuilds { get; set; }
 
     public virtual Project Project { get; set; }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<ReleaseProject> ReleaseProjects { get; set; }
-
     public virtual User User { get; set; }
+
+    public virtual Branch Branch { get; set; }
 
 }
 

@@ -4,6 +4,8 @@
     ViewBag.Title = "TicketManagement";
 }
 <style type="text/css">
+
+
     .High {
         color: red !important;
     }
@@ -13,7 +15,7 @@
     }
 
     .Low {
-        color: yellow !important;
+        color: yellowgreen !important;
     }
 </style>
 
@@ -23,8 +25,8 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="data-table-list">
-                        <input type="submit" value="Get All Fixed Ticket" id="fixticket">
-                        <input type="submit" value="Get All Not Fixed Ticket" id="notfixticket">
+                    <input type="submit" class="btn btn-lg btn-success" value="Fixed Ticket" id="fixticket">
+                    <input type="submit" class="btn btn-lg btn-danger" value="Not Fixed Ticket" id="notfixticket">
                 </div>
             </div>
         </div>
@@ -36,7 +38,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="data-table-list">
                     <div class="basic-tb-hd">
-                        <h2>Server Builds</h2>
+                        <h2 id="ticket-head"></h2>
                     </div>
                     <div class="table-responsive">
                         @*<table id="data-table-basic" class="table table-striped">
@@ -76,31 +78,38 @@
             };
 
             $("#fixticket").click(function (e) {
+                $("#ticket-head").html("Fixed Tickets");
                 ajaxCall("GetAllTicket");
             });
 
 
             $("#notfixticket").click(function (e) {
+                $("#ticket-head").html("Not Fixed Tickets");
                 ajaxCall("GetAllTicketUnfixed");
             });
 
             function ajaxCall(method){
                 event.preventDefault();
-                $('#data-table-basic_wrapper').remove();
-                var tbl = "<table id='data-table-basic' class='table table-striped'><thead><tr><th>GeneratedBy</th><th>FixedBy</th><th>Category</th><th>Discription</th><th>Status</th><th>GeneratedDate</th><th>FixedDate</th><th></th></tr></thead><tbody></tbody></table>";
-                $('.table-responsive').append(tbl);
                 var role = '@Session["Role"].ToString()';
                 var org = '@Session["Organization"].ToString()';
                 var id = '@Session["user"]';
-                var urlg = "http://localhost:60969/api/SupportTicket/"+ method +"?role=" + role + "&organization=" + org + "&id=" + id;
-
+                var urlg = "http://localhost:60969/api/SupportTicket/" + method + "?role=" + role + "&organization=" + org + "&id=" + id;
 
                 $.ajax({
                     url: urlg,
                     context: document.body,
                     success: function (data) {
                         console.log(data);
-
+                        $('#data-table-basic_wrapper').remove();
+                        var tbl = "<table id='data-table-basic' class='table table-striped'><thead><tr><th>GeneratedBy</th><th>Category</th><th>Discription</th><th>Status</th><th>GeneratedDate</th>";
+                        if (method == "GetAllTicket") {
+                            tbl += "<th>FixedBy</th><th>FixedDate</th>";
+                        }
+                        if (method != "GetAllTicket") {
+                            tbl += "<th></th>";
+                        }
+                        tbl += "</tr></thead><tbody></tbody></table>";
+                        $('.table-responsive').append(tbl);
                         for (var i = 0, li = data.length; i < li; i++) {
 
                             var fixedby = data[i].user ?? 10;
@@ -126,36 +135,51 @@
                                 categoryvalue = "<p class=Low>" + data[i].category;
                             }
                             //console.log(categoryvalue);
-                            var newTr = "<tr> <td>" + data[i].user1.name + " </td><td>" + name + "</td><td>" + categoryvalue + "</td><td>" + data[i].description + "</td><td>" + data[i].status + "</td><td>" + data[i].generatedDate + "</td><td>" + data[i].fixedDate + "</td><td> <input type='hidden' value=" + data[i].ticketId + ">";
-
-                            //var newTr = "<tr> <td>" + data[i].user1.name + " </td><td>" + data[i].user.hasOwnProperty("name") ? data[i].user.name : "not fixed" + "</td><td>" + data[i].category + "</td><td>" + data[i].description + "</td><td>" + data[i].status + "</td><td>" + data[i].generatedDate + "</td><td>" + data[i].fixedDate + "</td><td> <input type='hidden' value=" + data[i].ticketId + ">";
-                            if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
-                                newTr += "<a class='replyajax' id = '" + data[i].ticketId + "' href = '#' > Fix Ticket</a >";
+                            var newTr = "<tr> <td>" + data[i].user1.name + " </td>";
+                            newTr += "<td>" + categoryvalue + "</td>";
+                            newTr += "<td>" + data[i].description + "</td>";
+                            newTr += "<td>" + data[i].status + "</td>";
+                            newTr += "<td>" + data[i].generatedDate + "</td>";
+                            if (method == "GetAllTicket") {
+                                newTr += "<td>" + name + "</td>";
+                                newTr += "<td>" + data[i].fixedDate + "</td>";
                             }
-                            newTr += "</td></tr >";
+                            if (method != "GetAllTicket") {
+
+                                //var newTr = "<tr> <td>" + data[i].user1.name + " </td><td>" + data[i].user.hasOwnProperty("name") ? data[i].user.name : "not fixed" + "</td><td>" + data[i].category + "</td><td>" + data[i].description + "</td><td>" + data[i].status + "</td><td>" + data[i].generatedDate + "</td><td>" + data[i].fixedDate + "</td><td> <input type='hidden' value=" + data[i].ticketId + ">";
+                                if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+                                    newTr += "<td> <input type='hidden' value=" + data[i].ticketId + ">";
+                                    newTr += "<a class='replyajax' id = '" + data[i].ticketId + "' href = '#' > Fix Ticket</a >";
+                                    newTr += "</td>";
+                                }
+
+                            }
+                            newTr += "</tr >";
                             $("#data-table-basic").append(newTr);
-                            if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
-                                document.getElementsByClassName("replyajax")[i].addEventListener("click", function (event) {
-                                    event.preventDefault();
-                                    var url1 = "http://localhost:57996/SupportTicket/ShareSolution/" + event.target.id;
-                                    $.ajax({
-                                        url: url1,
-                                        type: 'GET',//type of posting the data
-                                        contentType: 'application/json',
-                                        dataType: 'html',
-                                        success: function (r) {
+                            if (method != "GetAllTicket") {
+                                if ('@Session["Role"].ToString()' == "Admin" || '@Session["Role"].ToString()' == "ReleaseManager") {
+                                    document.getElementsByClassName("replyajax")[i].addEventListener("click", function (event) {
+                                        event.preventDefault();
+                                        var url1 = "http://localhost:57996/SupportTicket/ShareSolution/" + event.target.id;
+                                        $.ajax({
+                                            url: url1,
+                                            type: 'GET',//type of posting the data
+                                            contentType: 'application/json',
+                                            dataType: 'html',
+                                            success: function (r) {
 
-                                            //console.log(r.ViewString);
-                                            $("#partialbody").empty();
-                                            $("#partialbody").html(r);
-                                        },
-                                        error: function (xhr, ajaxOptions, thrownError) {
-                                            //what to do in error
-                                            alert(url1);
-                                        }
+                                                //console.log(r.ViewString);
+                                                $("#partialbody").empty();
+                                                $("#partialbody").html(r);
+                                            },
+                                            error: function (xhr, ajaxOptions, thrownError) {
+                                                //what to do in error
+                                                alert(url1);
+                                            }
+                                        });
+
                                     });
-
-                                });
+                                }
                             }
                         };
 

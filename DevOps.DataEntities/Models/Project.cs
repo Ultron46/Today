@@ -22,9 +22,9 @@ public partial class Project
     public Project()
     {
 
-        this.Branches = new HashSet<Branch>();
-
         this.BuildProjects = new HashSet<BuildProject>();
+
+        this.Branches = new HashSet<Branch>();
 
     }
 
@@ -57,10 +57,6 @@ public partial class Project
 
 
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<Branch> Branches { get; set; }
-
     public virtual Organisation Organisation { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -70,6 +66,10 @@ public partial class Project
     public virtual User User { get; set; }
 
     public virtual User User1 { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<Branch> Branches { get; set; }
 
 }
 

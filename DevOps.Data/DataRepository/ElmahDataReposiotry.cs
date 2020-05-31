@@ -32,7 +32,7 @@ namespace DevOps.Data.DataRepository
         {
             try
             {
-                return DbContext.ELMAH_Error.ToList();
+                return DbContext.ELMAH_Error.OrderByDescending(x => x.TimeUtc).Take(100).ToList();
             }
             catch
             {

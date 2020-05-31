@@ -24,7 +24,7 @@ namespace DevOps.Data.DataRepository
 
         public List<SupportTicket> GetAllTicket()
         {
-            List<SupportTicket> supportTickets = DbContext.SupportTickets.Include(x => x.User).Include(x => x.User1).ToList();
+            List<SupportTicket> supportTickets = DbContext.SupportTickets.Where(x => x.Status == "Fixed").Include(x => x.User).Include(x => x.User1).ToList();
             return supportTickets;
             //return DbContext.SupportTickets.AsNoTracking().ToList();
         }
@@ -97,6 +97,49 @@ namespace DevOps.Data.DataRepository
         {
             List<SupportTicket> tickets = DbContext.SupportTickets.Where(x => x.GeneratedBy == id).OrderByDescending(x => x.GeneratedDate).Take(5).ToList();
             return tickets;
+        }
+
+        public int GetTotalFixSupportTickets(int id)
+        {
+            int total = 0;
+            if (id == 0)
+            {
+                total = DbContext.SupportTickets.Where(x => x.Status == "Fixed").Count();
+            }
+            else
+            {
+                total = DbContext.SupportTickets.Where(x => x.Status == "Fixed" && x.User1.OrganisationId == id).Count();
+            }
+            return total;
+        }
+
+        public int GetTotalNotFixedSupportTicket(int id)
+        {
+            int total = 0;
+            if (id == 0)
+            {
+                total = DbContext.SupportTickets.Where(x => x.Status == "Paynding").Count();
+            }
+            else
+            {
+                total = DbContext.SupportTickets.Where(x => x.Status == "Paynding" && x.User1.OrganisationId == id).Count();
+            }
+            return total;
+        }
+
+        public int GetTotalFixSupportTicketsOfUsers(int id)
+        {
+            int total = 0;
+            total = DbContext.SupportTickets.Where(x => x.GeneratedBy == id && x.Status == "Fixed").Count();
+            return total;
+        }
+
+        public int GetTotalNotFixedSupportTicketOfUsers(int id)
+        {
+            int total = 0;
+            total = DbContext.SupportTickets.Where(x => x.GeneratedBy == id && x.Status == "Paynding").Count();
+            return total;
+
         }
     }
 }

@@ -28,8 +28,6 @@ public partial class User
 
         this.Projects1 = new HashSet<Project>();
 
-        this.ReleaseProjects = new HashSet<ReleaseProject>();
-
         this.ServerBuilds = new HashSet<ServerBuild>();
 
         this.SupportTickets = new HashSet<SupportTicket>();
@@ -37,6 +35,8 @@ public partial class User
         this.SupportTickets1 = new HashSet<SupportTicket>();
 
         this.UserTokens = new HashSet<UserToken>();
+
+        this.ReleaseProjects = new HashSet<ReleaseProject>();
 
     }
 
@@ -79,10 +79,6 @@ public partial class User
 
     public virtual ICollection<Project> Projects1 { get; set; }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<ReleaseProject> ReleaseProjects { get; set; }
-
     public virtual Role Role { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -100,6 +96,10 @@ public partial class User
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<UserToken> UserTokens { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<ReleaseProject> ReleaseProjects { get; set; }
 
 }
 

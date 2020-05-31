@@ -18,26 +18,11 @@ using System;
 public partial class PackageRelease
 {
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public PackageRelease()
-    {
-
-        this.ReleaseProjects = new HashSet<ReleaseProject>();
-
-    }
-
-
     public int PackageId { get; set; }
 
     public string PackageName { get; set; }
 
     public string PackageVersion { get; set; }
-
-
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<ReleaseProject> ReleaseProjects { get; set; }
 
 }
 

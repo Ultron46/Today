@@ -1,0 +1,97 @@
+﻿@model IEnumerable<DevOps.UI.Models.PackageRelease>
+
+<div class="breadcomb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="breadcomb-list">
+                    <input type="hidden" id="ReleaseProjectId" value="@ViewBag.ReleaseProjectId" />
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+
+                            <div class="nk-int-mk sl-dp-mn sm-res-mg-t-10">
+                                <h2>Select Packages</h2>
+                                <br />
+                            </div>
+                            <div class="bootstrap-select fm-cmp-mg">
+                                @*@Html.DropDownList("Packages", new SelectList(ViewBag.packages, "PackageId", "PackageName"), "--Select--", new { @class = "udropdown" })*@
+
+
+                                @if (ViewBag.packages != null)
+                                {
+                                    foreach (var item in ViewBag.packages)
+                                    {
+                                        if (item.PackageName != null)
+                                        {
+                                            <input type="checkbox" value="@item.PackageId" name="Packages" id="Packages" /> @item.PackageName
+
+                                        }
+                                        <br />
+                                        <br />
+                                        //List<DevOps.UI.Models.ReleaseProjectPackage> releaseProjectPackages = new List<DevOps.UI.Models.ReleaseProjectPackage>();
+                                        //if(item.Isselected==true)
+                                        //{
+                                        //    releaseProjectPackages.Add(item.PackageId);
+                                        //}
+                                    }
+
+                                }
+
+
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+
+                            <input type="submit" id="submitbtn" value="Submit" class=" btn-success" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#submitbtn').click(function (e) {
+        e.preventDefault();
+        var releaseProjectPackage = {'releaseProjectPackage[]': []};
+        $('input:checkbox[name=Packages]:checked').each(function () {
+            var i = $('#ReleaseProjectId').val();
+            var p = $(this).val();
+            var tmpObj = { ReleaseProjectPackageId: "0", ReleaseProjectId: i, PackageId: p };
+            releaseProjectPackage['releaseProjectPackage[]'].push(tmpObj);
+        });
+        var postData = JSON.stringify({ releases: releaseProjectPackage['releaseProjectPackage[]'] });
+        console.log(postData);
+        var url1 = "http://localhost:60969/api/Projects/InsertReleaseProjectPackage"
+        $.ajax({
+            url: url1,
+            type: 'POST',//type of posting the data
+            data: postData,
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (r) {
+                var url2 = "http://localhost:57996/Package/Release";
+                $.ajax({
+                    url: url2,
+                    type: 'GET',//type of posting the data
+                    contentType: 'application/json',
+                    dataType: 'html',
+                    success: function (r) {
+                        $("#partialbody").empty();
+                        $("#partialbody").html(r);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //what to do in error
+                    }
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                //what to do in error
+                console.log(thrownError);
+            }
+        });
+
+    });
+</script>

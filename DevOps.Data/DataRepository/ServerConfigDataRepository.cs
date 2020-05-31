@@ -114,6 +114,7 @@ namespace DevOps.Data.DataRepository
             {
                 serverBuilds = db.ServerBuilds.Where(x => x.BuildProject.Project.OrganisationId == id).Include(x => x.BuildProject).Include(x => x.User).Include(x => x.BuildProject.Project).Include(x => x.ServerConfig).Include(x => x.BuildProject.Branch).ToList();
             }
+            serverBuilds.ForEach(x => x.BuildProject.DownloadURL = x.BuildProject.DownloadURL = "http://localhost:57996/Projects/DownloadBuildProject?fileName=" + x.BuildProject.DownloadURL.Split('\\').Last());
             return serverBuilds;
         }
 
@@ -143,7 +144,7 @@ namespace DevOps.Data.DataRepository
 
         public ServerBuild QueuedBuild()
         {
-            ServerBuild build = db.ServerBuilds.Where(x => x.Status.Equals("queued")).AsNoTracking().OrderBy(x => x.PublishDate).FirstOrDefault();
+            ServerBuild build = db.ServerBuilds.Where(x => x.Status.Equals("queued")).Include(x => x.BuildProject).Include(x => x.BuildProject.Project).AsNoTracking().OrderBy(x => x.PublishDate).FirstOrDefault();
             return build;
         }
 

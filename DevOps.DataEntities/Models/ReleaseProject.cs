@@ -18,29 +18,44 @@ using System;
 public partial class ReleaseProject
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public ReleaseProject()
+    {
+
+        this.ReleaseProjectPackages = new HashSet<ReleaseProjectPackage>();
+
+    }
+
+
     public int ReleaseProjectId { get; set; }
 
-    public Nullable<int> BuildId { get; set; }
+    public string ReleaseName { get; set; }
 
-    public Nullable<int> ReleaseBy { get; set; }
+    public int ServerBuildId { get; set; }
 
-    public Nullable<int> ServerId { get; set; }
+    public int BranchId { get; set; }
 
-    public Nullable<System.DateTime> ReleaseDate { get; set; }
+    public int ReleaseBy { get; set; }
 
-    public Nullable<int> PackageId { get; set; }
+    public System.DateTime ReleaseDate { get; set; }
 
     public string Status { get; set; }
 
+    public string DownloadURL { get; set; }
+
+    public string ReleaseNotes { get; set; }
 
 
-    public virtual BuildProject BuildProject { get; set; }
 
-    public virtual PackageRelease PackageRelease { get; set; }
+    public virtual Branch Branch { get; set; }
 
-    public virtual ServerConfig ServerConfig { get; set; }
+    public virtual ServerBuild ServerBuild { get; set; }
 
     public virtual User User { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<ReleaseProjectPackage> ReleaseProjectPackages { get; set; }
 
 }
 

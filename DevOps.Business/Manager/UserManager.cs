@@ -80,5 +80,10 @@ namespace DevOps.Business.Manager
         {
             return _userDataRepository.UpdatePassword(Email, Password);
         }
+
+        public bool ChangePassword(string Email, string CurrentPassword, string Password)
+        {
+            return _userDataRepository.ChangePassword(Email, CurrentPassword, Password);
+        }
     }
 }

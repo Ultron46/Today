@@ -21,5 +21,6 @@ namespace DevOps.Business.Interfaces
         User ForgotPassword(string Email);
         bool CheckEmail(string Email);
         bool UpdatePassword(string Email, string Password);
+        bool ChangePassword(string Email, string CurrentPassword, string Password);
     }
 }

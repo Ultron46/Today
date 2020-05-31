@@ -128,6 +128,27 @@ namespace DevOps.Controllers
             List<SupportTicket> tickets = _supportTicketManager.UserSupportTickets(id);
             return Ok(tickets);
         }
+
+        public IHttpActionResult GetTotalFixSupportTickets(int id)
+        {
+            int total = _supportTicketManager.GetTotalFixSupportTickets(id);
+            return Ok(total);
+        }
+        public IHttpActionResult GetTotalNotFixedSupportTicket(int id)
+        {
+            int total = _supportTicketManager.GetTotalNotFixedSupportTicket(id);
+            return Ok(total);
+        }
+        public IHttpActionResult GetTotalFixSupportTicketsOfUsers(int id)
+        {
+            int total = _supportTicketManager.GetTotalFixSupportTicketsOfUsers(id);
+            return Ok(total);
+        }
+        public IHttpActionResult GetTotalNotFixedSupportTicketOfUsers(int id)
+        {
+            int total = _supportTicketManager.GetTotalNotFixedSupportTicketOfUsers(id);
+            return Ok(total);
+        }
     }
 }
 

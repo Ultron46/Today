@@ -11,6 +11,7 @@ using System.Web.Http.Results;
 using System.Data.Entity;
 using System.Web.Http.Cors;
 using DevOps.Model;
+using DevOps.Common;
 
 namespace DevOps.Controllers
 {
@@ -70,9 +71,11 @@ namespace DevOps.Controllers
             return Ok(user);
         }
 
+        [TokenAuth("Admin", "ReleaseManager")]
         [HttpPost]
         public IHttpActionResult InsertUser(User user)
         {
+            user.Password = Helpers.Hash(user.Password);
             bool status = _userManager.InsertUser(user);
             if (status)
                 return Ok(status);
@@ -142,7 +145,23 @@ namespace DevOps.Controllers
         [HttpPost]
         public IHttpActionResult UpdatePassword(ResetPassword reset)
         {
-            return Ok(_userManager.UpdatePassword(reset.Email, reset.Password));
+            bool status = _userManager.UpdatePassword(reset.Email, reset.Password);
+            if(status == false)
+            {
+                return NotFound();
+            }
+            return Ok(status);
+        }
+
+        [HttpPost]
+        public IHttpActionResult ChangePassword(ChangePassword changePassword)
+        {
+            bool status = _userManager.ChangePassword(changePassword.Email, changePassword.CurrentPassword, changePassword.Password);
+            if(status == false)
+            {
+                return NotFound();
+            }
+            return Ok(status);
         }
     }
 }

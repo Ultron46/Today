@@ -9,16 +9,21 @@ namespace DevOps.UI.Models
     {
         public int ReleaseProjectId { get; set; }
 
-        public Nullable<int> BuildId { get; set; }
+        public string ReleaseName { get; set; }
 
-        public Nullable<int> ReleaseBy { get; set; }
+        public int ServerBuildId { get; set; }
 
-        public Nullable<int> ServerId { get; set; }
+        public int BranchId { get; set; }
 
-        public Nullable<System.DateTime> ReleaseDate { get; set; }
+        public int ReleaseBy { get; set; }
 
-        public Nullable<int> PackageId { get; set; }
+        public System.DateTime ReleaseDate { get; set; }
 
         public string Status { get; set; }
+
+        public string DownloadURL { get; set; }
+        public string ReleaseNotes { get; set; }
+
+        public ServerBuild ServerBuild { get; set; }
     }
 }

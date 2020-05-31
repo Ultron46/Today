@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="4e2435bd041341759c618f5d5491ff2e" Name="Diagram1">
-        <EntityTypeShape EntityType="DevOpsModel.Branch" Width="1.5" PointX="8.25" PointY="15" IsExpanded="true" />
         <EntityTypeShape EntityType="DevOpsModel.ELMAH_Error" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DevOpsModel.EmailMaster" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DevOpsModel.MainMenu" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
@@ -18,7 +17,6 @@
         <EntityTypeShape EntityType="DevOpsModel.SubMenu" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
         <EntityTypeShape EntityType="DevOpsModel.SupportTicket" Width="1.5" PointX="11.25" PointY="8.25" IsExpanded="true" />
         <EntityTypeShape EntityType="DevOpsModel.ErrorLog" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="DevOpsModel.FK_Project_Branch_ProjectId" ManuallyRouted="false" />
         <AssociationConnector Association="DevOpsModel.FK_Organisation_EmailMaster_OrganisationId" ManuallyRouted="false" />
         <AssociationConnector Association="DevOpsModel.FK_MainMenu_SubMneu_MainMenuId" ManuallyRouted="false" />
         <AssociationConnector Association="DevOpsModel.FK_Organisation_Poeject_OrganisationId" ManuallyRouted="false" />
@@ -29,26 +27,29 @@
         <EntityTypeShape EntityType="DevOpsModel.UserToken" Width="1.5" PointX="11.25" PointY="12" />
         <EntityTypeShape EntityType="DevOpsModel.BuildProject" Width="1.5" PointX="14.25" PointY="10.875" />
         <EntityTypeShape EntityType="DevOpsModel.ServerBuild" Width="1.5" PointX="16.5" PointY="11.875" />
-        <AssociationConnector Association="DevOpsModel.FK_BuildProject_Branch" />
         <AssociationConnector Association="DevOpsModel.FK_BuildProject_ServerBuild_BuildId" />
         <AssociationConnector Association="DevOpsModel.FK_Project_BuildProject_ProjectId" />
         <AssociationConnector Association="DevOpsModel.FK_ServerConfig_ServerBuild_ServerId" />
         <EntityTypeShape EntityType="DevOpsModel.PackageRelease" Width="1.5" PointX="8.375" PointY="0.75" />
-        <EntityTypeShape EntityType="DevOpsModel.ReleaseProject" Width="1.5" PointX="16.5" PointY="7.5" />
-        <AssociationConnector Association="DevOpsModel.FK_ReleaseProject_BuildProject" />
-        <AssociationConnector Association="DevOpsModel.FK_ReleaseProject_PackageRelease" />
-        <AssociationConnector Association="DevOpsModel.FK_ReleaseProject_ServerConfig" />
         <EntityTypeShape EntityType="DevOpsModel.User" Width="1.5" PointX="9" PointY="6.625" />
         <AssociationConnector Association="DevOpsModel.FK_User_BuildProject_BuildBy" />
         <AssociationConnector Association="DevOpsModel.FK_Organisation_User_OrganisationId" />
         <AssociationConnector Association="DevOpsModel.FK_User_Project_CreatedBy" />
         <AssociationConnector Association="DevOpsModel.FK_User_Project_LastModifiedBy" />
-        <AssociationConnector Association="DevOpsModel.FK_User_ReleaseProject_ReleaseBy" />
         <AssociationConnector Association="DevOpsModel.FK_Role_User_RoleId" />
         <AssociationConnector Association="DevOpsModel.FK_User_ServerBuild_PublishedBy" />
         <AssociationConnector Association="DevOpsModel.FK_User_SupportTickets_FixedBy" />
         <AssociationConnector Association="DevOpsModel.FK_User_SupportTickets_GeneratedBy" />
         <AssociationConnector Association="DevOpsModel.FK_UserToken_User" />
+        <EntityTypeShape EntityType="DevOpsModel.Branch" Width="1.5" PointX="8.25" PointY="12.5" />
+        <AssociationConnector Association="DevOpsModel.FK_BuildProject_Branch" />
+        <AssociationConnector Association="DevOpsModel.FK_Project_Branch_ProjectId" />
+        <EntityTypeShape EntityType="DevOpsModel.ReleaseProjectPackage" Width="1.5" PointX="8.375" PointY="3.75" />
+        <EntityTypeShape EntityType="DevOpsModel.ReleaseProject" Width="1.5" PointX="18.75" PointY="9.25" />
+        <AssociationConnector Association="DevOpsModel.FK_ReleaseProject_Branch" />
+        <AssociationConnector Association="DevOpsModel.FK_ReleaseProject_ServerBuild" />
+        <AssociationConnector Association="DevOpsModel.FK_ReleaseProject_User" />
+        <AssociationConnector Association="DevOpsModel.FK_ReleaseProjectPackage_ReleaseProject" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
